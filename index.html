@@ -40,228 +40,102 @@
     justify-content: space-between;
     align-items: baseline;
   }
-  .header h1 {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text);
-  }
+  .header h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
   .header .v { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; }
-
   .container { padding: 16px 20px 100px; }
-  .section {
-    margin-bottom: 20px;
-  }
+  .section { margin-bottom: 20px; }
   .section-title {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
   }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-
   .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
+  .field label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
   .field input, .field select {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px 12px;
-    font-family: inherit;
-    font-size: 15px;
-    border-radius: 6px;
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    padding: 10px 12px; font-family: inherit; font-size: 15px;
+    border-radius: 6px; width: 100%; -webkit-appearance: none; appearance: none;
   }
-  .field input:focus, .field select:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
   .field select {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 32px;
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
   }
-
-  /* Live readouts */
-  .readouts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .readout {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    position: relative;
-    overflow: hidden;
-  }
-  .readout .label {
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 6px;
-  }
-  .readout .value {
-    font-size: 32px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-  .readout .unit {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-left: 4px;
-    font-weight: 400;
-  }
-  .readout.wide { grid-column: span 2; }
+  .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .readout { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .readout .label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+  .readout .value { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .readout .unit { font-size: 12px; color: var(--text-dim); margin-left: 4px; font-weight: 400; }
+  .readout .sub { font-size: 10px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.05em; }
+  .readout .sub.warn { color: var(--warn); }
+  .readout .sub.danger { color: var(--danger); }
   .readout.accent .value { color: var(--accent); }
   .readout.warn .value { color: var(--warn); }
-  .readout.danger .value { color: var(--danger); }
-
-  .slip-bar {
-    height: 6px;
-    background: var(--panel-2);
-    border-radius: 3px;
-    margin-top: 10px;
-    overflow: hidden;
-    position: relative;
-  }
-  .slip-bar-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 0.2s ease, background 0.3s;
-    width: 0%;
-  }
-
+  .slip-bar { height: 6px; background: var(--panel-2); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+  .slip-bar-fill { height: 100%; background: var(--accent); transition: width 0.2s ease, background 0.3s; width: 0%; }
   .btn {
-    display: block;
-    width: 100%;
-    padding: 18px;
-    background: var(--accent);
-    color: #001b14;
-    border: none;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    cursor: pointer;
+    display: block; width: 100%; padding: 18px;
+    background: var(--accent); color: #001b14; border: none; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer;
     transition: transform 0.1s, opacity 0.2s;
   }
   .btn:active { transform: scale(0.98); }
   .btn.stop { background: var(--danger); color: #2a0000; }
-  .btn:disabled { opacity: 0.4; }
-
+  .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); padding: 12px; font-size: 11px; }
   .btn-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: fixed; bottom: 0; left: 0; right: 0;
     padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
-    background: linear-gradient(to top, var(--bg) 70%, transparent);
-    z-index: 10;
+    background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 10;
   }
-
-  .status {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-  }
+  .status { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
   .pill {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 100px;
-    background: var(--panel-2);
-    color: var(--text-dim);
-    border: 1px solid var(--border);
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px;
+    background: var(--panel-2); color: var(--text-dim); border: 1px solid var(--border);
   }
   .pill.ok { color: var(--good); border-color: rgba(0,217,163,0.3); }
   .pill.err { color: var(--danger); border-color: rgba(255,107,107,0.3); }
-  .pill .dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    margin-right: 4px;
-    vertical-align: middle;
-  }
+  .pill .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 4px; vertical-align: middle; }
   .pill.ok .dot { animation: pulse 2s infinite; }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  details {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: var(--text-dim);
-  }
-  details summary {
-    cursor: pointer;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  details { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(--text-dim); }
+  details summary { cursor: pointer; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
   details p { margin: 8px 0 4px; line-height: 1.5; }
-
-  .log-summary {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 12px;
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 10px;
-  }
-  .log-summary span {
-    color: var(--text);
-    font-variant-numeric: tabular-nums;
-  }
+  .log-summary { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 12px; color: var(--text-dim); margin-top: 10px; }
+  .log-summary span { color: var(--text); font-variant-numeric: tabular-nums; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; overflow-y: auto; }
+  .modal-overlay.active { display: block; }
+  .modal { background: var(--bg); margin: 20px auto; max-width: 600px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .modal-header h2 { margin: 0; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
+  .modal-close { background: none; border: none; color: var(--text-dim); font-size: 22px; cursor: pointer; padding: 4px 8px; }
+  .modal-body { padding: 16px 20px; }
+  .peaks-list { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-top: 10px; }
+  .peak-row { display: grid; grid-template-columns: 30px 1fr 1fr 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .peak-row:last-child { border-bottom: none; }
+  .peak-row.header { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .peak-row .strength { color: var(--text-dim); }
+  .peak-row.dominant { color: var(--accent); }
+  .peak-row.dominant .strength { color: var(--accent); }
+  .verdict { margin-top: 14px; padding: 12px; border-radius: 6px; font-size: 13px; border: 1px solid var(--border); background: var(--panel); line-height: 1.5; }
+  .verdict.good { border-color: rgba(0,217,163,0.4); background: rgba(0,217,163,0.05); }
+  .verdict.bad { border-color: rgba(255,180,84,0.4); background: rgba(255,180,84,0.05); }
+  .verdict strong { color: var(--text); }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>◣ Prop Slip Logger</h1>
-  <span class="v">v0.1</span>
+  <span class="v">v0.2</span>
 </div>
 
 <div class="container">
 
-  <!-- LIVE READOUTS -->
   <div class="section">
     <div class="status">
       <span class="pill" id="pill-gps"><span class="dot"></span>GPS</span>
@@ -273,10 +147,12 @@
       <div class="readout accent">
         <div class="label">Speed</div>
         <div><span class="value" id="r-speed">—</span><span class="unit" id="r-speed-unit">kn</span></div>
+        <div class="sub" id="r-speed-acc">—</div>
       </div>
       <div class="readout warn">
         <div class="label">RPM</div>
         <div><span class="value" id="r-rpm">—</span></div>
+        <div class="sub" id="r-rpm-sub">—</div>
       </div>
       <div class="readout">
         <div class="label">Theoretical</div>
@@ -292,61 +168,47 @@
     <div class="log-summary" id="log-summary" style="display:none">
       Logged: <span id="log-count">0</span> samples · Duration: <span id="log-duration">0s</span>
     </div>
+
+    <button class="btn secondary" id="btn-calibrate" style="margin-top:10px">⚙ Calibration Mode</button>
   </div>
 
-  <!-- ENGINE CONFIG -->
   <div class="section">
     <div class="section-title">Engine</div>
     <div class="grid-2" style="margin-bottom:10px">
-      <div class="field">
-        <label>Cylinders</label>
-        <input type="number" id="cyl" value="4" min="1" max="16">
-      </div>
-      <div class="field">
-        <label>Stroke</label>
+      <div class="field"><label>Cylinders</label><input type="number" id="cyl" value="4" min="1" max="16"></div>
+      <div class="field"><label>Stroke</label>
         <select id="stroke">
           <option value="2">2-stroke</option>
           <option value="4" selected>4-stroke</option>
         </select>
       </div>
     </div>
-    <div class="grid-2">
-      <div class="field">
-        <label>Min RPM</label>
-        <input type="number" id="rpm-min" value="600" step="50">
-      </div>
-      <div class="field">
-        <label>Max RPM</label>
-        <input type="number" id="rpm-max" value="6000" step="100">
+    <div class="grid-3">
+      <div class="field"><label>Min RPM</label><input type="number" id="rpm-min" value="600" step="50"></div>
+      <div class="field"><label>Max RPM</label><input type="number" id="rpm-max" value="6000" step="100"></div>
+      <div class="field"><label>Harmonic</label>
+        <select id="harmonic">
+          <option value="0.5">×0.5</option>
+          <option value="1" selected>×1</option>
+          <option value="2">×2</option>
+        </select>
       </div>
     </div>
   </div>
 
-  <!-- DRIVE CONFIG -->
   <div class="section">
     <div class="section-title">Drive</div>
     <div class="grid-3">
-      <div class="field">
-        <label>Gear Ratio</label>
-        <input type="number" id="gear" value="2.0" step="0.01" min="0.5" max="5">
-      </div>
-      <div class="field">
-        <label>Pitch (in)</label>
-        <input type="number" id="pitch" value="19" step="0.5" min="5" max="40">
-      </div>
-      <div class="field">
-        <label>Diam (in)</label>
-        <input type="number" id="diam" value="14" step="0.25" min="5" max="40">
-      </div>
+      <div class="field"><label>Gear Ratio</label><input type="number" id="gear" value="2.0" step="0.01" min="0.5" max="5"></div>
+      <div class="field"><label>Pitch (in)</label><input type="number" id="pitch" value="19" step="0.5" min="5" max="40"></div>
+      <div class="field"><label>Diam (in)</label><input type="number" id="diam" value="14" step="0.25" min="5" max="40"></div>
     </div>
   </div>
 
-  <!-- DISPLAY/FILTER -->
   <div class="section">
     <div class="section-title">Display & Filter</div>
-    <div class="grid-2" style="margin-bottom:10px">
-      <div class="field">
-        <label>Speed Unit</label>
+    <div class="grid-2">
+      <div class="field"><label>Speed Unit</label>
         <select id="speed-unit">
           <option value="kn" selected>knots</option>
           <option value="mph">mph</option>
@@ -354,19 +216,16 @@
           <option value="ms">m/s</option>
         </select>
       </div>
-      <div class="field">
-        <label>Max ΔRPM/s</label>
-        <input type="number" id="rpm-slew" value="2500" step="100">
-      </div>
+      <div class="field"><label>Max ΔRPM/s</label><input type="number" id="rpm-slew" value="2500" step="100"></div>
     </div>
   </div>
 
   <details>
     <summary>How it works</summary>
-    <p><strong>RPM via mic:</strong> The app samples audio at ~22kHz and uses an FFT to find the dominant frequency in the engine's expected band. Firing rate = (RPM/60) × cylinders / (stroke/2).</p>
-    <p><strong>Slew filter:</strong> Rejects RPM jumps above your Max ΔRPM/s threshold — physically impossible spikes (e.g. wave slap, harmonic flip).</p>
-    <p><strong>Slip:</strong> Theoretical speed = (RPM ÷ gear ratio) × pitch ÷ 1056 [knots]. Slip % = (1 − actual/theoretical) × 100.</p>
-    <p><strong>Note:</strong> Hold phone in a quiet-ish spot near the engine. Wind noise will hurt accuracy.</p>
+    <p><strong>RPM via mic:</strong> FFT finds dominant frequency in engine's expected band. Firing rate = (RPM/60) × cyl / (stroke/2).</p>
+    <p><strong>Harmonic correction:</strong> If RPM consistently shows 2× or 0.5× of true value, change Harmonic. Use Calibration Mode to determine which.</p>
+    <p><strong>GPS accuracy:</strong> Modern phones use Doppler shift on satellite signals for speed. The ± value is the device's own confidence estimate.</p>
+    <p><strong>Slip:</strong> Theoretical (kn) = (RPM ÷ gear) × pitch ÷ 1215.2</p>
   </details>
 
 </div>
@@ -375,26 +234,63 @@
   <button class="btn" id="btn-start">▶ Start Logging</button>
 </div>
 
-<script>
-// =====================================================
-// Prop Slip Logger - core logic
-// =====================================================
+<div class="modal-overlay" id="cal-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>◐ Calibration Mode</h2>
+      <button class="modal-close" id="cal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="color: var(--text-dim); font-size:12px; line-height:1.5; margin-top:0">
+        Run engine at a steady RPM. Read the boat's tachometer and enter it below.
+        The app will compare against what the FFT detects.
+      </p>
 
+      <div class="status">
+        <span class="pill" id="pill-cal-mic"><span class="dot"></span>Mic</span>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 14px">
+        <div class="field"><label>Tach reading (RPM)</label><input type="number" id="cal-tach" value="2000" step="50"></div>
+        <div class="field"><label>Detected RPM</label><input type="text" id="cal-detected" value="—" readonly style="background:var(--panel-2)"></div>
+      </div>
+
+      <div class="section-title">Top 3 Frequency Peaks</div>
+      <div class="peaks-list">
+        <div class="peak-row header">
+          <div>#</div><div>Freq</div><div>RPM</div><div>Strength</div>
+        </div>
+        <div id="peak-rows"></div>
+      </div>
+
+      <div class="verdict" id="cal-verdict">
+        Start the engine and let the audio run for a few seconds…
+      </div>
+
+      <button class="btn secondary" id="cal-apply" style="margin-top:14px; display:none">
+        Apply suggested harmonic correction
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
 const $ = id => document.getElementById(id);
 
-// State
-let state = {
+const state = {
   running: false,
-  gps: { speedMs: null, lastUpdate: 0, watchId: null },
+  calibrating: false,
+  gps: { speedMs: null, accuracyMs: null, lastUpdate: 0, watchId: null },
   audio: { ctx: null, analyser: null, stream: null, rafId: null },
   rpm: { current: null, lastUpdate: 0, history: [] },
+  peaks: [],
   log: [],
   startTime: 0,
+  suggestedHarmonic: null,
 };
 
-// ---------- Helpers ----------
 const speedUnits = {
-  kn:  { label: 'kn',   factor: 1.94384 },  // m/s -> knots
+  kn:  { label: 'kn',   factor: 1.94384 },
   mph: { label: 'mph',  factor: 2.23694 },
   kmh: { label: 'km/h', factor: 3.6 },
   ms:  { label: 'm/s',  factor: 1 },
@@ -408,13 +304,13 @@ function formatSpeed(ms) {
 
 function setPill(id, ok, label) {
   const el = $(id);
+  if (!el) return;
   el.classList.remove('ok', 'err');
   if (ok === true) el.classList.add('ok');
   else if (ok === false) el.classList.add('err');
   el.innerHTML = `<span class="dot"></span>${label}`;
 }
 
-// ---------- GPS ----------
 function startGPS() {
   if (!navigator.geolocation) {
     setPill('pill-gps', false, 'GPS unavailable');
@@ -423,7 +319,8 @@ function startGPS() {
   setPill('pill-gps', null, 'GPS…');
   state.gps.watchId = navigator.geolocation.watchPosition(
     pos => {
-      state.gps.speedMs = pos.coords.speed; // m/s, can be null
+      state.gps.speedMs = pos.coords.speed;
+      state.gps.accuracyMs = pos.coords.speedAccuracy;
       state.gps.lastUpdate = Date.now();
       setPill('pill-gps', true, 'GPS');
     },
@@ -441,31 +338,27 @@ function stopGPS() {
   }
 }
 
-// ---------- Audio / RPM ----------
-async function startAudio() {
-  setPill('pill-mic', null, 'Mic…');
+async function startAudio(forCalibration = false) {
+  const pillId = forCalibration ? 'pill-cal-mic' : 'pill-mic';
+  setPill(pillId, null, 'Mic…');
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: false,
-        noiseSuppression: false,
-        autoGainControl: false,
-      },
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
     });
     state.audio.stream = stream;
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     state.audio.ctx = ctx;
     const src = ctx.createMediaStreamSource(stream);
     const analyser = ctx.createAnalyser();
-    analyser.fftSize = 8192; // good freq resolution
+    analyser.fftSize = 8192;
     analyser.smoothingTimeConstant = 0.3;
     src.connect(analyser);
     state.audio.analyser = analyser;
-    setPill('pill-mic', true, 'Mic');
+    setPill(pillId, true, 'Mic');
     rpmLoop();
   } catch (e) {
     console.error('Mic error', e);
-    setPill('pill-mic', false, 'Mic blocked');
+    setPill(pillId, false, 'Mic blocked');
   }
 }
 
@@ -476,16 +369,11 @@ function stopAudio() {
   state.audio = { ctx: null, analyser: null, stream: null, rafId: null };
 }
 
-// Convert RPM <-> firing frequency (Hz)
-function rpmToFiringHz(rpm, cyl, stroke) {
-  return (rpm / 60) * cyl / (stroke / 2);
-}
-function firingHzToRpm(hz, cyl, stroke) {
-  return (hz * 60 * (stroke / 2)) / cyl;
-}
+function rpmToFiringHz(rpm, cyl, stroke) { return (rpm / 60) * cyl / (stroke / 2); }
+function firingHzToRpm(hz, cyl, stroke) { return (hz * 60 * (stroke / 2)) / cyl; }
 
 let lastRpmTimestamp = 0;
-const RPM_LOOP_INTERVAL_MS = 100; // ~10 Hz update
+const RPM_LOOP_INTERVAL_MS = 100;
 
 function rpmLoop() {
   const now = performance.now();
@@ -503,17 +391,19 @@ function estimateRPM() {
   const sampleRate = ctx.sampleRate;
   const bins = a.frequencyBinCount;
   const data = new Float32Array(bins);
-  a.getFloatFrequencyData(data); // dB values
+  a.getFloatFrequencyData(data);
 
-  // Engine config
   const cyl = parseFloat($('cyl').value) || 4;
   const stroke = parseFloat($('stroke').value) || 4;
   const rpmMin = parseFloat($('rpm-min').value) || 500;
   const rpmMax = parseFloat($('rpm-max').value) || 6000;
+  const harmonic = parseFloat($('harmonic').value) || 1;
 
-  // Frequency range corresponding to RPM range (firing frequency)
-  const fMin = rpmToFiringHz(rpmMin, cyl, stroke);
-  const fMax = rpmToFiringHz(rpmMax, cyl, stroke);
+  const searchMinRpm = state.calibrating ? rpmMin * 0.5 : rpmMin;
+  const searchMaxRpm = state.calibrating ? rpmMax * 2 : rpmMax;
+
+  const fMin = rpmToFiringHz(searchMinRpm, cyl, stroke);
+  const fMax = rpmToFiringHz(searchMaxRpm, cyl, stroke);
 
   const binHz = sampleRate / (bins * 2);
   const iMin = Math.max(1, Math.floor(fMin / binHz));
@@ -521,46 +411,44 @@ function estimateRPM() {
 
   if (iMax <= iMin) return;
 
-  // Find dominant bin in band
-  let peakIdx = -1;
-  let peakDb = -Infinity;
-  for (let i = iMin; i <= iMax; i++) {
-    if (data[i] > peakDb) {
-      peakDb = data[i];
-      peakIdx = i;
+  const peaks = [];
+  for (let i = iMin + 1; i < iMax - 1; i++) {
+    if (data[i] > data[i-1] && data[i] > data[i+1] && data[i] > -85) {
+      peaks.push({ idx: i, db: data[i] });
     }
   }
+  peaks.sort((a, b) => b.db - a.db);
+  const top3 = peaks.slice(0, 3);
 
-  // Signal-strength gate: ignore quiet/no-signal frames
-  if (peakDb < -75) return;
-
-  // Parabolic interpolation around the peak for sub-bin accuracy
-  let refinedIdx = peakIdx;
-  if (peakIdx > 0 && peakIdx < bins - 1) {
-    const a0 = data[peakIdx - 1];
-    const b0 = data[peakIdx];
-    const c0 = data[peakIdx + 1];
-    const denom = (a0 - 2 * b0 + c0);
-    if (denom !== 0) {
-      const offset = 0.5 * (a0 - c0) / denom;
-      if (Math.abs(offset) < 1) refinedIdx = peakIdx + offset;
+  for (const p of top3) {
+    const i = p.idx;
+    let refined = i;
+    if (i > 0 && i < bins - 1) {
+      const a0 = data[i-1], b0 = data[i], c0 = data[i+1];
+      const denom = (a0 - 2 * b0 + c0);
+      if (denom !== 0) {
+        const offset = 0.5 * (a0 - c0) / denom;
+        if (Math.abs(offset) < 1) refined = i + offset;
+      }
     }
+    p.hz = refined * binHz;
+    p.rpm = firingHzToRpm(p.hz, cyl, stroke);
   }
+  state.peaks = top3;
 
-  const peakHz = refinedIdx * binHz;
-  const candidateRpm = firingHzToRpm(peakHz, cyl, stroke);
+  if (top3.length === 0) return;
+  const peakHz = top3[0].hz;
+  const candidateRpm = firingHzToRpm(peakHz * harmonic, cyl, stroke);
 
-  // Slew-rate filter
+  if (candidateRpm < rpmMin * 0.5 || candidateRpm > rpmMax * 2) return;
+
   const maxSlew = parseFloat($('rpm-slew').value) || 2500;
   const tNow = Date.now();
   if (state.rpm.current !== null && state.rpm.lastUpdate > 0) {
     const dt = (tNow - state.rpm.lastUpdate) / 1000;
     const allowedDelta = maxSlew * dt;
     if (Math.abs(candidateRpm - state.rpm.current) > allowedDelta) {
-      // Reject — keep previous, but update timestamp slowly so we can recover
-      // after a few rejections.
       if (dt > 1.0) {
-        // Been rejecting for a full second — accept the new value to recover
         state.rpm.current = candidateRpm;
         state.rpm.lastUpdate = tNow;
       }
@@ -568,49 +456,52 @@ function estimateRPM() {
     }
   }
 
-  // Light smoothing (3-sample moving average)
   state.rpm.history.push(candidateRpm);
   if (state.rpm.history.length > 3) state.rpm.history.shift();
-  const smoothed = state.rpm.history.reduce((a, b) => a + b, 0) / state.rpm.history.length;
-
-  state.rpm.current = smoothed;
+  state.rpm.current = state.rpm.history.reduce((a, b) => a + b, 0) / state.rpm.history.length;
   state.rpm.lastUpdate = tNow;
 }
 
-// ---------- Slip math ----------
 function calcTheoreticalKn(rpm, gear, pitchIn) {
-  // Theoretical speed (knots) = (rpm / gear) * pitch / 1056
-  // Derivation: prop revs/min * pitch (in) = in/min;
-  // 1 knot = 1.15078 mph = 1.15078 * 5280 * 12 in/h = 72913 in/h = 1215 in/min
-  // Actually: 1 knot = 6076 ft/h = 72913 in/h = 1215.2 in/min
-  // So speed_kn = (rpm/gear * pitch) / 1215.2  ≈ pitch*rpm/(gear*1215)
-  // Common formula uses 1056 for mph; for knots ≈ 1215.
   const propRpm = rpm / gear;
   const inPerMin = propRpm * pitchIn;
   return inPerMin / 1215.2;
 }
 
-// ---------- UI update ----------
 function uiTick() {
-  // Speed
   const speedMs = state.gps.speedMs;
+  const accMs = state.gps.accuracyMs;
   $('r-speed').textContent = formatSpeed(speedMs);
-  $('r-speed-unit').textContent = speedUnits[$('speed-unit').value].label;
+  const u = speedUnits[$('speed-unit').value];
+  $('r-speed-unit').textContent = u.label;
 
-  // RPM
+  const accEl = $('r-speed-acc');
+  accEl.classList.remove('warn', 'danger');
+  if (accMs == null || speedMs == null) {
+    accEl.textContent = state.gps.watchId ? 'acquiring…' : '—';
+  } else {
+    accEl.textContent = `± ${(accMs * u.factor).toFixed(2)} ${u.label}`;
+    if (accMs > 1.0) accEl.classList.add('danger');
+    else if (accMs > 0.5) accEl.classList.add('warn');
+  }
+
   const rpm = state.rpm.current;
   $('r-rpm').textContent = rpm == null ? '—' : Math.round(rpm);
+  const rpmSubEl = $('r-rpm-sub');
+  if (rpm != null && state.peaks.length > 0 && state.peaks[0].hz) {
+    rpmSubEl.textContent = `${state.peaks[0].hz.toFixed(1)} Hz`;
+  } else {
+    rpmSubEl.textContent = '—';
+  }
 
-  // Theoretical & slip
   const gear = parseFloat($('gear').value) || 2;
   const pitch = parseFloat($('pitch').value) || 19;
-  const unit = speedUnits[$('speed-unit').value];
 
   if (rpm != null && rpm > 100) {
     const theoKn = calcTheoreticalKn(rpm, gear, pitch);
     const theoMs = theoKn / 1.94384;
-    $('r-theo').textContent = (theoMs * unit.factor).toFixed(1);
-    $('r-theo-unit').textContent = unit.label;
+    $('r-theo').textContent = (theoMs * u.factor).toFixed(1);
+    $('r-theo-unit').textContent = u.label;
 
     if (speedMs != null && theoKn > 0.1) {
       const slip = (1 - (speedMs * 1.94384) / theoKn) * 100;
@@ -618,9 +509,7 @@ function uiTick() {
       $('r-slip').textContent = slip.toFixed(1);
 
       const fill = $('slip-fill');
-      const w = Math.max(0, Math.min(100, slipClamped));
-      fill.style.width = w + '%';
-      // Color: green <15%, amber 15-30%, red >30%
+      fill.style.width = Math.max(0, Math.min(100, slipClamped)) + '%';
       if (slipClamped < 15) fill.style.background = 'var(--good)';
       else if (slipClamped < 30) fill.style.background = 'var(--warn)';
       else fill.style.background = 'var(--danger)';
@@ -632,24 +521,92 @@ function uiTick() {
     $('r-slip').textContent = '—';
   }
 
-  // Logging
   if (state.running) {
     if (rpm != null && speedMs != null) {
-      state.log.push({
-        t: Date.now() - state.startTime,
-        rpm: Math.round(rpm),
-        speedMs: speedMs,
-      });
+      state.log.push({ t: Date.now() - state.startTime, rpm: Math.round(rpm), speedMs: speedMs, accMs: accMs });
     }
     $('log-count').textContent = state.log.length;
-    const dur = Math.floor((Date.now() - state.startTime) / 1000);
-    $('log-duration').textContent = dur + 's';
+    $('log-duration').textContent = Math.floor((Date.now() - state.startTime) / 1000) + 's';
+  }
+
+  if (state.calibrating) updateCalibrationUI();
+}
+setInterval(uiTick, 200);
+
+function updateCalibrationUI() {
+  const peaks = state.peaks;
+  const cont = $('peak-rows');
+
+  if (peaks.length === 0) {
+    cont.innerHTML = '<div class="peak-row"><div>—</div><div>no signal</div><div></div><div></div></div>';
+  } else {
+    cont.innerHTML = peaks.map((p, i) => `
+      <div class="${i === 0 ? 'peak-row dominant' : 'peak-row'}">
+        <div>${i+1}</div>
+        <div>${p.hz.toFixed(1)} Hz</div>
+        <div>${Math.round(p.rpm)}</div>
+        <div class="strength">${p.db.toFixed(0)} dB</div>
+      </div>
+    `).join('');
+  }
+
+  const detected = state.rpm.current;
+  $('cal-detected').value = detected == null ? '—' : Math.round(detected);
+
+  const tach = parseFloat($('cal-tach').value);
+  const verdictEl = $('cal-verdict');
+  const applyBtn = $('cal-apply');
+  applyBtn.style.display = 'none';
+  state.suggestedHarmonic = null;
+
+  if (!tach || !detected) {
+    verdictEl.className = 'verdict';
+    verdictEl.innerHTML = 'Run engine at a steady RPM and enter the tach reading.';
+    return;
+  }
+
+  const ratio = detected / tach;
+  if (ratio > 0.85 && ratio < 1.15) {
+    verdictEl.className = 'verdict good';
+    verdictEl.innerHTML = '<strong>✓ Looks right.</strong> Detected RPM is within 15% of tach reading.';
+  } else if (ratio > 1.7 && ratio < 2.3) {
+    verdictEl.className = 'verdict bad';
+    verdictEl.innerHTML = '<strong>⚠ Detecting at ~2× true RPM.</strong> Probably picking up second harmonic. Set Harmonic to ×0.5.';
+    state.suggestedHarmonic = 0.5;
+    applyBtn.style.display = 'block';
+  } else if (ratio > 0.4 && ratio < 0.6) {
+    verdictEl.className = 'verdict bad';
+    verdictEl.innerHTML = '<strong>⚠ Detecting at ~½ true RPM.</strong> Probably picking up sub-harmonic. Set Harmonic to ×2.';
+    state.suggestedHarmonic = 2;
+    applyBtn.style.display = 'block';
+  } else {
+    verdictEl.className = 'verdict bad';
+    verdictEl.innerHTML = `<strong>? Mismatch.</strong> Detected ${Math.round(detected)} vs tach ${tach} (ratio ${ratio.toFixed(2)}). Check cylinder/stroke or steady the RPM.`;
   }
 }
 
-setInterval(uiTick, 200);
+$('btn-calibrate').addEventListener('click', async () => {
+  state.calibrating = true;
+  state.peaks = [];
+  state.rpm = { current: null, lastUpdate: 0, history: [] };
+  $('cal-modal').classList.add('active');
+  if (!state.audio.ctx) await startAudio(true);
+  else setPill('pill-cal-mic', true, 'Mic');
+});
 
-// ---------- Start/Stop ----------
+$('cal-close').addEventListener('click', () => {
+  state.calibrating = false;
+  $('cal-modal').classList.remove('active');
+  if (!state.running) stopAudio();
+});
+
+$('cal-apply').addEventListener('click', () => {
+  if (state.suggestedHarmonic) {
+    $('harmonic').value = String(state.suggestedHarmonic);
+    state.rpm = { current: null, lastUpdate: 0, history: [] };
+  }
+});
+
 $('btn-start').addEventListener('click', async () => {
   if (!state.running) {
     state.running = true;
@@ -663,16 +620,19 @@ $('btn-start').addEventListener('click', async () => {
     $('log-summary').style.display = 'block';
 
     startGPS();
-    await startAudio();
+    if (!state.audio.ctx) await startAudio(false);
+    else setPill('pill-mic', true, 'Mic');
   } else {
     state.running = false;
     $('btn-start').textContent = '▶ Start Logging';
     $('btn-start').classList.remove('stop');
     $('pill-rec').style.display = 'none';
     stopGPS();
-    stopAudio();
+    if (!state.calibrating) {
+      stopAudio();
+      setPill('pill-mic', null, 'Mic');
+    }
     setPill('pill-gps', null, 'GPS');
-    setPill('pill-mic', null, 'Mic');
   }
 });
 </script>
