@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e14">
+<title>Prop Slip Logger</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --panel: #131922;
+    --panel-2: #1a212d;
+    --border: #2a3340;
+    --text: #e6edf3;
+    --text-dim: #8b97a8;
+    --accent: #00d9a3;
+    --warn: #ffb454;
+    --danger: #ff6b6b;
+    --good: #00d9a3;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  body {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    min-height: 100vh;
+  }
+  .header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .header h1 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .header .v { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; }
+
+  .container { padding: 16px 20px 100px; }
+  .section {
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .field input, .field select {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 15px;
+    border-radius: 6px;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .field select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+
+  /* Live readouts */
+  .readouts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .readout {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .readout .label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .readout .value {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .readout .unit {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-left: 4px;
+    font-weight: 400;
+  }
+  .readout.wide { grid-column: span 2; }
+  .readout.accent .value { color: var(--accent); }
+  .readout.warn .value { color: var(--warn); }
+  .readout.danger .value { color: var(--danger); }
+
+  .slip-bar {
+    height: 6px;
+    background: var(--panel-2);
+    border-radius: 3px;
+    margin-top: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  .slip-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.2s ease, background 0.3s;
+    width: 0%;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    background: var(--accent);
+    color: #001b14;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.stop { background: var(--danger); color: #2a0000; }
+  .btn:disabled { opacity: 0.4; }
+
+  .btn-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--bg) 70%, transparent);
+    z-index: 10;
+  }
+
+  .status {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--panel-2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+  .pill.ok { color: var(--good); border-color: rgba(0,217,163,0.3); }
+  .pill.err { color: var(--danger); border-color: rgba(255,107,107,0.3); }
+  .pill .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .pill.ok .dot { animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  details {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  details summary {
+    cursor: pointer;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  details p { margin: 8px 0 4px; line-height: 1.5; }
+
+  .log-summary {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 10px;
+  }
+  .log-summary span {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>◣ Prop Slip Logger</h1>
+  <span class="v">v0.1</span>
+</div>
+
+<div class="container">
+
+  <!-- LIVE READOUTS -->
+  <div class="section">
+    <div class="status">
+      <span class="pill" id="pill-gps"><span class="dot"></span>GPS</span>
+      <span class="pill" id="pill-mic"><span class="dot"></span>Mic</span>
+      <span class="pill" id="pill-rec" style="display:none"><span class="dot"></span>Rec</span>
+    </div>
+
+    <div class="readouts">
+      <div class="readout accent">
+        <div class="label">Speed</div>
+        <div><span class="value" id="r-speed">—</span><span class="unit" id="r-speed-unit">kn</span></div>
+      </div>
+      <div class="readout warn">
+        <div class="label">RPM</div>
+        <div><span class="value" id="r-rpm">—</span></div>
+      </div>
+      <div class="readout">
+        <div class="label">Theoretical</div>
+        <div><span class="value" id="r-theo" style="font-size:24px">—</span><span class="unit" id="r-theo-unit">kn</span></div>
+      </div>
+      <div class="readout">
+        <div class="label">Slip</div>
+        <div><span class="value" id="r-slip" style="font-size:24px">—</span><span class="unit">%</span></div>
+        <div class="slip-bar"><div class="slip-bar-fill" id="slip-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="log-summary" id="log-summary" style="display:none">
+      Logged: <span id="log-count">0</span> samples · Duration: <span id="log-duration">0s</span>
+    </div>
+  </div>
+
+  <!-- ENGINE CONFIG -->
+  <div class="section">
+    <div class="section-title">Engine</div>
+    <div class="grid-2" style="margin-bottom:10px">
+      <div class="field">
+        <label>Cylinders</label>
+        <input type="number" id="cyl" value="4" min="1" max="16">
+      </div>
+      <div class="field">
+        <label>Stroke</label>
+        <select id="stroke">
+          <option value="2">2-stroke</option>
+          <option value="4" selected>4-stroke</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Min RPM</label>
+        <input type="number" id="rpm-min" value="600" step="50">
+      </div>
+      <div class="field">
+        <label>Max RPM</label>
+        <input type="number" id="rpm-max" value="6000" step="100">
+      </div>
+    </div>
+  </div>
+
+  <!-- DRIVE CONFIG -->
+  <div class="section">
+    <div class="section-title">Drive</div>
+    <div class="grid-3">
+      <div class="field">
+        <label>Gear Ratio</label>
+        <input type="number" id="gear" value="2.0" step="0.01" min="0.5" max="5">
+      </div>
+      <div class="field">
+        <label>Pitch (in)</label>
+        <input type="number" id="pitch" value="19" step="0.5" min="5" max="40">
+      </div>
+      <div class="field">
+        <label>Diam (in)</label>
+        <input type="number" id="diam" value="14" step="0.25" min="5" max="40">
+      </div>
+    </div>
+  </div>
+
+  <!-- DISPLAY/FILTER -->
+  <div class="section">
+    <div class="section-title">Display & Filter</div>
+    <div class="grid-2" style="margin-bottom:10px">
+      <div class="field">
+        <label>Speed Unit</label>
+        <select id="speed-unit">
+          <option value="kn" selected>knots</option>
+          <option value="mph">mph</option>
+          <option value="kmh">km/h</option>
+          <option value="ms">m/s</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Max ΔRPM/s</label>
+        <input type="number" id="rpm-slew" value="2500" step="100">
+      </div>
+    </div>
+  </div>
+
+  <details>
+    <summary>How it works</summary>
+    <p><strong>RPM via mic:</strong> The app samples audio at ~22kHz and uses an FFT to find the dominant frequency in the engine's expected band. Firing rate = (RPM/60) × cylinders / (stroke/2).</p>
+    <p><strong>Slew filter:</strong> Rejects RPM jumps above your Max ΔRPM/s threshold — physically impossible spikes (e.g. wave slap, harmonic flip).</p>
+    <p><strong>Slip:</strong> Theoretical speed = (RPM ÷ gear ratio) × pitch ÷ 1056 [knots]. Slip % = (1 − actual/theoretical) × 100.</p>
+    <p><strong>Note:</strong> Hold phone in a quiet-ish spot near the engine. Wind noise will hurt accuracy.</p>
+  </details>
+
+</div>
+
+<div class="btn-bar">
+  <button class="btn" id="btn-start">▶ Start Logging</button>
+</div>
+
+<script>
+// =====================================================
+// Prop Slip Logger - core logic
+// =====================================================
+
+const $ = id => document.getElementById(id);
+
+// State
+let state = {
+  running: false,
+  gps: { speedMs: null, lastUpdate: 0, watchId: null },
+  audio: { ctx: null, analyser: null, stream: null, rafId: null },
+  rpm: { current: null, lastUpdate: 0, history: [] },
+  log: [],
+  startTime: 0,
+};
+
+// ---------- Helpers ----------
+const speedUnits = {
+  kn:  { label: 'kn',   factor: 1.94384 },  // m/s -> knots
+  mph: { label: 'mph',  factor: 2.23694 },
+  kmh: { label: 'km/h', factor: 3.6 },
+  ms:  { label: 'm/s',  factor: 1 },
+};
+
+function formatSpeed(ms) {
+  if (ms == null) return '—';
+  const u = speedUnits[$('speed-unit').value];
+  return (ms * u.factor).toFixed(1);
+}
+
+function setPill(id, ok, label) {
+  const el = $(id);
+  el.classList.remove('ok', 'err');
+  if (ok === true) el.classList.add('ok');
+  else if (ok === false) el.classList.add('err');
+  el.innerHTML = `<span class="dot"></span>${label}`;
+}
+
+// ---------- GPS ----------
+function startGPS() {
+  if (!navigator.geolocation) {
+    setPill('pill-gps', false, 'GPS unavailable');
+    return;
+  }
+  setPill('pill-gps', null, 'GPS…');
+  state.gps.watchId = navigator.geolocation.watchPosition(
+    pos => {
+      state.gps.speedMs = pos.coords.speed; // m/s, can be null
+      state.gps.lastUpdate = Date.now();
+      setPill('pill-gps', true, 'GPS');
+    },
+    err => {
+      console.warn('GPS error', err);
+      setPill('pill-gps', false, 'GPS err');
+    },
+    { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+  );
+}
+function stopGPS() {
+  if (state.gps.watchId !== null) {
+    navigator.geolocation.clearWatch(state.gps.watchId);
+    state.gps.watchId = null;
+  }
+}
+
+// ---------- Audio / RPM ----------
+async function startAudio() {
+  setPill('pill-mic', null, 'Mic…');
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false,
+      },
+    });
+    state.audio.stream = stream;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    state.audio.ctx = ctx;
+    const src = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 8192; // good freq resolution
+    analyser.smoothingTimeConstant = 0.3;
+    src.connect(analyser);
+    state.audio.analyser = analyser;
+    setPill('pill-mic', true, 'Mic');
+    rpmLoop();
+  } catch (e) {
+    console.error('Mic error', e);
+    setPill('pill-mic', false, 'Mic blocked');
+  }
+}
+
+function stopAudio() {
+  if (state.audio.rafId) cancelAnimationFrame(state.audio.rafId);
+  if (state.audio.stream) state.audio.stream.getTracks().forEach(t => t.stop());
+  if (state.audio.ctx) state.audio.ctx.close();
+  state.audio = { ctx: null, analyser: null, stream: null, rafId: null };
+}
+
+// Convert RPM <-> firing frequency (Hz)
+function rpmToFiringHz(rpm, cyl, stroke) {
+  return (rpm / 60) * cyl / (stroke / 2);
+}
+function firingHzToRpm(hz, cyl, stroke) {
+  return (hz * 60 * (stroke / 2)) / cyl;
+}
+
+let lastRpmTimestamp = 0;
+const RPM_LOOP_INTERVAL_MS = 100; // ~10 Hz update
+
+function rpmLoop() {
+  const now = performance.now();
+  if (now - lastRpmTimestamp >= RPM_LOOP_INTERVAL_MS) {
+    lastRpmTimestamp = now;
+    estimateRPM();
+  }
+  state.audio.rafId = requestAnimationFrame(rpmLoop);
+}
+
+function estimateRPM() {
+  const a = state.audio.analyser;
+  if (!a) return;
+  const ctx = state.audio.ctx;
+  const sampleRate = ctx.sampleRate;
+  const bins = a.frequencyBinCount;
+  const data = new Float32Array(bins);
+  a.getFloatFrequencyData(data); // dB values
+
+  // Engine config
+  const cyl = parseFloat($('cyl').value) || 4;
+  const stroke = parseFloat($('stroke').value) || 4;
+  const rpmMin = parseFloat($('rpm-min').value) || 500;
+  const rpmMax = parseFloat($('rpm-max').value) || 6000;
+
+  // Frequency range corresponding to RPM range (firing frequency)
+  const fMin = rpmToFiringHz(rpmMin, cyl, stroke);
+  const fMax = rpmToFiringHz(rpmMax, cyl, stroke);
+
+  const binHz = sampleRate / (bins * 2);
+  const iMin = Math.max(1, Math.floor(fMin / binHz));
+  const iMax = Math.min(bins - 1, Math.ceil(fMax / binHz));
+
+  if (iMax <= iMin) return;
+
+  // Find dominant bin in band
+  let peakIdx = -1;
+  let peakDb = -Infinity;
+  for (let i = iMin; i <= iMax; i++) {
+    if (data[i] > peakDb) {
+      peakDb = data[i];
+      peakIdx = i;
+    }
+  }
+
+  // Signal-strength gate: ignore quiet/no-signal frames
+  if (peakDb < -75) return;
+
+  // Parabolic interpolation around the peak for sub-bin accuracy
+  let refinedIdx = peakIdx;
+  if (peakIdx > 0 && peakIdx < bins - 1) {
+    const a0 = data[peakIdx - 1];
+    const b0 = data[peakIdx];
+    const c0 = data[peakIdx + 1];
+    const denom = (a0 - 2 * b0 + c0);
+    if (denom !== 0) {
+      const offset = 0.5 * (a0 - c0) / denom;
+      if (Math.abs(offset) < 1) refinedIdx = peakIdx + offset;
+    }
+  }
+
+  const peakHz = refinedIdx * binHz;
+  const candidateRpm = firingHzToRpm(peakHz, cyl, stroke);
+
+  // Slew-rate filter
+  const maxSlew = parseFloat($('rpm-slew').value) || 2500;
+  const tNow = Date.now();
+  if (state.rpm.current !== null && state.rpm.lastUpdate > 0) {
+    const dt = (tNow - state.rpm.lastUpdate) / 1000;
+    const allowedDelta = maxSlew * dt;
+    if (Math.abs(candidateRpm - state.rpm.current) > allowedDelta) {
+      // Reject — keep previous, but update timestamp slowly so we can recover
+      // after a few rejections.
+      if (dt > 1.0) {
+        // Been rejecting for a full second — accept the new value to recover
+        state.rpm.current = candidateRpm;
+        state.rpm.lastUpdate = tNow;
+      }
+      return;
+    }
+  }
+
+  // Light smoothing (3-sample moving average)
+  state.rpm.history.push(candidateRpm);
+  if (state.rpm.history.length > 3) state.rpm.history.shift();
+  const smoothed = state.rpm.history.reduce((a, b) => a + b, 0) / state.rpm.history.length;
+
+  state.rpm.current = smoothed;
+  state.rpm.lastUpdate = tNow;
+}
+
+// ---------- Slip math ----------
+function calcTheoreticalKn(rpm, gear, pitchIn) {
+  // Theoretical speed (knots) = (rpm / gear) * pitch / 1056
+  // Derivation: prop revs/min * pitch (in) = in/min;
+  // 1 knot = 1.15078 mph = 1.15078 * 5280 * 12 in/h = 72913 in/h = 1215 in/min
+  // Actually: 1 knot = 6076 ft/h = 72913 in/h = 1215.2 in/min
+  // So speed_kn = (rpm/gear * pitch) / 1215.2  ≈ pitch*rpm/(gear*1215)
+  // Common formula uses 1056 for mph; for knots ≈ 1215.
+  const propRpm = rpm / gear;
+  const inPerMin = propRpm * pitchIn;
+  return inPerMin / 1215.2;
+}
+
+// ---------- UI update ----------
+function uiTick() {
+  // Speed
+  const speedMs = state.gps.speedMs;
+  $('r-speed').textContent = formatSpeed(speedMs);
+  $('r-speed-unit').textContent = speedUnits[$('speed-unit').value].label;
+
+  // RPM
+  const rpm = state.rpm.current;
+  $('r-rpm').textContent = rpm == null ? '—' : Math.round(rpm);
+
+  // Theoretical & slip
+  const gear = parseFloat($('gear').value) || 2;
+  const pitch = parseFloat($('pitch').value) || 19;
+  const unit = speedUnits[$('speed-unit').value];
+
+  if (rpm != null && rpm > 100) {
+    const theoKn = calcTheoreticalKn(rpm, gear, pitch);
+    const theoMs = theoKn / 1.94384;
+    $('r-theo').textContent = (theoMs * unit.factor).toFixed(1);
+    $('r-theo-unit').textContent = unit.label;
+
+    if (speedMs != null && theoKn > 0.1) {
+      const slip = (1 - (speedMs * 1.94384) / theoKn) * 100;
+      const slipClamped = Math.max(-50, Math.min(100, slip));
+      $('r-slip').textContent = slip.toFixed(1);
+
+      const fill = $('slip-fill');
+      const w = Math.max(0, Math.min(100, slipClamped));
+      fill.style.width = w + '%';
+      // Color: green <15%, amber 15-30%, red >30%
+      if (slipClamped < 15) fill.style.background = 'var(--good)';
+      else if (slipClamped < 30) fill.style.background = 'var(--warn)';
+      else fill.style.background = 'var(--danger)';
+    } else {
+      $('r-slip').textContent = '—';
+    }
+  } else {
+    $('r-theo').textContent = '—';
+    $('r-slip').textContent = '—';
+  }
+
+  // Logging
+  if (state.running) {
+    if (rpm != null && speedMs != null) {
+      state.log.push({
+        t: Date.now() - state.startTime,
+        rpm: Math.round(rpm),
+        speedMs: speedMs,
+      });
+    }
+    $('log-count').textContent = state.log.length;
+    const dur = Math.floor((Date.now() - state.startTime) / 1000);
+    $('log-duration').textContent = dur + 's';
+  }
+}
+
+setInterval(uiTick, 200);
+
+// ---------- Start/Stop ----------
+$('btn-start').addEventListener('click', async () => {
+  if (!state.running) {
+    state.running = true;
+    state.log = [];
+    state.startTime = Date.now();
+    state.rpm = { current: null, lastUpdate: 0, history: [] };
+    $('btn-start').textContent = '■ Stop Logging';
+    $('btn-start').classList.add('stop');
+    $('pill-rec').style.display = 'inline-block';
+    setPill('pill-rec', false, 'REC');
+    $('log-summary').style.display = 'block';
+
+    startGPS();
+    await startAudio();
+  } else {
+    state.running = false;
+    $('btn-start').textContent = '▶ Start Logging';
+    $('btn-start').classList.remove('stop');
+    $('pill-rec').style.display = 'none';
+    stopGPS();
+    stopAudio();
+    setPill('pill-gps', null, 'GPS');
+    setPill('pill-mic', null, 'Mic');
+  }
+});
+</script>
+</body>
+</html>
