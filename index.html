@@ -20,6 +20,7 @@
     --danger: #ff6b6b;
     --good: #00d9a3;
     --ghost: #58a6ff;
+    --magenta: #c678dd;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
@@ -84,38 +85,26 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>");
     background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
   }
+  .field input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    height: 6px; padding: 0; background: var(--panel-2);
+  }
+  .field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); cursor: pointer;
+  }
 
   .speedometer-wrap {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 14px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; margin-bottom: 14px;
     display: none;
   }
   .speedometer-wrap.active { display: block; }
-  .speedometer {
-    width: 100%;
-    aspect-ratio: 2 / 1.1;
-    display: block;
-  }
-  .speedometer-readout {
-    text-align: center;
-    margin-top: -12px;
-    font-variant-numeric: tabular-nums;
-  }
-  .speedometer-readout .big {
-    font-size: 36px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--accent);
-  }
-  .speedometer-readout .ghost-text {
-    font-size: 11px;
-    color: var(--ghost);
-    margin-top: 2px;
-    letter-spacing: 0.1em;
-  }
+  .speedometer { width: 100%; aspect-ratio: 2 / 1.1; display: block; }
+  .speedometer-readout { text-align: center; margin-top: -12px; font-variant-numeric: tabular-nums; }
+  .speedometer-readout .big { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(--accent); }
+  .speedometer-readout .ghost-text { font-size: 11px; color: var(--ghost); margin-top: 2px; letter-spacing: 0.1em; }
 
   .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
   .readout { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
@@ -143,8 +132,11 @@
   .btn:active { transform: scale(0.98); }
   .btn.stop { background: var(--danger); color: #2a0000; }
   .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); padding: 12px; font-size: 11px; }
+  .btn.tiny { padding: 8px; font-size: 10px; }
+  .btn.danger { background: var(--danger); color: #2a0000; }
 
   .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
 
   .btn-bar {
     position: fixed; bottom: 0; left: 0; right: 0;
@@ -172,7 +164,7 @@
 
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; overflow-y: auto; }
   .modal-overlay.active { display: block; }
-  .modal { background: var(--bg); margin: 20px auto; max-width: 600px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .modal { background: var(--bg); margin: 20px auto; max-width: 700px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .modal-header h2 { margin: 0; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
   .modal-close { background: none; border: none; color: var(--text-dim); font-size: 22px; cursor: pointer; padding: 4px 8px; }
@@ -191,20 +183,94 @@
   .verdict.bad { border-color: rgba(255,180,84,0.4); background: rgba(255,180,84,0.05); }
   .verdict strong { color: var(--text); }
 
-  /* Debug view */
   .debug-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
   .debug-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
   .debug-stat .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
   .debug-stat .val { font-size: 16px; font-variant-numeric: tabular-nums; color: var(--text); font-weight: 500; }
   .debug-stat .val.dim { color: var(--text-dim); font-size: 13px; }
+  .debug-stat .val.accent { color: var(--accent); }
+  .debug-stat .val.warn { color: var(--warn); }
+  .debug-stat .val.magenta { color: var(--magenta); }
 
   .spectrum {
-    width: 100%;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    display: block;
+    width: 100%; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 6px; display: block;
   }
+
+  .test-tone {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px; margin-top: 14px;
+  }
+  .test-tone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
+
+  /* Sessions list */
+  .session-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px; margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .session-card:active { background: var(--panel-2); }
+  .session-card-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .session-name { font-size: 14px; color: var(--text); font-weight: 500; }
+  .session-date { font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em; }
+  .session-stats { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .session-stats span { color: var(--text); font-variant-numeric: tabular-nums; }
+
+  /* Live log table */
+  .log-table-wrap {
+    max-height: 60vh; overflow-y: auto;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .log-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 11px; font-variant-numeric: tabular-nums;
+  }
+  .log-table th, .log-table td {
+    padding: 6px 8px; text-align: right;
+    border-bottom: 1px solid var(--border);
+  }
+  .log-table th {
+    position: sticky; top: 0;
+    background: var(--panel-2); color: var(--text-dim);
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .log-table tr:last-child td { border-bottom: none; }
+  .log-table .col-t { text-align: left; }
+
+  .summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; margin-bottom: 14px;
+  }
+  .summary-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
+  .summary-stat .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .summary-stat .val { font-size: 18px; font-variant-numeric: tabular-nums; color: var(--text); font-weight: 600; }
+
+  .toggle-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 12px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 6px; margin-bottom: 8px;
+  }
+  .toggle-row label { font-size: 12px; color: var(--text); }
+  .toggle-row .desc { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .switch { position: relative; width: 44px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; cursor: pointer; inset: 0;
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 24px; transition: 0.2s;
+  }
+  .slider::before {
+    content: ""; position: absolute;
+    height: 16px; width: 16px;
+    left: 3px; top: 3px;
+    background: var(--text-dim); border-radius: 50%; transition: 0.2s;
+  }
+  .switch input:checked + .slider { background: var(--accent); border-color: var(--accent); }
+  .switch input:checked + .slider::before { transform: translateX(20px); background: #001b14; }
+
+  .empty-state { text-align: center; padding: 30px 20px; color: var(--text-dim); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -213,7 +279,8 @@
   <h1>◣ Prop Slip Logger</h1>
   <div class="header-actions">
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
-    <span class="v">v0.3</span>
+    <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
+    <span class="v">v0.4</span>
   </div>
 </div>
 
@@ -224,9 +291,9 @@
       <span class="pill" id="pill-gps"><span class="dot"></span>GPS</span>
       <span class="pill" id="pill-mic"><span class="dot"></span>Mic</span>
       <span class="pill" id="pill-rec" style="display:none"><span class="dot"></span>Rec</span>
+      <span class="pill" id="pill-wake" style="display:none">⌁ Awake</span>
     </div>
 
-    <!-- Analog speedometer (toggle) -->
     <div class="speedometer-wrap" id="speedo-wrap">
       <svg class="speedometer" id="speedo-svg" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="speedometer-readout">
@@ -265,16 +332,17 @@
       Logged: <span id="log-count">0</span> samples · Duration: <span id="log-duration">0s</span>
     </div>
 
-    <div class="btn-row">
-      <button class="btn secondary" id="btn-calibrate">⚙ Calibrate</button>
+    <div class="btn-row three">
+      <button class="btn secondary" id="btn-calibrate">⚙ Cal</button>
       <button class="btn secondary" id="btn-debug">◍ Debug</button>
+      <button class="btn secondary" id="btn-livelog">▤ Live Log</button>
     </div>
   </div>
 
   <div class="section">
     <div class="section-title">Engine</div>
     <div class="grid-2" style="margin-bottom:10px">
-      <div class="field"><label>Cylinders</label><input type="number" id="cyl" value="4" min="1" max="16"></div>
+      <div class="field"><label>Cylinders (1–16)</label><input type="number" id="cyl" value="4" min="1" max="16"></div>
       <div class="field"><label>Stroke</label>
         <select id="stroke">
           <option value="2">2-stroke</option>
@@ -283,8 +351,8 @@
       </div>
     </div>
     <div class="grid-3">
-      <div class="field"><label>Min RPM</label><input type="number" id="rpm-min" value="600" step="50"></div>
-      <div class="field"><label>Max RPM</label><input type="number" id="rpm-max" value="6000" step="100"></div>
+      <div class="field"><label>Min RPM (≥300)</label><input type="number" id="rpm-min" value="600" step="50" min="300"></div>
+      <div class="field"><label>Max RPM (≤12000)</label><input type="number" id="rpm-max" value="6000" step="100" max="12000"></div>
       <div class="field"><label>Harmonic</label>
         <select id="harmonic">
           <option value="0.5">×0.5</option>
@@ -320,15 +388,27 @@
     </div>
     <div class="grid-2">
       <div class="field"><label>Speedo max</label><input type="number" id="speedo-max" value="50" step="5" min="5"></div>
+      <div class="field"><label>Spectral contrast (dB)</label><input type="number" id="contrast-thresh" value="6" step="1" min="0" max="20"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Power</div>
+    <div class="toggle-row">
+      <div>
+        <label>Keep screen on</label>
+        <div class="desc">Wake Lock — prevents iOS from sleeping during logging</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="wake-toggle"><span class="slider"></span></label>
     </div>
   </div>
 
   <details>
     <summary>How it works</summary>
-    <p><strong>RPM via mic:</strong> FFT finds the dominant frequency in engine's expected band. Firing rate = (RPM/60) × cyl / (stroke/2).</p>
-    <p><strong>SNR filter:</strong> Peak must be at least N dB above the band's median (noise floor) to count.</p>
-    <p><strong>Best 2-sec / 20s:</strong> Highest 2-second average speed within the last 20 seconds (rolling).</p>
-    <p><strong>Slip:</strong> Theoretical (kn) = (RPM ÷ gear) × pitch ÷ 1215.2</p>
+    <p><strong>FFT pipeline:</strong> high-pass → noise floor (adaptive median over time) → SNR gate → spectral contrast check → slew rate filter.</p>
+    <p><strong>Adaptive noise floor:</strong> tracks slow-varying noise across the spectrum so peaks stand out from constant background sources.</p>
+    <p><strong>Spectral contrast:</strong> peak must be sharper than its neighbours, not just louder than the average. Rejects broadband noise like wind/rain.</p>
+    <p><strong>Logging:</strong> sessions are saved to your phone (IndexedDB). Export as CSV via Share Sheet.</p>
   </details>
 
 </div>
@@ -358,7 +438,7 @@
         <div class="field"><label>Detected RPM</label><input type="text" id="cal-detected" value="—" readonly style="background:var(--panel-2)"></div>
       </div>
 
-      <div class="section-title">Top 3 Frequency Peaks</div>
+      <div class="section-title">Top 3 Frequency Peaks (in band)</div>
       <div class="peaks-list">
         <div class="peak-row header">
           <div>#</div><div>Freq</div><div>RPM</div><div>Strength</div>
@@ -390,23 +470,120 @@
 
       <div class="section-title">Live Diagnostics</div>
       <div class="debug-stats">
-        <div class="debug-stat"><div class="lbl">Detected freq</div><div class="val" id="d-freq">— Hz</div></div>
-        <div class="debug-stat"><div class="lbl">Detected RPM</div><div class="val" id="d-rpm">—</div></div>
-        <div class="debug-stat"><div class="lbl">Peak strength</div><div class="val" id="d-peak">— dB</div></div>
-        <div class="debug-stat"><div class="lbl">Noise floor</div><div class="val dim" id="d-noise">— dB</div></div>
+        <div class="debug-stat"><div class="lbl">In-band peak</div><div class="val accent" id="d-freq">— Hz</div></div>
+        <div class="debug-stat"><div class="lbl">Detected RPM</div><div class="val accent" id="d-rpm">—</div></div>
+        <div class="debug-stat"><div class="lbl">Global peak (20-1500Hz)</div><div class="val magenta" id="d-globalfreq">— Hz</div></div>
+        <div class="debug-stat"><div class="lbl">Global peak strength</div><div class="val magenta" id="d-globaldb">— dB</div></div>
+        <div class="debug-stat"><div class="lbl">In-band peak strength</div><div class="val" id="d-peak">— dB</div></div>
+        <div class="debug-stat"><div class="lbl">Noise floor (adaptive)</div><div class="val dim" id="d-noise">— dB</div></div>
         <div class="debug-stat"><div class="lbl">Current SNR</div><div class="val" id="d-snr">— dB</div></div>
-        <div class="debug-stat"><div class="lbl">GPS rate</div><div class="val dim" id="d-gpsrate">— Hz</div></div>
+        <div class="debug-stat"><div class="lbl">Contrast</div><div class="val" id="d-contrast">— dB</div></div>
         <div class="debug-stat"><div class="lbl">Accepted (10s)</div><div class="val" id="d-accept">—</div></div>
         <div class="debug-stat"><div class="lbl">Rejected (10s)</div><div class="val dim" id="d-reject">—</div></div>
+        <div class="debug-stat"><div class="lbl">GPS rate</div><div class="val dim" id="d-gpsrate">— Hz</div></div>
+        <div class="debug-stat"><div class="lbl">FFT rate</div><div class="val dim" id="d-fftrate">— Hz</div></div>
       </div>
 
-      <div class="section-title">Spectrum 50–500 Hz</div>
-      <svg class="spectrum" id="spectrum-svg" viewBox="0 0 400 180" preserveAspectRatio="none" style="height:180px"></svg>
+      <div class="section-title">Spectrum 20–1500 Hz</div>
+      <svg class="spectrum" id="spectrum-svg" viewBox="0 0 400 200" preserveAspectRatio="none" style="height:200px"></svg>
       <p style="color:var(--text-dim); font-size:11px; margin-top:8px; line-height:1.5">
-        Smoothed spectrum. <span style="color:var(--accent)">Green line</span> = peak.
+        <span style="color:var(--accent)">Green</span> = in-band peak (used for RPM).
+        <span style="color:var(--magenta)">Magenta</span> = global peak.
         <span style="color:var(--warn)">Orange dashed</span> = noise floor.
         <span style="color:var(--ghost)">Blue dashed</span> = RPM band edges.
       </p>
+
+      <div class="test-tone">
+        <div class="section-title">Test Tone Generator</div>
+        <p style="color:var(--text-dim); font-size:11px; margin: 0 0 10px; line-height:1.5">
+          Plays a sine wave through the speaker. Hold mic near speaker — FFT should match.
+        </p>
+        <div class="test-tone-row" style="margin-bottom:10px">
+          <div class="field"><label>Frequency (Hz)</label><input type="number" id="tone-freq" value="200" min="40" max="2000" step="10"></div>
+          <div class="field"><label>Volume</label><input type="range" id="tone-vol" min="0" max="100" value="40"></div>
+        </div>
+        <div style="font-size:11px; color:var(--text-dim); margin-bottom:10px">
+          Expected RPM at this frequency: <span id="tone-expected" style="color:var(--text); font-variant-numeric:tabular-nums">—</span>
+        </div>
+        <button class="btn secondary tiny" id="btn-tone">▶ Play Tone</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE LOG MODAL -->
+<div class="modal-overlay" id="livelog-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>▤ Live Log</h2>
+      <button class="modal-close" id="livelog-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="summary-grid" id="livelog-summary"></div>
+      <div class="log-table-wrap">
+        <table class="log-table" id="livelog-table">
+          <thead>
+            <tr>
+              <th class="col-t">t (s)</th>
+              <th>RPM</th>
+              <th>Speed</th>
+              <th>Theo</th>
+              <th>Slip</th>
+            </tr>
+          </thead>
+          <tbody id="livelog-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SESSIONS MODAL -->
+<div class="modal-overlay" id="sessions-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>≡ Sessions</h2>
+      <button class="modal-close" id="sessions-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="sessions-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SESSION DETAIL MODAL -->
+<div class="modal-overlay" id="session-detail-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="session-detail-title">Session</h2>
+      <button class="modal-close" id="session-detail-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="summary-grid" id="session-detail-summary"></div>
+
+      <div class="btn-row" style="margin-bottom:14px">
+        <button class="btn secondary tiny" id="session-export">⤓ Export CSV</button>
+        <button class="btn secondary tiny danger" id="session-delete">🗑 Delete</button>
+      </div>
+
+      <div class="section-title">Configuration</div>
+      <div id="session-config" style="background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:10px; font-size:12px; color:var(--text-dim); margin-bottom:14px"></div>
+
+      <div class="section-title">Samples</div>
+      <div class="log-table-wrap">
+        <table class="log-table">
+          <thead>
+            <tr>
+              <th class="col-t">t (s)</th>
+              <th>RPM</th>
+              <th>Speed</th>
+              <th>Theo</th>
+              <th>Slip</th>
+            </tr>
+          </thead>
+          <tbody id="session-detail-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -418,25 +595,35 @@ const state = {
   running: false,
   calibrating: false,
   debugging: false,
+  liveLogVisible: false,
   speedoVisible: false,
   gps: { speedMs: null, accuracyMs: null, lastUpdate: 0, watchId: null, updates: [] },
-  audio: { ctx: null, analyser: null, stream: null, rafId: null },
+  audio: { ctx: null, analyser: null, stream: null, rafId: null, hpFilter: null },
+  tone: { osc: null, gain: null },
   rpm: { current: null, lastUpdate: 0, history: [] },
   peaks: [],
+  globalPeak: null, // { hz, db } across full 20-1500 Hz
   diag: {
     peakDb: null,
     noiseDb: null,
     snr: null,
-    accepted: [],   // timestamps of accepted samples
-    rejected: [],   // timestamps of rejected samples
-    spectrum: null, // smoothed spectrum 50-500 Hz
+    contrast: null,
+    accepted: [],
+    rejected: [],
+    spectrum: null,
     spectrumSmoothing: null,
+    adaptiveNoise: null, // per-bin slow-tracking noise floor
+    fftCount: 0,
+    fftRateUpdates: [],
   },
-  speedHistory: [], // {t, speedMs} for best-2sec calc
-  bestTwoSec: null, // m/s
+  speedHistory: [],
+  bestTwoSec: null,
   log: [],
   startTime: 0,
   suggestedHarmonic: null,
+  wakeLock: null,
+  db: null,
+  currentSessionDetail: null,
 };
 
 const speedUnits = {
@@ -460,7 +647,67 @@ function setPill(id, ok, label) {
   el.innerHTML = `<span class="dot"></span>${label}`;
 }
 
-// ---------- GPS ----------
+// ======================================================
+// IndexedDB for session storage
+// ======================================================
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('PropSlipLogger', 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('sessions')) {
+        const store = db.createObjectStore('sessions', { keyPath: 'id', autoIncrement: true });
+        store.createIndex('startTime', 'startTime');
+      }
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+async function saveSession(session) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('sessions', 'readwrite');
+    const req = tx.objectStore('sessions').add(session);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function listSessions() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('sessions', 'readonly');
+    const req = tx.objectStore('sessions').index('startTime').getAll();
+    req.onsuccess = () => resolve(req.result.sort((a, b) => b.startTime - a.startTime));
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getSession(id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('sessions', 'readonly');
+    const req = tx.objectStore('sessions').get(id);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function deleteSession(id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('sessions', 'readwrite');
+    const req = tx.objectStore('sessions').delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// ======================================================
+// GPS
+// ======================================================
 function startGPS() {
   if (!navigator.geolocation) {
     setPill('pill-gps', false, 'GPS unavailable');
@@ -474,14 +721,11 @@ function startGPS() {
       const now = Date.now();
       state.gps.lastUpdate = now;
       state.gps.updates.push(now);
-      // keep last 5 sec
       while (state.gps.updates.length && state.gps.updates[0] < now - 5000) {
         state.gps.updates.shift();
       }
-      // Track speed history for best-2sec
       if (pos.coords.speed != null) {
         state.speedHistory.push({ t: now, speedMs: pos.coords.speed });
-        // Keep last 25 sec to be safe (need 20 sec window + 2 sec)
         while (state.speedHistory.length && state.speedHistory[0].t < now - 25000) {
           state.speedHistory.shift();
         }
@@ -504,7 +748,9 @@ function stopGPS() {
   }
 }
 
-// ---------- Audio ----------
+// ======================================================
+// Audio + FFT
+// ======================================================
 async function startAudio() {
   setPill('pill-mic', null, 'Mic…');
   setPill('pill-cal-mic', null, 'Mic…');
@@ -517,10 +763,20 @@ async function startAudio() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     state.audio.ctx = ctx;
     const src = ctx.createMediaStreamSource(stream);
+
+    // High-pass filter at 30 Hz (kills wind, hand-shake)
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 30;
+    hp.Q.value = 0.7;
+    state.audio.hpFilter = hp;
+
     const analyser = ctx.createAnalyser();
     analyser.fftSize = 8192;
     analyser.smoothingTimeConstant = 0.3;
-    src.connect(analyser);
+
+    src.connect(hp);
+    hp.connect(analyser);
     state.audio.analyser = analyser;
     setPill('pill-mic', true, 'Mic');
     setPill('pill-cal-mic', true, 'Mic');
@@ -533,11 +789,13 @@ async function startAudio() {
     setPill('pill-debug-mic', false, 'Mic blocked');
   }
 }
+
 function stopAudio() {
   if (state.audio.rafId) cancelAnimationFrame(state.audio.rafId);
   if (state.audio.stream) state.audio.stream.getTracks().forEach(t => t.stop());
   if (state.audio.ctx) state.audio.ctx.close();
-  state.audio = { ctx: null, analyser: null, stream: null, rafId: null };
+  state.audio = { ctx: null, analyser: null, stream: null, rafId: null, hpFilter: null };
+  state.diag.adaptiveNoise = null;
 }
 
 function rpmToFiringHz(rpm, cyl, stroke) { return (rpm / 60) * cyl / (stroke / 2); }
@@ -562,6 +820,30 @@ function median(arr) {
   return sorted.length % 2 ? sorted[m] : (sorted[m-1] + sorted[m]) / 2;
 }
 
+// Refine peak position via parabolic interpolation
+function refinePeak(data, idx, binHz) {
+  if (idx <= 0 || idx >= data.length - 1) return idx * binHz;
+  const a = data[idx - 1], b = data[idx], c = data[idx + 1];
+  const denom = (a - 2 * b + c);
+  if (denom === 0) return idx * binHz;
+  const offset = 0.5 * (a - c) / denom;
+  if (Math.abs(offset) >= 1) return idx * binHz;
+  return (idx + offset) * binHz;
+}
+
+// Compute spectral contrast: how much peak exceeds local average
+function spectralContrast(data, peakIdx, windowBins) {
+  const lo = Math.max(0, peakIdx - windowBins);
+  const hi = Math.min(data.length - 1, peakIdx + windowBins);
+  let sum = 0, cnt = 0;
+  for (let i = lo; i <= hi; i++) {
+    if (i === peakIdx) continue;
+    if (isFinite(data[i])) { sum += data[i]; cnt++; }
+  }
+  if (cnt === 0) return 0;
+  return data[peakIdx] - (sum / cnt);
+}
+
 function estimateRPM() {
   const a = state.audio.analyser;
   if (!a) return;
@@ -571,35 +853,57 @@ function estimateRPM() {
   const data = new Float32Array(bins);
   a.getFloatFrequencyData(data);
 
+  state.diag.fftCount++;
+  state.diag.fftRateUpdates.push(performance.now());
+  while (state.diag.fftRateUpdates.length && state.diag.fftRateUpdates[0] < performance.now() - 1000) {
+    state.diag.fftRateUpdates.shift();
+  }
+
   const cyl = parseFloat($('cyl').value) || 4;
   const stroke = parseFloat($('stroke').value) || 4;
-  const rpmMin = parseFloat($('rpm-min').value) || 500;
+  const rpmMin = parseFloat($('rpm-min').value) || 600;
   const rpmMax = parseFloat($('rpm-max').value) || 6000;
   const harmonic = parseFloat($('harmonic').value) || 1;
   const snrThresh = parseFloat($('snr-thresh').value) || 10;
-
-  const searchMinRpm = state.calibrating ? rpmMin * 0.5 : rpmMin;
-  const searchMaxRpm = state.calibrating ? rpmMax * 2 : rpmMax;
-
-  const fMin = rpmToFiringHz(searchMinRpm, cyl, stroke);
-  const fMax = rpmToFiringHz(searchMaxRpm, cyl, stroke);
+  const contrastThresh = parseFloat($('contrast-thresh').value) || 6;
 
   const binHz = sampleRate / (bins * 2);
-  const iMin = Math.max(1, Math.floor(fMin / binHz));
-  const iMax = Math.min(bins - 1, Math.ceil(fMax / binHz));
 
-  if (iMax <= iMin) return;
+  // ---- Adaptive noise floor (slow-tracking per-bin median)
+  if (!state.diag.adaptiveNoise || state.diag.adaptiveNoise.length !== bins) {
+    state.diag.adaptiveNoise = new Float32Array(bins);
+    for (let i = 0; i < bins; i++) state.diag.adaptiveNoise[i] = data[i];
+  } else {
+    // Slow EMA: noise tracks slow-varying components.
+    // Use min() to track the floor (peaks shouldn't pull noise estimate up).
+    const alpha = 0.005; // very slow rise (~200 frames to reach)
+    const fastDrop = 0.05; // moderate drop (peaks fading)
+    for (let i = 0; i < bins; i++) {
+      if (data[i] < state.diag.adaptiveNoise[i]) {
+        state.diag.adaptiveNoise[i] = (1 - fastDrop) * state.diag.adaptiveNoise[i] + fastDrop * data[i];
+      } else {
+        state.diag.adaptiveNoise[i] = (1 - alpha) * state.diag.adaptiveNoise[i] + alpha * data[i];
+      }
+    }
+  }
 
-  // ---- Spectrum for debug view (50-500 Hz, smoothed)
+  // ---- Search band for in-band peak (RPM range)
+  const fInBandMin = rpmToFiringHz(rpmMin, cyl, stroke);
+  const fInBandMax = rpmToFiringHz(rpmMax, cyl, stroke);
+  const iInBandMin = Math.max(1, Math.floor(fInBandMin / binHz));
+  const iInBandMax = Math.min(bins - 1, Math.ceil(fInBandMax / binHz));
+
+  // ---- Global search band: 20-1500 Hz
+  const iGlobalMin = Math.max(1, Math.floor(20 / binHz));
+  const iGlobalMax = Math.min(bins - 1, Math.ceil(1500 / binHz));
+
+  // ---- Spectrum for debug view (20-1500 Hz, smoothed)
   if (state.debugging) {
-    const specStart = Math.max(1, Math.floor(50 / binHz));
-    const specEnd = Math.min(bins - 1, Math.ceil(500 / binHz));
-    const specRaw = data.slice(specStart, specEnd + 1);
+    const specRaw = data.slice(iGlobalMin, iGlobalMax + 1);
     if (!state.diag.spectrumSmoothing || state.diag.spectrumSmoothing.length !== specRaw.length) {
       state.diag.spectrumSmoothing = new Float32Array(specRaw.length);
       for (let i = 0; i < specRaw.length; i++) state.diag.spectrumSmoothing[i] = specRaw[i];
     } else {
-      // Exponential smoothing
       const alpha = 0.3;
       for (let i = 0; i < specRaw.length; i++) {
         state.diag.spectrumSmoothing[i] = alpha * specRaw[i] + (1 - alpha) * state.diag.spectrumSmoothing[i];
@@ -607,22 +911,42 @@ function estimateRPM() {
     }
     state.diag.spectrum = {
       data: state.diag.spectrumSmoothing,
-      fStart: specStart * binHz,
-      fEnd: specEnd * binHz,
+      fStart: iGlobalMin * binHz,
+      fEnd: iGlobalMax * binHz,
     };
   }
 
-  // ---- Compute noise floor (median in band)
-  const bandSamples = [];
-  for (let i = iMin; i <= iMax; i++) {
-    if (isFinite(data[i])) bandSamples.push(data[i]);
+  // ---- Find global peak (across 20-1500 Hz)
+  let globalPeakIdx = -1;
+  let globalPeakDb = -Infinity;
+  for (let i = iGlobalMin; i <= iGlobalMax; i++) {
+    if (data[i] > globalPeakDb) {
+      globalPeakDb = data[i];
+      globalPeakIdx = i;
+    }
   }
-  const noiseFloor = median(bandSamples);
+  if (globalPeakIdx > 0) {
+    state.globalPeak = {
+      hz: refinePeak(data, globalPeakIdx, binHz),
+      db: globalPeakDb,
+    };
+  } else {
+    state.globalPeak = null;
+  }
+
+  if (iInBandMax <= iInBandMin) return;
+
+  // ---- Compute noise floor for in-band region from adaptive noise
+  const noiseSamples = [];
+  for (let i = iInBandMin; i <= iInBandMax; i++) {
+    if (isFinite(state.diag.adaptiveNoise[i])) noiseSamples.push(state.diag.adaptiveNoise[i]);
+  }
+  const noiseFloor = median(noiseSamples);
   state.diag.noiseDb = noiseFloor;
 
-  // ---- Find peaks
+  // ---- Find local maxima in band, top 3
   const peaks = [];
-  for (let i = iMin + 1; i < iMax - 1; i++) {
+  for (let i = iInBandMin + 1; i < iInBandMax - 1; i++) {
     if (data[i] > data[i-1] && data[i] > data[i+1]) {
       peaks.push({ idx: i, db: data[i] });
     }
@@ -631,17 +955,7 @@ function estimateRPM() {
   const top3 = peaks.slice(0, 3);
 
   for (const p of top3) {
-    const i = p.idx;
-    let refined = i;
-    if (i > 0 && i < bins - 1) {
-      const a0 = data[i-1], b0 = data[i], c0 = data[i+1];
-      const denom = (a0 - 2 * b0 + c0);
-      if (denom !== 0) {
-        const offset = 0.5 * (a0 - c0) / denom;
-        if (Math.abs(offset) < 1) refined = i + offset;
-      }
-    }
-    p.hz = refined * binHz;
+    p.hz = refinePeak(data, p.idx, binHz);
     p.rpm = firingHzToRpm(p.hz, cyl, stroke);
   }
   state.peaks = top3;
@@ -649,6 +963,7 @@ function estimateRPM() {
   if (top3.length === 0) {
     state.diag.peakDb = null;
     state.diag.snr = null;
+    state.diag.contrast = null;
     return;
   }
 
@@ -657,8 +972,19 @@ function estimateRPM() {
   const snr = peakDb - noiseFloor;
   state.diag.snr = snr;
 
-  // ---- SNR gate
+  // Spectral contrast around the peak (window ~8 bins each side)
+  const contrast = spectralContrast(data, top3[0].idx, 8);
+  state.diag.contrast = contrast;
+
+  // ---- Filter gates
   if (snr < snrThresh) {
+    state.diag.rejected.push(Date.now());
+    pruneOld(state.diag.rejected);
+    pruneOld(state.diag.accepted);
+    return;
+  }
+
+  if (contrast < contrastThresh) {
     state.diag.rejected.push(Date.now());
     pruneOld(state.diag.rejected);
     pruneOld(state.diag.accepted);
@@ -675,7 +1001,7 @@ function estimateRPM() {
     return;
   }
 
-  // ---- Slew filter
+  // ---- Slew rate filter
   const maxSlew = parseFloat($('rpm-slew').value) || 2500;
   const tNow = Date.now();
   if (state.rpm.current !== null && state.rpm.lastUpdate > 0) {
@@ -713,19 +1039,16 @@ function calcTheoreticalKn(rpm, gear, pitchIn) {
   return ((rpm / gear) * pitchIn) / 1215.2;
 }
 
-// ---------- Best 2-sec speed calculation ----------
 function computeBest2SecOver20s() {
   const now = Date.now();
   const windowStart = now - 20000;
   const samples = state.speedHistory.filter(s => s.t >= windowStart);
   if (samples.length < 2) return null;
-
-  // Slide a 2-sec window across the 20-sec history, find max average
   let best = null;
   for (let i = 0; i < samples.length; i++) {
     const winStart = samples[i].t;
     const winEnd = winStart + 2000;
-    if (winEnd > now) break; // not enough future data
+    if (winEnd > now) break;
     let sum = 0, cnt = 0;
     for (let j = i; j < samples.length && samples[j].t <= winEnd; j++) {
       sum += samples[j].speedMs;
@@ -736,7 +1059,6 @@ function computeBest2SecOver20s() {
       if (best == null || avg > best) best = avg;
     }
   }
-  // Also include trailing partial window if we have enough recent data
   if (samples.length >= 2) {
     const trailingStart = now - 2000;
     const trailing = samples.filter(s => s.t >= trailingStart);
@@ -748,23 +1070,22 @@ function computeBest2SecOver20s() {
   return best;
 }
 
-// ---------- Speedometer rendering ----------
+// ======================================================
+// Speedometer
+// ======================================================
 function renderSpeedometer() {
   const svg = $('speedo-svg');
   const u = getUnit();
-  const maxSpeed = parseFloat($('speedo-max').value) || 50; // in user's unit
+  const maxSpeed = parseFloat($('speedo-max').value) || 50;
   const speedMs = state.gps.speedMs;
   const bestMs = state.bestTwoSec;
 
   const speedDisplay = speedMs != null ? speedMs * u.factor : null;
   const bestDisplay = bestMs != null ? bestMs * u.factor : null;
 
-  // 180-degree arc, centered at (200, 200), radius 150
   const cx = 200, cy = 200, r = 150;
-  // 180° to 360° → left to right semicircle (top)
-  const startAngle = 180; // degrees
-  const endAngle = 360;
-  const arcSpan = endAngle - startAngle; // 180
+  const startAngle = 180, endAngle = 360;
+  const arcSpan = endAngle - startAngle;
 
   function angleForValue(v) {
     const clamped = Math.max(0, Math.min(maxSpeed, v));
@@ -775,7 +1096,6 @@ function renderSpeedometer() {
     return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
   }
 
-  // Build tick marks: 11 ticks (0, 10%, 20%, ... 100%)
   const ticks = [];
   for (let i = 0; i <= 10; i++) {
     const v = (i / 10) * maxSpeed;
@@ -785,18 +1105,15 @@ function renderSpeedometer() {
     ticks.push({ x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y, big: i % 2 === 0, value: v, angle });
   }
 
-  // Arc path
   const arcStart = pointAt(startAngle, r);
   const arcEnd = pointAt(endAngle, r);
   const arcPath = `M ${arcStart.x} ${arcStart.y} A ${r} ${r} 0 0 1 ${arcEnd.x} ${arcEnd.y}`;
 
-  // Needle
   const needleAngle = speedDisplay != null ? angleForValue(speedDisplay) : startAngle;
   const needleTip = pointAt(needleAngle, r - 18);
   const needleBaseLeft = pointAt(needleAngle + 90, 6);
   const needleBaseRight = pointAt(needleAngle - 90, 6);
 
-  // Ghost needle
   const ghostAngle = bestDisplay != null ? angleForValue(bestDisplay) : startAngle;
   const ghostTip = pointAt(ghostAngle, r - 22);
   const ghostBase = pointAt(ghostAngle, r - 4);
@@ -812,7 +1129,6 @@ function renderSpeedometer() {
     <path d="${arcPath}" stroke="url(#arcGrad)" stroke-width="3" fill="none" opacity="0.6"/>
   `;
 
-  // Ticks
   for (const t of ticks) {
     html += `<line x1="${t.x1}" y1="${t.y1}" x2="${t.x2}" y2="${t.y2}" stroke="#8b97a8" stroke-width="${t.big ? 2 : 1}"/>`;
     if (t.big) {
@@ -821,20 +1137,16 @@ function renderSpeedometer() {
     }
   }
 
-  // Unit label
   html += `<text x="${cx}" y="${cy - 30}" text-anchor="middle" fill="#8b97a8" font-size="11" letter-spacing="2" font-family="monospace">${u.label.toUpperCase()}</text>`;
 
-  // Ghost needle (drawn first, behind main needle)
   if (bestDisplay != null) {
     html += `<line x1="${ghostBase.x}" y1="${ghostBase.y}" x2="${ghostTip.x}" y2="${ghostTip.y}" stroke="#58a6ff" stroke-width="2" stroke-dasharray="3,2" opacity="0.85"/>`;
     html += `<circle cx="${ghostTip.x}" cy="${ghostTip.y}" r="3" fill="#58a6ff" opacity="0.85"/>`;
   }
 
-  // Main needle (triangle)
   if (speedDisplay != null) {
     html += `<polygon points="${needleTip.x},${needleTip.y} ${needleBaseLeft.x},${needleBaseLeft.y} ${needleBaseRight.x},${needleBaseRight.y}" fill="#00d9a3"/>`;
   }
-  // Center hub
   html += `<circle cx="${cx}" cy="${cy}" r="8" fill="#1a212d" stroke="#2a3340" stroke-width="2"/>`;
   html += `<circle cx="${cx}" cy="${cy}" r="3" fill="#00d9a3"/>`;
 
@@ -845,20 +1157,21 @@ function renderSpeedometer() {
   $('speedo-ghost').textContent = bestDisplay != null ? `${bestDisplay.toFixed(1)} ${u.label}` : '—';
 }
 
-// ---------- Spectrum rendering ----------
+// ======================================================
+// Spectrum graph
+// ======================================================
 function renderSpectrum() {
   const svg = $('spectrum-svg');
   const spec = state.diag.spectrum;
   if (!spec) {
-    svg.innerHTML = '<text x="200" y="90" text-anchor="middle" fill="#8b97a8" font-size="12" font-family="monospace">no signal</text>';
+    svg.innerHTML = '<text x="200" y="100" text-anchor="middle" fill="#8b97a8" font-size="12" font-family="monospace">no signal</text>';
     return;
   }
 
-  const W = 400, H = 180;
+  const W = 400, H = 200;
   const data = spec.data;
   const dbMin = -110, dbMax = -30;
 
-  // Build polyline
   let pts = [];
   for (let i = 0; i < data.length; i++) {
     const x = (i / (data.length - 1)) * W;
@@ -867,40 +1180,30 @@ function renderSpectrum() {
     pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
   }
 
-  // Find peak in this view
-  let peakIdx = 0;
-  for (let i = 1; i < data.length; i++) {
-    if (data[i] > data[peakIdx]) peakIdx = i;
-  }
-  const peakX = (peakIdx / (data.length - 1)) * W;
+  const fStart = spec.fStart, fEnd = spec.fEnd;
+  const freqToX = f => ((f - fStart) / (fEnd - fStart)) * W;
 
-  // Noise floor line
-  const noise = state.diag.noiseDb;
-  const noiseY = noise != null ? H - ((Math.max(dbMin, Math.min(dbMax, noise)) - dbMin) / (dbMax - dbMin)) * H : null;
-
-  // RPM band edges
   const cyl = parseFloat($('cyl').value) || 4;
   const stroke = parseFloat($('stroke').value) || 4;
   const rpmMin = parseFloat($('rpm-min').value) || 600;
   const rpmMax = parseFloat($('rpm-max').value) || 6000;
   const fLow = rpmToFiringHz(rpmMin, cyl, stroke);
   const fHigh = rpmToFiringHz(rpmMax, cyl, stroke);
-  const fStart = spec.fStart, fEnd = spec.fEnd;
-  const xLow = ((fLow - fStart) / (fEnd - fStart)) * W;
-  const xHigh = ((fHigh - fStart) / (fEnd - fStart)) * W;
 
   let html = '';
 
-  // Grid lines (frequency markers every 100Hz)
-  for (let f = 100; f <= 500; f += 100) {
-    const x = ((f - fStart) / (fEnd - fStart)) * W;
+  // Grid lines
+  const gridFreqs = [100, 200, 400, 600, 1000, 1500];
+  for (const f of gridFreqs) {
+    const x = freqToX(f);
     if (x >= 0 && x <= W) {
       html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#2a3340" stroke-width="1"/>`;
       html += `<text x="${x + 2}" y="${H - 4}" fill="#8b97a8" font-size="9" font-family="monospace">${f}</text>`;
     }
   }
 
-  // RPM band
+  // RPM band edges
+  const xLow = freqToX(fLow), xHigh = freqToX(fHigh);
   if (xLow >= 0 && xLow <= W) {
     html += `<line x1="${xLow}" y1="0" x2="${xLow}" y2="${H}" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
   }
@@ -909,20 +1212,36 @@ function renderSpectrum() {
   }
 
   // Noise floor
-  if (noiseY != null) {
+  if (state.diag.noiseDb != null) {
+    const noiseY = H - ((Math.max(dbMin, Math.min(dbMax, state.diag.noiseDb)) - dbMin) / (dbMax - dbMin)) * H;
     html += `<line x1="0" y1="${noiseY}" x2="${W}" y2="${noiseY}" stroke="#ffb454" stroke-width="1" stroke-dasharray="4,2" opacity="0.7"/>`;
   }
 
-  // Spectrum line + fill
+  // Spectrum
   html += `<polyline points="${pts.join(' ')}" stroke="#e6edf3" stroke-width="1.5" fill="none"/>`;
 
-  // Peak marker
-  html += `<line x1="${peakX}" y1="0" x2="${peakX}" y2="${H}" stroke="#00d9a3" stroke-width="1.5" opacity="0.8"/>`;
+  // Global peak (magenta)
+  if (state.globalPeak) {
+    const x = freqToX(state.globalPeak.hz);
+    if (x >= 0 && x <= W) {
+      html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#c678dd" stroke-width="1.5" opacity="0.7"/>`;
+    }
+  }
+
+  // In-band peak (green)
+  if (state.peaks.length > 0) {
+    const x = freqToX(state.peaks[0].hz);
+    if (x >= 0 && x <= W) {
+      html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#00d9a3" stroke-width="1.5" opacity="0.9"/>`;
+    }
+  }
 
   svg.innerHTML = html;
 }
 
-// ---------- UI tick ----------
+// ======================================================
+// UI tick
+// ======================================================
 function uiTick() {
   const speedMs = state.gps.speedMs;
   const accMs = state.gps.accuracyMs;
@@ -976,51 +1295,84 @@ function uiTick() {
     $('r-slip').textContent = '—';
   }
 
-  // Best 2-sec speed
   state.bestTwoSec = computeBest2SecOver20s();
   $('r-best').textContent = formatSpeed(state.bestTwoSec);
   $('r-best-unit').textContent = u.label;
 
-  // Speedometer
   if (state.speedoVisible) renderSpeedometer();
 
-  // Logging
+  // Logging at 5 Hz (handled in separate interval below)
   if (state.running) {
-    if (rpm != null && speedMs != null) {
-      state.log.push({ t: Date.now() - state.startTime, rpm: Math.round(rpm), speedMs: speedMs, accMs: accMs });
-    }
     $('log-count').textContent = state.log.length;
     $('log-duration').textContent = Math.floor((Date.now() - state.startTime) / 1000) + 's';
   }
 
   if (state.calibrating) updateCalibrationUI();
+  if (state.liveLogVisible) updateLiveLog();
 }
 setInterval(uiTick, 200);
 
-// Slower debug update (every 500 ms)
+// Logging at 5 Hz
+setInterval(() => {
+  if (!state.running) return;
+  const now = Date.now();
+  const speedMs = state.gps.speedMs;
+  const rpm = state.rpm.current;
+  const gear = parseFloat($('gear').value) || 2;
+  const pitch = parseFloat($('pitch').value) || 19;
+  const theoKn = (rpm != null) ? calcTheoreticalKn(rpm, gear, pitch) : null;
+  const slip = (rpm != null && speedMs != null && theoKn > 0.1)
+    ? (1 - (speedMs * 1.94384) / theoKn) * 100 : null;
+
+  state.log.push({
+    t: now - state.startTime,
+    rpm: rpm != null ? Math.round(rpm) : null,
+    speedMs: speedMs,
+    accMs: state.gps.accuracyMs,
+    freqHz: state.peaks.length > 0 ? state.peaks[0].hz : null,
+    peakDb: state.diag.peakDb,
+    noiseDb: state.diag.noiseDb,
+    snr: state.diag.snr,
+    contrast: state.diag.contrast,
+    theoKn: theoKn,
+    slip: slip,
+  });
+}, 200);
+
 function debugTick() {
   if (!state.debugging) return;
   $('d-freq').textContent = state.peaks.length > 0 ? `${state.peaks[0].hz.toFixed(1)} Hz` : '— Hz';
   $('d-rpm').textContent = state.rpm.current == null ? '—' : Math.round(state.rpm.current);
+  $('d-globalfreq').textContent = state.globalPeak ? `${state.globalPeak.hz.toFixed(1)} Hz` : '— Hz';
+  $('d-globaldb').textContent = state.globalPeak ? `${state.globalPeak.db.toFixed(1)} dB` : '— dB';
   $('d-peak').textContent = state.diag.peakDb == null ? '— dB' : `${state.diag.peakDb.toFixed(1)} dB`;
   $('d-noise').textContent = state.diag.noiseDb == null ? '— dB' : `${state.diag.noiseDb.toFixed(1)} dB`;
   $('d-snr').textContent = state.diag.snr == null ? '— dB' : `${state.diag.snr.toFixed(1)} dB`;
+  $('d-contrast').textContent = state.diag.contrast == null ? '— dB' : `${state.diag.contrast.toFixed(1)} dB`;
 
   pruneOld(state.diag.accepted);
   pruneOld(state.diag.rejected);
   $('d-accept').textContent = state.diag.accepted.length;
   $('d-reject').textContent = state.diag.rejected.length;
 
-  // GPS rate
   $('d-gpsrate').textContent = state.gps.updates.length > 0
-    ? `${(state.gps.updates.length / 5).toFixed(1)} Hz`
-    : '— Hz';
+    ? `${(state.gps.updates.length / 5).toFixed(1)} Hz` : '— Hz';
+  $('d-fftrate').textContent = `${state.diag.fftRateUpdates.length} Hz`;
+
+  // Update tone expected RPM
+  const toneFreq = parseFloat($('tone-freq').value) || 200;
+  const cyl = parseFloat($('cyl').value) || 4;
+  const stroke = parseFloat($('stroke').value) || 4;
+  const expectedRpm = Math.round(firingHzToRpm(toneFreq, cyl, stroke));
+  $('tone-expected').textContent = `${expectedRpm} RPM`;
 
   renderSpectrum();
 }
 setInterval(debugTick, 500);
 
-// ---------- Calibration UI ----------
+// ======================================================
+// Calibration UI
+// ======================================================
 function updateCalibrationUI() {
   const peaks = state.peaks;
   const cont = $('peak-rows');
@@ -1073,11 +1425,281 @@ function updateCalibrationUI() {
   }
 }
 
-// ---------- Event handlers ----------
+// ======================================================
+// Live log
+// ======================================================
+function updateLiveLog() {
+  const log = state.log;
+  const u = getUnit();
+
+  // Show last 30 samples
+  const tbody = $('livelog-tbody');
+  const recent = log.slice(-30).reverse();
+  tbody.innerHTML = recent.map(row => `
+    <tr>
+      <td class="col-t">${(row.t / 1000).toFixed(1)}</td>
+      <td>${row.rpm != null ? row.rpm : '—'}</td>
+      <td>${row.speedMs != null ? (row.speedMs * u.factor).toFixed(1) : '—'}</td>
+      <td>${row.theoKn != null ? (row.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td>
+      <td>${row.slip != null ? row.slip.toFixed(1) : '—'}</td>
+    </tr>
+  `).join('');
+
+  // Summary
+  const summary = computeSummary(log, u);
+  $('livelog-summary').innerHTML = renderSummary(summary, u);
+}
+
+function computeSummary(log, u) {
+  const valid = log.filter(r => r.rpm != null && r.speedMs != null);
+  if (valid.length === 0) return null;
+  let maxSpeed = -Infinity, sumSpeed = 0, maxRpm = -Infinity, sumRpm = 0;
+  let sumSlip = 0, slipCount = 0;
+  for (const r of valid) {
+    maxSpeed = Math.max(maxSpeed, r.speedMs);
+    sumSpeed += r.speedMs;
+    maxRpm = Math.max(maxRpm, r.rpm);
+    sumRpm += r.rpm;
+    if (r.slip != null) { sumSlip += r.slip; slipCount++; }
+  }
+  return {
+    samples: log.length,
+    maxSpeed: maxSpeed,
+    avgSpeed: sumSpeed / valid.length,
+    maxRpm: Math.round(maxRpm),
+    avgRpm: Math.round(sumRpm / valid.length),
+    avgSlip: slipCount > 0 ? sumSlip / slipCount : null,
+    duration: log.length > 0 ? Math.floor((log[log.length-1].t) / 1000) : 0,
+  };
+}
+
+function renderSummary(s, u) {
+  if (!s) return '<div class="empty-state">No data yet</div>';
+  return `
+    <div class="summary-stat"><div class="lbl">Max ${u.label}</div><div class="val">${(s.maxSpeed * u.factor).toFixed(1)}</div></div>
+    <div class="summary-stat"><div class="lbl">Avg ${u.label}</div><div class="val">${(s.avgSpeed * u.factor).toFixed(1)}</div></div>
+    <div class="summary-stat"><div class="lbl">Duration</div><div class="val">${s.duration}s</div></div>
+    <div class="summary-stat"><div class="lbl">Max RPM</div><div class="val">${s.maxRpm}</div></div>
+    <div class="summary-stat"><div class="lbl">Avg RPM</div><div class="val">${s.avgRpm}</div></div>
+    <div class="summary-stat"><div class="lbl">Avg slip</div><div class="val">${s.avgSlip != null ? s.avgSlip.toFixed(1) + '%' : '—'}</div></div>
+  `;
+}
+
+// ======================================================
+// Sessions UI
+// ======================================================
+async function renderSessionsList() {
+  const list = await listSessions();
+  const cont = $('sessions-list');
+  if (list.length === 0) {
+    cont.innerHTML = '<div class="empty-state">No sessions yet.<br>Tap "Start Logging" to record one.</div>';
+    return;
+  }
+  cont.innerHTML = list.map(s => {
+    const date = new Date(s.startTime);
+    const dateStr = date.toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' });
+    const u = speedUnits[s.config.speedUnit] || speedUnits.kn;
+    return `
+      <div class="session-card" data-id="${s.id}">
+        <div class="session-card-row">
+          <span class="session-name">${s.name || `Session ${s.id}`}</span>
+          <span class="session-date">${dateStr}</span>
+        </div>
+        <div class="session-stats">
+          <span>${s.summary.duration}s</span> · 
+          <span>${s.summary.samples}</span> samples · 
+          max <span>${(s.summary.maxSpeed * u.factor).toFixed(1)}</span> ${u.label} · 
+          max <span>${s.summary.maxRpm}</span> RPM
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  cont.querySelectorAll('.session-card').forEach(el => {
+    el.addEventListener('click', () => openSessionDetail(parseInt(el.dataset.id)));
+  });
+}
+
+async function openSessionDetail(id) {
+  const session = await getSession(id);
+  if (!session) return;
+  state.currentSessionDetail = session;
+  $('session-detail-title').textContent = session.name || `Session ${id}`;
+  const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
+  $('session-detail-summary').innerHTML = renderSummary(session.summary, u);
+
+  // Config
+  const c = session.config;
+  $('session-config').innerHTML = `
+    Engine: ${c.cyl} cyl · ${c.stroke}-stroke · RPM ${c.rpmMin}–${c.rpmMax} · harmonic ×${c.harmonic}<br>
+    Drive: gear ${c.gear} · pitch ${c.pitch}" · diam ${c.diam}"<br>
+    Filter: SNR ${c.snrThresh} dB · slew ${c.maxSlew} RPM/s · contrast ${c.contrastThresh} dB
+  `;
+
+  // Samples (last 200 to keep responsive)
+  const tbody = $('session-detail-tbody');
+  const recent = session.samples.slice(-200).reverse();
+  tbody.innerHTML = recent.map(row => `
+    <tr>
+      <td class="col-t">${(row.t / 1000).toFixed(1)}</td>
+      <td>${row.rpm != null ? row.rpm : '—'}</td>
+      <td>${row.speedMs != null ? (row.speedMs * u.factor).toFixed(1) : '—'}</td>
+      <td>${row.theoKn != null ? (row.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td>
+      <td>${row.slip != null ? row.slip.toFixed(1) : '—'}</td>
+    </tr>
+  `).join('');
+
+  $('session-detail-modal').classList.add('active');
+}
+
+function sessionToCSV(session) {
+  const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
+  const lines = [];
+  lines.push('# Prop Slip Logger session');
+  lines.push(`# name: ${session.name}`);
+  lines.push(`# started: ${new Date(session.startTime).toISOString()}`);
+  lines.push(`# config: cyl=${session.config.cyl} stroke=${session.config.stroke} gear=${session.config.gear} pitch=${session.config.pitch} diam=${session.config.diam}`);
+  lines.push(`# filter: snr=${session.config.snrThresh}dB contrast=${session.config.contrastThresh}dB slew=${session.config.maxSlew}rpm/s harmonic=x${session.config.harmonic}`);
+  lines.push(`# unit: ${u.label}`);
+  lines.push('t_s,rpm,speed_ms,speed_unit,acc_ms,freq_hz,peak_db,noise_db,snr_db,contrast_db,theo_kn,slip_pct');
+  for (const r of session.samples) {
+    lines.push([
+      (r.t / 1000).toFixed(2),
+      r.rpm != null ? r.rpm : '',
+      r.speedMs != null ? r.speedMs.toFixed(3) : '',
+      r.speedMs != null ? (r.speedMs * u.factor).toFixed(3) : '',
+      r.accMs != null ? r.accMs.toFixed(3) : '',
+      r.freqHz != null ? r.freqHz.toFixed(2) : '',
+      r.peakDb != null ? r.peakDb.toFixed(1) : '',
+      r.noiseDb != null ? r.noiseDb.toFixed(1) : '',
+      r.snr != null ? r.snr.toFixed(1) : '',
+      r.contrast != null ? r.contrast.toFixed(1) : '',
+      r.theoKn != null ? r.theoKn.toFixed(2) : '',
+      r.slip != null ? r.slip.toFixed(2) : '',
+    ].join(','));
+  }
+  return lines.join('\n');
+}
+
+async function exportSession(session) {
+  const csv = sessionToCSV(session);
+  const fileName = `propslip_${new Date(session.startTime).toISOString().slice(0,16).replace(/[:T-]/g,'')}.csv`;
+  const blob = new Blob([csv], { type: 'text/csv' });
+
+  // Try Web Share API with file (iOS Safari supports this)
+  if (navigator.canShare) {
+    try {
+      const file = new File([blob], fileName, { type: 'text/csv' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Prop Slip Session' });
+        return;
+      }
+    } catch (e) { console.warn('Share failed, falling back to download', e); }
+  }
+
+  // Fallback: download link
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ======================================================
+// Wake Lock
+// ======================================================
+async function requestWakeLock() {
+  if (!('wakeLock' in navigator)) {
+    alert('Wake Lock not supported on this device.');
+    $('wake-toggle').checked = false;
+    return;
+  }
+  try {
+    state.wakeLock = await navigator.wakeLock.request('screen');
+    $('pill-wake').style.display = 'inline-block';
+    state.wakeLock.addEventListener('release', () => {
+      $('pill-wake').style.display = 'none';
+    });
+  } catch (e) {
+    console.warn('Wake lock failed', e);
+    $('wake-toggle').checked = false;
+  }
+}
+async function releaseWakeLock() {
+  if (state.wakeLock) {
+    await state.wakeLock.release();
+    state.wakeLock = null;
+    $('pill-wake').style.display = 'none';
+  }
+}
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible' && $('wake-toggle').checked && !state.wakeLock) {
+    await requestWakeLock();
+  }
+});
+
+// ======================================================
+// Test tone
+// ======================================================
+function startTone() {
+  if (!state.audio.ctx) {
+    alert('Start audio first (open Debug to initialize the mic).');
+    return;
+  }
+  const ctx = state.audio.ctx;
+  if (state.tone.osc) stopTone();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = parseFloat($('tone-freq').value) || 200;
+  gain.gain.value = (parseFloat($('tone-vol').value) || 40) / 100 * 0.3; // cap at 0.3 for safety
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  state.tone.osc = osc;
+  state.tone.gain = gain;
+  $('btn-tone').textContent = '■ Stop Tone';
+}
+function stopTone() {
+  if (state.tone.osc) {
+    state.tone.osc.stop();
+    state.tone.osc.disconnect();
+    state.tone.gain.disconnect();
+    state.tone.osc = null;
+    state.tone.gain = null;
+  }
+  $('btn-tone').textContent = '▶ Play Tone';
+}
+
+// ======================================================
+// Event handlers
+// ======================================================
 $('btn-speedo').addEventListener('click', () => {
   state.speedoVisible = !state.speedoVisible;
   $('speedo-wrap').classList.toggle('active', state.speedoVisible);
   $('btn-speedo').classList.toggle('active', state.speedoVisible);
+});
+
+$('btn-sessions').addEventListener('click', async () => {
+  await renderSessionsList();
+  $('sessions-modal').classList.add('active');
+});
+$('sessions-close').addEventListener('click', () => $('sessions-modal').classList.remove('active'));
+$('session-detail-close').addEventListener('click', () => $('session-detail-modal').classList.remove('active'));
+
+$('session-export').addEventListener('click', () => {
+  if (state.currentSessionDetail) exportSession(state.currentSessionDetail);
+});
+
+$('session-delete').addEventListener('click', async () => {
+  if (!state.currentSessionDetail) return;
+  if (!confirm('Delete this session?')) return;
+  await deleteSession(state.currentSessionDetail.id);
+  $('session-detail-modal').classList.remove('active');
+  await renderSessionsList();
 });
 
 $('btn-calibrate').addEventListener('click', async () => {
@@ -1087,13 +1709,11 @@ $('btn-calibrate').addEventListener('click', async () => {
   $('cal-modal').classList.add('active');
   if (!state.audio.ctx) await startAudio();
 });
-
 $('cal-close').addEventListener('click', () => {
   state.calibrating = false;
   $('cal-modal').classList.remove('active');
   if (!state.running && !state.debugging) stopAudio();
 });
-
 $('cal-apply').addEventListener('click', () => {
   if (state.suggestedHarmonic) {
     $('harmonic').value = String(state.suggestedHarmonic);
@@ -1107,16 +1727,44 @@ $('btn-debug').addEventListener('click', async () => {
   if (!state.audio.ctx) await startAudio();
   if (!state.gps.watchId) startGPS();
 });
-
 $('debug-close').addEventListener('click', () => {
   state.debugging = false;
   $('debug-modal').classList.remove('active');
+  if (state.tone.osc) stopTone();
   if (!state.running && !state.calibrating) {
     stopAudio();
-    stopGPS();
+    if (!state.running) {
+      stopGPS();
+      setPill('pill-gps', null, 'GPS');
+    }
     setPill('pill-mic', null, 'Mic');
-    setPill('pill-gps', null, 'GPS');
   }
+});
+
+$('btn-tone').addEventListener('click', () => {
+  if (state.tone.osc) stopTone();
+  else startTone();
+});
+$('tone-freq').addEventListener('input', () => {
+  if (state.tone.osc) state.tone.osc.frequency.value = parseFloat($('tone-freq').value) || 200;
+});
+$('tone-vol').addEventListener('input', () => {
+  if (state.tone.gain) state.tone.gain.gain.value = (parseFloat($('tone-vol').value) || 0) / 100 * 0.3;
+});
+
+$('btn-livelog').addEventListener('click', () => {
+  state.liveLogVisible = true;
+  $('livelog-modal').classList.add('active');
+  updateLiveLog();
+});
+$('livelog-close').addEventListener('click', () => {
+  state.liveLogVisible = false;
+  $('livelog-modal').classList.remove('active');
+});
+
+$('wake-toggle').addEventListener('change', async (e) => {
+  if (e.target.checked) await requestWakeLock();
+  else await releaseWakeLock();
 });
 
 $('btn-start').addEventListener('click', async () => {
@@ -1125,7 +1773,7 @@ $('btn-start').addEventListener('click', async () => {
     state.log = [];
     state.startTime = Date.now();
     state.rpm = { current: null, lastUpdate: 0, history: [] };
-    $('btn-start').textContent = '■ Stop Logging';
+    $('btn-start').textContent = '■ Stop & Save';
     $('btn-start').classList.add('stop');
     $('pill-rec').style.display = 'inline-block';
     setPill('pill-rec', false, 'REC');
@@ -1138,12 +1786,48 @@ $('btn-start').addEventListener('click', async () => {
     $('btn-start').textContent = '▶ Start Logging';
     $('btn-start').classList.remove('stop');
     $('pill-rec').style.display = 'none';
-    if (!state.debugging) stopGPS();
+
+    // Save session if there's data
+    if (state.log.length > 0) {
+      const u = getUnit();
+      const summary = computeSummary(state.log, u);
+      const config = {
+        cyl: parseFloat($('cyl').value),
+        stroke: parseFloat($('stroke').value),
+        rpmMin: parseFloat($('rpm-min').value),
+        rpmMax: parseFloat($('rpm-max').value),
+        harmonic: parseFloat($('harmonic').value),
+        gear: parseFloat($('gear').value),
+        pitch: parseFloat($('pitch').value),
+        diam: parseFloat($('diam').value),
+        speedUnit: $('speed-unit').value,
+        maxSlew: parseFloat($('rpm-slew').value),
+        snrThresh: parseFloat($('snr-thresh').value),
+        contrastThresh: parseFloat($('contrast-thresh').value),
+      };
+      const session = {
+        startTime: state.startTime,
+        name: `Session ${new Date(state.startTime).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })}`,
+        config: config,
+        samples: state.log,
+        summary: summary || { samples: 0, maxSpeed: 0, avgSpeed: 0, maxRpm: 0, avgRpm: 0, duration: 0 },
+      };
+      try {
+        await saveSession(session);
+      } catch (e) {
+        console.error('Save failed', e);
+        alert('Failed to save session: ' + e.message);
+      }
+    }
+
+    if (!state.debugging) {
+      stopGPS();
+      setPill('pill-gps', null, 'GPS');
+    }
     if (!state.calibrating && !state.debugging) {
       stopAudio();
       setPill('pill-mic', null, 'Mic');
     }
-    if (!state.debugging) setPill('pill-gps', null, 'GPS');
   }
 });
 </script>
