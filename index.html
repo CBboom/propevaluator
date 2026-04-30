@@ -24,52 +24,21 @@
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-    margin: 0; padding: 0;
-    background: var(--bg);
-    color: var(--text);
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
     font-family: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
-    -webkit-font-smoothing: antialiased;
-    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased; overscroll-behavior: none;
   }
-  body {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    min-height: 100vh;
-  }
-  .header {
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
+  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); min-height: 100vh; }
+  .header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
   .header h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
   .header .v { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; }
   .header-actions { display: flex; gap: 8px; align-items: center; }
-  .icon-btn {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    width: 32px; height: 32px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    padding: 0;
-  }
-  .icon-btn.active {
-    background: var(--accent);
-    color: #001b14;
-    border-color: var(--accent);
-  }
+  .icon-btn { background: var(--panel); border: 1px solid var(--border); color: var(--text-dim); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
+  .icon-btn.active { background: var(--accent); color: #001b14; border-color: var(--accent); }
 
   .container { padding: 16px 20px 100px; }
   .section { margin-bottom: 20px; }
-  .section-title {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text-dim); margin-bottom: 10px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .section-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
   .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
@@ -85,21 +54,10 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>");
     background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
   }
-  .field input[type="range"] {
-    -webkit-appearance: none; appearance: none;
-    height: 6px; padding: 0; background: var(--panel-2);
-  }
-  .field input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: var(--accent); cursor: pointer;
-  }
+  .field input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; padding: 0; background: var(--panel-2); }
+  .field input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-  .speedometer-wrap {
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px; margin-bottom: 14px;
-    display: none;
-  }
+  .speedometer-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 14px; display: none; }
   .speedometer-wrap.active { display: block; }
   .speedometer { width: 100%; aspect-ratio: 2 / 1.1; display: block; }
   .speedometer-readout { text-align: center; margin-top: -12px; font-variant-numeric: tabular-nums; }
@@ -122,33 +80,18 @@
   .slip-bar { height: 6px; background: var(--panel-2); border-radius: 3px; margin-top: 10px; overflow: hidden; }
   .slip-bar-fill { height: 100%; background: var(--accent); transition: width 0.2s ease, background 0.3s; width: 0%; }
 
-  .btn {
-    display: block; width: 100%; padding: 18px;
-    background: var(--accent); color: #001b14; border: none; border-radius: 8px;
-    font-family: inherit; font-size: 14px; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer;
-    transition: transform 0.1s, opacity 0.2s;
-  }
+  .btn { display: block; width: 100%; padding: 18px; background: var(--accent); color: #001b14; border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
   .btn:active { transform: scale(0.98); }
   .btn.stop { background: var(--danger); color: #2a0000; }
   .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); padding: 12px; font-size: 11px; }
   .btn.tiny { padding: 8px; font-size: 10px; }
   .btn.danger { background: var(--danger); color: #2a0000; }
-
   .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
   .btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .btn-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 10; }
 
-  .btn-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
-    background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 10;
-  }
   .status { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-  .pill {
-    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 100px;
-    background: var(--panel-2); color: var(--text-dim); border: 1px solid var(--border);
-  }
+  .pill { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: var(--panel-2); color: var(--text-dim); border: 1px solid var(--border); }
   .pill.ok { color: var(--good); border-color: rgba(0,217,163,0.3); }
   .pill.err { color: var(--danger); border-color: rgba(255,107,107,0.3); }
   .pill .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 4px; vertical-align: middle; }
@@ -192,23 +135,12 @@
   .debug-stat .val.warn { color: var(--warn); }
   .debug-stat .val.magenta { color: var(--magenta); }
 
-  .spectrum {
-    width: 100%; background: var(--panel); border: 1px solid var(--border);
-    border-radius: 6px; display: block;
-  }
+  .spectrum { width: 100%; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; display: block; }
 
-  .test-tone {
-    background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 6px; padding: 12px; margin-top: 14px;
-  }
+  .test-tone { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-top: 14px; }
   .test-tone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
 
-  /* Sessions list */
-  .session-card {
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 8px; padding: 12px; margin-bottom: 8px;
-    cursor: pointer;
-  }
+  .session-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
   .session-card:active { background: var(--panel-2); }
   .session-card-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
   .session-name { font-size: 14px; color: var(--text); font-weight: 500; }
@@ -216,61 +148,69 @@
   .session-stats { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
   .session-stats span { color: var(--text); font-variant-numeric: tabular-nums; }
 
-  /* Live log table */
-  .log-table-wrap {
-    max-height: 60vh; overflow-y: auto;
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 6px;
-  }
-  .log-table {
-    width: 100%; border-collapse: collapse;
-    font-size: 11px; font-variant-numeric: tabular-nums;
-  }
-  .log-table th, .log-table td {
-    padding: 6px 8px; text-align: right;
-    border-bottom: 1px solid var(--border);
-  }
-  .log-table th {
-    position: sticky; top: 0;
-    background: var(--panel-2); color: var(--text-dim);
-    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    font-weight: 500;
-  }
+  .log-table-wrap { max-height: 50vh; overflow-y: auto; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; }
+  .log-table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .log-table th, .log-table td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--border); }
+  .log-table th { position: sticky; top: 0; background: var(--panel-2); color: var(--text-dim); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
   .log-table tr:last-child td { border-bottom: none; }
   .log-table .col-t { text-align: left; }
 
-  .summary-grid {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px; margin-bottom: 14px;
-  }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
   .summary-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
   .summary-stat .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
   .summary-stat .val { font-size: 18px; font-variant-numeric: tabular-nums; color: var(--text); font-weight: 600; }
 
-  .toggle-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 12px; background: var(--panel); border: 1px solid var(--border);
-    border-radius: 6px; margin-bottom: 8px;
-  }
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; }
   .toggle-row label { font-size: 12px; color: var(--text); }
   .toggle-row .desc { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
   .switch { position: relative; width: 44px; height: 24px; }
   .switch input { opacity: 0; width: 0; height: 0; }
-  .slider {
-    position: absolute; cursor: pointer; inset: 0;
-    background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 24px; transition: 0.2s;
-  }
-  .slider::before {
-    content: ""; position: absolute;
-    height: 16px; width: 16px;
-    left: 3px; top: 3px;
-    background: var(--text-dim); border-radius: 50%; transition: 0.2s;
-  }
+  .slider { position: absolute; cursor: pointer; inset: 0; background: var(--panel-2); border: 1px solid var(--border); border-radius: 24px; transition: 0.2s; }
+  .slider::before { content: ""; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: var(--text-dim); border-radius: 50%; transition: 0.2s; }
   .switch input:checked + .slider { background: var(--accent); border-color: var(--accent); }
   .switch input:checked + .slider::before { transform: translateX(20px); background: #001b14; }
 
   .empty-state { text-align: center; padding: 30px 20px; color: var(--text-dim); font-size: 13px; }
+
+  /* Chart viewer */
+  .chart-toggles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .series-toggle {
+    padding: 6px 10px; font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; border-radius: 4px;
+    border: 1px solid var(--border); background: var(--panel-2);
+    color: var(--text-dim); cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .series-toggle .swatch { width: 10px; height: 10px; border-radius: 2px; background: var(--text-dim); }
+  .series-toggle.active { color: var(--text); }
+  .series-toggle.active .swatch { background: currentColor; }
+  .series-toggle.spd.active { border-color: var(--accent); color: var(--accent); }
+  .series-toggle.rpm.active { border-color: var(--warn); color: var(--warn); }
+  .series-toggle.slp.active { border-color: var(--ghost); color: var(--ghost); }
+  .series-toggle.j.active { border-color: var(--magenta); color: var(--magenta); }
+  .series-toggle.acc.active { border-color: var(--text); color: var(--text); }
+
+  .chart-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 8px; user-select: none; -webkit-user-select: none; }
+  .chart-svg { width: 100%; height: 280px; display: block; touch-action: none; }
+  .chart-rangebar { width: 100%; height: 50px; display: block; margin-top: 6px; touch-action: none; }
+  .chart-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
+  .chart-time-mode { display: flex; gap: 4px; }
+  .chart-time-mode button {
+    padding: 4px 8px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    border-radius: 3px; border: 1px solid var(--border); background: var(--panel-2);
+    color: var(--text-dim); cursor: pointer; font-family: inherit;
+  }
+  .chart-time-mode button.active { background: var(--accent); color: #001b14; border-color: var(--accent); }
+
+  .chart-tooltip {
+    position: absolute; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px; font-size: 11px;
+    pointer-events: none; z-index: 5;
+    font-variant-numeric: tabular-nums; min-width: 130px;
+  }
+  .chart-tooltip .tt-time { color: var(--text-dim); font-size: 10px; margin-bottom: 4px; }
+  .chart-tooltip .tt-row { display: flex; justify-content: space-between; gap: 10px; }
+  .chart-tooltip .tt-row .name { color: var(--text-dim); }
 </style>
 </head>
 <body>
@@ -280,12 +220,11 @@
   <div class="header-actions">
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
     <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
-    <span class="v">v0.4</span>
+    <span class="v">v0.5</span>
   </div>
 </div>
 
 <div class="container">
-
   <div class="section">
     <div class="status">
       <span class="pill" id="pill-gps"><span class="dot"></span>GPS</span>
@@ -335,7 +274,7 @@
     <div class="btn-row three">
       <button class="btn secondary" id="btn-calibrate">⚙ Cal</button>
       <button class="btn secondary" id="btn-debug">◍ Debug</button>
-      <button class="btn secondary" id="btn-livelog">▤ Live Log</button>
+      <button class="btn secondary" id="btn-livelog">▤ Live</button>
     </div>
   </div>
 
@@ -405,12 +344,11 @@
 
   <details>
     <summary>How it works</summary>
-    <p><strong>FFT pipeline:</strong> high-pass → noise floor (adaptive median over time) → SNR gate → spectral contrast check → slew rate filter.</p>
-    <p><strong>Adaptive noise floor:</strong> tracks slow-varying noise across the spectrum so peaks stand out from constant background sources.</p>
-    <p><strong>Spectral contrast:</strong> peak must be sharper than its neighbours, not just louder than the average. Rejects broadband noise like wind/rain.</p>
-    <p><strong>Logging:</strong> sessions are saved to your phone (IndexedDB). Export as CSV via Share Sheet.</p>
+    <p><strong>FFT pipeline:</strong> high-pass → adaptive noise floor → SNR gate → spectral contrast → slew rate filter.</p>
+    <p><strong>Logging:</strong> sessions are saved to your phone (IndexedDB). View charts inline and export as CSV via Share Sheet.</p>
+    <p><strong>Advance ratio J:</strong> J = V / (n × D) where V = boat speed (m/s), n = prop revs/sec, D = prop diameter (m).</p>
+    <p><strong>Acceleration:</strong> smoothed GPS-speed derivative over ~1 sec window.</p>
   </details>
-
 </div>
 
 <div class="btn-bar">
@@ -425,32 +363,19 @@
       <button class="modal-close" id="cal-close">×</button>
     </div>
     <div class="modal-body">
-      <p style="color: var(--text-dim); font-size:12px; line-height:1.5; margin-top:0">
-        Run engine at a steady RPM. Read the boat's tachometer and enter it below.
-      </p>
-
-      <div class="status">
-        <span class="pill" id="pill-cal-mic"><span class="dot"></span>Mic</span>
-      </div>
-
+      <p style="color: var(--text-dim); font-size:12px; line-height:1.5; margin-top:0">Run engine at a steady RPM. Read the boat's tachometer and enter it below.</p>
+      <div class="status"><span class="pill" id="pill-cal-mic"><span class="dot"></span>Mic</span></div>
       <div class="grid-2" style="margin-bottom: 14px">
         <div class="field"><label>Tach reading (RPM)</label><input type="number" id="cal-tach" value="2000" step="50"></div>
         <div class="field"><label>Detected RPM</label><input type="text" id="cal-detected" value="—" readonly style="background:var(--panel-2)"></div>
       </div>
-
       <div class="section-title">Top 3 Frequency Peaks (in band)</div>
       <div class="peaks-list">
-        <div class="peak-row header">
-          <div>#</div><div>Freq</div><div>RPM</div><div>Strength</div>
-        </div>
+        <div class="peak-row header"><div>#</div><div>Freq</div><div>RPM</div><div>Strength</div></div>
         <div id="peak-rows"></div>
       </div>
-
       <div class="verdict" id="cal-verdict">Start the engine and let the audio run for a few seconds…</div>
-
-      <button class="btn secondary" id="cal-apply" style="margin-top:14px; display:none">
-        Apply suggested harmonic correction
-      </button>
+      <button class="btn secondary" id="cal-apply" style="margin-top:14px; display:none">Apply suggested harmonic correction</button>
     </div>
   </div>
 </div>
@@ -467,15 +392,14 @@
         <span class="pill" id="pill-debug-mic"><span class="dot"></span>Mic</span>
         <span class="pill" id="pill-debug-gps"><span class="dot"></span>GPS</span>
       </div>
-
       <div class="section-title">Live Diagnostics</div>
       <div class="debug-stats">
         <div class="debug-stat"><div class="lbl">In-band peak</div><div class="val accent" id="d-freq">— Hz</div></div>
         <div class="debug-stat"><div class="lbl">Detected RPM</div><div class="val accent" id="d-rpm">—</div></div>
-        <div class="debug-stat"><div class="lbl">Global peak (20-1500Hz)</div><div class="val magenta" id="d-globalfreq">— Hz</div></div>
+        <div class="debug-stat"><div class="lbl">Global peak</div><div class="val magenta" id="d-globalfreq">— Hz</div></div>
         <div class="debug-stat"><div class="lbl">Global peak strength</div><div class="val magenta" id="d-globaldb">— dB</div></div>
         <div class="debug-stat"><div class="lbl">In-band peak strength</div><div class="val" id="d-peak">— dB</div></div>
-        <div class="debug-stat"><div class="lbl">Noise floor (adaptive)</div><div class="val dim" id="d-noise">— dB</div></div>
+        <div class="debug-stat"><div class="lbl">Noise floor</div><div class="val dim" id="d-noise">— dB</div></div>
         <div class="debug-stat"><div class="lbl">Current SNR</div><div class="val" id="d-snr">— dB</div></div>
         <div class="debug-stat"><div class="lbl">Contrast</div><div class="val" id="d-contrast">— dB</div></div>
         <div class="debug-stat"><div class="lbl">Accepted (10s)</div><div class="val" id="d-accept">—</div></div>
@@ -483,28 +407,22 @@
         <div class="debug-stat"><div class="lbl">GPS rate</div><div class="val dim" id="d-gpsrate">— Hz</div></div>
         <div class="debug-stat"><div class="lbl">FFT rate</div><div class="val dim" id="d-fftrate">— Hz</div></div>
       </div>
-
       <div class="section-title">Spectrum 20–1500 Hz</div>
       <svg class="spectrum" id="spectrum-svg" viewBox="0 0 400 200" preserveAspectRatio="none" style="height:200px"></svg>
       <p style="color:var(--text-dim); font-size:11px; margin-top:8px; line-height:1.5">
-        <span style="color:var(--accent)">Green</span> = in-band peak (used for RPM).
+        <span style="color:var(--accent)">Green</span> = in-band peak.
         <span style="color:var(--magenta)">Magenta</span> = global peak.
         <span style="color:var(--warn)">Orange dashed</span> = noise floor.
         <span style="color:var(--ghost)">Blue dashed</span> = RPM band edges.
       </p>
-
       <div class="test-tone">
         <div class="section-title">Test Tone Generator</div>
-        <p style="color:var(--text-dim); font-size:11px; margin: 0 0 10px; line-height:1.5">
-          Plays a sine wave through the speaker. Hold mic near speaker — FFT should match.
-        </p>
+        <p style="color:var(--text-dim); font-size:11px; margin: 0 0 10px; line-height:1.5">Plays sine wave through the speaker. FFT should match.</p>
         <div class="test-tone-row" style="margin-bottom:10px">
           <div class="field"><label>Frequency (Hz)</label><input type="number" id="tone-freq" value="200" min="40" max="2000" step="10"></div>
           <div class="field"><label>Volume</label><input type="range" id="tone-vol" min="0" max="100" value="40"></div>
         </div>
-        <div style="font-size:11px; color:var(--text-dim); margin-bottom:10px">
-          Expected RPM at this frequency: <span id="tone-expected" style="color:var(--text); font-variant-numeric:tabular-nums">—</span>
-        </div>
+        <div style="font-size:11px; color:var(--text-dim); margin-bottom:10px">Expected RPM: <span id="tone-expected" style="color:var(--text); font-variant-numeric:tabular-nums">—</span></div>
         <button class="btn secondary tiny" id="btn-tone">▶ Play Tone</button>
       </div>
     </div>
@@ -522,15 +440,7 @@
       <div class="summary-grid" id="livelog-summary"></div>
       <div class="log-table-wrap">
         <table class="log-table" id="livelog-table">
-          <thead>
-            <tr>
-              <th class="col-t">t (s)</th>
-              <th>RPM</th>
-              <th>Speed</th>
-              <th>Theo</th>
-              <th>Slip</th>
-            </tr>
-          </thead>
+          <thead><tr><th class="col-t">t (s)</th><th>RPM</th><th>Speed</th><th>Theo</th><th>Slip</th></tr></thead>
           <tbody id="livelog-tbody"></tbody>
         </table>
       </div>
@@ -545,9 +455,7 @@
       <h2>≡ Sessions</h2>
       <button class="modal-close" id="sessions-close">×</button>
     </div>
-    <div class="modal-body">
-      <div id="sessions-list"></div>
-    </div>
+    <div class="modal-body"><div id="sessions-list"></div></div>
   </div>
 </div>
 
@@ -566,21 +474,34 @@
         <button class="btn secondary tiny danger" id="session-delete">🗑 Delete</button>
       </div>
 
-      <div class="section-title">Configuration</div>
+      <!-- Chart viewer -->
+      <div class="section-title">Chart</div>
+      <div class="chart-toggles" id="chart-toggles">
+        <button class="series-toggle spd active" data-key="speed"><span class="swatch"></span>Speed</button>
+        <button class="series-toggle rpm active" data-key="rpm"><span class="swatch"></span>RPM</button>
+        <button class="series-toggle slp" data-key="slip"><span class="swatch"></span>Slip</button>
+        <button class="series-toggle j" data-key="j"><span class="swatch"></span>J</button>
+        <button class="series-toggle acc" data-key="accel"><span class="swatch"></span>Accel</button>
+      </div>
+      <div class="chart-wrap" style="position:relative">
+        <svg class="chart-svg" id="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none"></svg>
+        <svg class="chart-rangebar" id="chart-rangebar" viewBox="0 0 800 50" preserveAspectRatio="none"></svg>
+        <div class="chart-controls">
+          <div class="chart-time-mode">
+            <button id="time-clock" class="active">Clock</button>
+            <button id="time-elapsed">Elapsed</button>
+          </div>
+          <button class="btn secondary tiny" id="chart-reset" style="width:auto">Reset zoom</button>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:20px">Configuration</div>
       <div id="session-config" style="background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:10px; font-size:12px; color:var(--text-dim); margin-bottom:14px"></div>
 
-      <div class="section-title">Samples</div>
+      <div class="section-title">Samples (last 200)</div>
       <div class="log-table-wrap">
         <table class="log-table">
-          <thead>
-            <tr>
-              <th class="col-t">t (s)</th>
-              <th>RPM</th>
-              <th>Speed</th>
-              <th>Theo</th>
-              <th>Slip</th>
-            </tr>
-          </thead>
+          <thead><tr><th class="col-t">t (s)</th><th>RPM</th><th>Speed</th><th>Theo</th><th>Slip</th></tr></thead>
           <tbody id="session-detail-tbody"></tbody>
         </table>
       </div>
@@ -602,18 +523,11 @@ const state = {
   tone: { osc: null, gain: null },
   rpm: { current: null, lastUpdate: 0, history: [] },
   peaks: [],
-  globalPeak: null, // { hz, db } across full 20-1500 Hz
+  globalPeak: null,
   diag: {
-    peakDb: null,
-    noiseDb: null,
-    snr: null,
-    contrast: null,
-    accepted: [],
-    rejected: [],
-    spectrum: null,
-    spectrumSmoothing: null,
-    adaptiveNoise: null, // per-bin slow-tracking noise floor
-    fftCount: 0,
+    peakDb: null, noiseDb: null, snr: null, contrast: null,
+    accepted: [], rejected: [],
+    spectrum: null, spectrumSmoothing: null, adaptiveNoise: null,
     fftRateUpdates: [],
   },
   speedHistory: [],
@@ -622,8 +536,29 @@ const state = {
   startTime: 0,
   suggestedHarmonic: null,
   wakeLock: null,
-  db: null,
   currentSessionDetail: null,
+  // Animated speedometer values (m/s)
+  anim: {
+    speedDisplayed: 0,
+    bestDisplayed: 0,
+    lastFrame: 0,
+  },
+  // Chart state
+  chart: {
+    session: null,
+    // Series visibility
+    visible: { speed: true, rpm: true, slip: false, j: false, accel: false },
+    // X-domain in ms (timestamps)
+    xMin: null, xMax: null,
+    xMinFull: null, xMaxFull: null,
+    timeMode: 'clock', // 'clock' | 'elapsed'
+    // Drag state
+    drag: null, // {type, startX, startMin, startMax}
+    // Pinch state
+    pinch: null,
+    // Tooltip
+    tooltipIdx: null,
+  },
 };
 
 const speedUnits = {
@@ -633,23 +568,21 @@ const speedUnits = {
   ms:  { label: 'm/s',  factor: 1 },
 };
 
+const SERIES_COLORS = {
+  speed: '#00d9a3', rpm: '#ffb454', slip: '#58a6ff', j: '#c678dd', accel: '#e6edf3'
+};
+
 function getUnit() { return speedUnits[$('speed-unit').value]; }
-function formatSpeed(ms) {
-  if (ms == null) return '—';
-  return (ms * getUnit().factor).toFixed(1);
-}
+function formatSpeed(ms) { if (ms == null) return '—'; return (ms * getUnit().factor).toFixed(1); }
 function setPill(id, ok, label) {
-  const el = $(id);
-  if (!el) return;
+  const el = $(id); if (!el) return;
   el.classList.remove('ok', 'err');
   if (ok === true) el.classList.add('ok');
   else if (ok === false) el.classList.add('err');
   el.innerHTML = `<span class="dot"></span>${label}`;
 }
 
-// ======================================================
-// IndexedDB for session storage
-// ======================================================
+// ============ IndexedDB ============
 function openDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open('PropSlipLogger', 1);
@@ -664,7 +597,6 @@ function openDB() {
     req.onerror = e => reject(e.target.error);
   });
 }
-
 async function saveSession(session) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -674,7 +606,6 @@ async function saveSession(session) {
     req.onerror = () => reject(req.error);
   });
 }
-
 async function listSessions() {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -684,7 +615,6 @@ async function listSessions() {
     req.onerror = () => reject(req.error);
   });
 }
-
 async function getSession(id) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -694,7 +624,6 @@ async function getSession(id) {
     req.onerror = () => reject(req.error);
   });
 }
-
 async function deleteSession(id) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -705,14 +634,9 @@ async function deleteSession(id) {
   });
 }
 
-// ======================================================
-// GPS
-// ======================================================
+// ============ GPS ============
 function startGPS() {
-  if (!navigator.geolocation) {
-    setPill('pill-gps', false, 'GPS unavailable');
-    return;
-  }
+  if (!navigator.geolocation) { setPill('pill-gps', false, 'GPS unavailable'); return; }
   setPill('pill-gps', null, 'GPS…');
   state.gps.watchId = navigator.geolocation.watchPosition(
     pos => {
@@ -721,36 +645,21 @@ function startGPS() {
       const now = Date.now();
       state.gps.lastUpdate = now;
       state.gps.updates.push(now);
-      while (state.gps.updates.length && state.gps.updates[0] < now - 5000) {
-        state.gps.updates.shift();
-      }
+      while (state.gps.updates.length && state.gps.updates[0] < now - 5000) state.gps.updates.shift();
       if (pos.coords.speed != null) {
         state.speedHistory.push({ t: now, speedMs: pos.coords.speed });
-        while (state.speedHistory.length && state.speedHistory[0].t < now - 25000) {
-          state.speedHistory.shift();
-        }
+        while (state.speedHistory.length && state.speedHistory[0].t < now - 25000) state.speedHistory.shift();
       }
       setPill('pill-gps', true, 'GPS');
       setPill('pill-debug-gps', true, 'GPS');
     },
-    err => {
-      console.warn('GPS error', err);
-      setPill('pill-gps', false, 'GPS err');
-      setPill('pill-debug-gps', false, 'GPS err');
-    },
+    err => { console.warn('GPS error', err); setPill('pill-gps', false, 'GPS err'); setPill('pill-debug-gps', false, 'GPS err'); },
     { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
   );
 }
-function stopGPS() {
-  if (state.gps.watchId !== null) {
-    navigator.geolocation.clearWatch(state.gps.watchId);
-    state.gps.watchId = null;
-  }
-}
+function stopGPS() { if (state.gps.watchId !== null) { navigator.geolocation.clearWatch(state.gps.watchId); state.gps.watchId = null; } }
 
-// ======================================================
-// Audio + FFT
-// ======================================================
+// ============ Audio ============
 async function startAudio() {
   setPill('pill-mic', null, 'Mic…');
   setPill('pill-cal-mic', null, 'Mic…');
@@ -763,20 +672,12 @@ async function startAudio() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     state.audio.ctx = ctx;
     const src = ctx.createMediaStreamSource(stream);
-
-    // High-pass filter at 30 Hz (kills wind, hand-shake)
     const hp = ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 30;
-    hp.Q.value = 0.7;
+    hp.type = 'highpass'; hp.frequency.value = 30; hp.Q.value = 0.7;
     state.audio.hpFilter = hp;
-
     const analyser = ctx.createAnalyser();
-    analyser.fftSize = 8192;
-    analyser.smoothingTimeConstant = 0.3;
-
-    src.connect(hp);
-    hp.connect(analyser);
+    analyser.fftSize = 8192; analyser.smoothingTimeConstant = 0.3;
+    src.connect(hp); hp.connect(analyser);
     state.audio.analyser = analyser;
     setPill('pill-mic', true, 'Mic');
     setPill('pill-cal-mic', true, 'Mic');
@@ -789,7 +690,6 @@ async function startAudio() {
     setPill('pill-debug-mic', false, 'Mic blocked');
   }
 }
-
 function stopAudio() {
   if (state.audio.rafId) cancelAnimationFrame(state.audio.rafId);
   if (state.audio.stream) state.audio.stream.getTracks().forEach(t => t.stop());
@@ -803,7 +703,6 @@ function firingHzToRpm(hz, cyl, stroke) { return (hz * 60 * (stroke / 2)) / cyl;
 
 let lastRpmTimestamp = 0;
 const RPM_LOOP_INTERVAL_MS = 100;
-
 function rpmLoop() {
   const now = performance.now();
   if (now - lastRpmTimestamp >= RPM_LOOP_INTERVAL_MS) {
@@ -812,15 +711,12 @@ function rpmLoop() {
   }
   state.audio.rafId = requestAnimationFrame(rpmLoop);
 }
-
 function median(arr) {
   if (arr.length === 0) return -100;
   const sorted = [...arr].sort((a, b) => a - b);
   const m = Math.floor(sorted.length / 2);
   return sorted.length % 2 ? sorted[m] : (sorted[m-1] + sorted[m]) / 2;
 }
-
-// Refine peak position via parabolic interpolation
 function refinePeak(data, idx, binHz) {
   if (idx <= 0 || idx >= data.length - 1) return idx * binHz;
   const a = data[idx - 1], b = data[idx], c = data[idx + 1];
@@ -830,8 +726,6 @@ function refinePeak(data, idx, binHz) {
   if (Math.abs(offset) >= 1) return idx * binHz;
   return (idx + offset) * binHz;
 }
-
-// Compute spectral contrast: how much peak exceeds local average
 function spectralContrast(data, peakIdx, windowBins) {
   const lo = Math.max(0, peakIdx - windowBins);
   const hi = Math.min(data.length - 1, peakIdx + windowBins);
@@ -853,11 +747,8 @@ function estimateRPM() {
   const data = new Float32Array(bins);
   a.getFloatFrequencyData(data);
 
-  state.diag.fftCount++;
   state.diag.fftRateUpdates.push(performance.now());
-  while (state.diag.fftRateUpdates.length && state.diag.fftRateUpdates[0] < performance.now() - 1000) {
-    state.diag.fftRateUpdates.shift();
-  }
+  while (state.diag.fftRateUpdates.length && state.diag.fftRateUpdates[0] < performance.now() - 1000) state.diag.fftRateUpdates.shift();
 
   const cyl = parseFloat($('cyl').value) || 4;
   const stroke = parseFloat($('stroke').value) || 4;
@@ -866,18 +757,14 @@ function estimateRPM() {
   const harmonic = parseFloat($('harmonic').value) || 1;
   const snrThresh = parseFloat($('snr-thresh').value) || 10;
   const contrastThresh = parseFloat($('contrast-thresh').value) || 6;
-
   const binHz = sampleRate / (bins * 2);
 
-  // ---- Adaptive noise floor (slow-tracking per-bin median)
+  // Adaptive noise floor
   if (!state.diag.adaptiveNoise || state.diag.adaptiveNoise.length !== bins) {
     state.diag.adaptiveNoise = new Float32Array(bins);
     for (let i = 0; i < bins; i++) state.diag.adaptiveNoise[i] = data[i];
   } else {
-    // Slow EMA: noise tracks slow-varying components.
-    // Use min() to track the floor (peaks shouldn't pull noise estimate up).
-    const alpha = 0.005; // very slow rise (~200 frames to reach)
-    const fastDrop = 0.05; // moderate drop (peaks fading)
+    const alpha = 0.005, fastDrop = 0.05;
     for (let i = 0; i < bins; i++) {
       if (data[i] < state.diag.adaptiveNoise[i]) {
         state.diag.adaptiveNoise[i] = (1 - fastDrop) * state.diag.adaptiveNoise[i] + fastDrop * data[i];
@@ -887,17 +774,13 @@ function estimateRPM() {
     }
   }
 
-  // ---- Search band for in-band peak (RPM range)
   const fInBandMin = rpmToFiringHz(rpmMin, cyl, stroke);
   const fInBandMax = rpmToFiringHz(rpmMax, cyl, stroke);
   const iInBandMin = Math.max(1, Math.floor(fInBandMin / binHz));
   const iInBandMax = Math.min(bins - 1, Math.ceil(fInBandMax / binHz));
-
-  // ---- Global search band: 20-1500 Hz
   const iGlobalMin = Math.max(1, Math.floor(20 / binHz));
   const iGlobalMax = Math.min(bins - 1, Math.ceil(1500 / binHz));
 
-  // ---- Spectrum for debug view (20-1500 Hz, smoothed)
   if (state.debugging) {
     const specRaw = data.slice(iGlobalMin, iGlobalMax + 1);
     if (!state.diag.spectrumSmoothing || state.diag.spectrumSmoothing.length !== specRaw.length) {
@@ -909,159 +792,83 @@ function estimateRPM() {
         state.diag.spectrumSmoothing[i] = alpha * specRaw[i] + (1 - alpha) * state.diag.spectrumSmoothing[i];
       }
     }
-    state.diag.spectrum = {
-      data: state.diag.spectrumSmoothing,
-      fStart: iGlobalMin * binHz,
-      fEnd: iGlobalMax * binHz,
-    };
+    state.diag.spectrum = { data: state.diag.spectrumSmoothing, fStart: iGlobalMin * binHz, fEnd: iGlobalMax * binHz };
   }
 
-  // ---- Find global peak (across 20-1500 Hz)
-  let globalPeakIdx = -1;
-  let globalPeakDb = -Infinity;
+  let globalPeakIdx = -1, globalPeakDb = -Infinity;
   for (let i = iGlobalMin; i <= iGlobalMax; i++) {
-    if (data[i] > globalPeakDb) {
-      globalPeakDb = data[i];
-      globalPeakIdx = i;
-    }
+    if (data[i] > globalPeakDb) { globalPeakDb = data[i]; globalPeakIdx = i; }
   }
-  if (globalPeakIdx > 0) {
-    state.globalPeak = {
-      hz: refinePeak(data, globalPeakIdx, binHz),
-      db: globalPeakDb,
-    };
-  } else {
-    state.globalPeak = null;
-  }
+  state.globalPeak = globalPeakIdx > 0 ? { hz: refinePeak(data, globalPeakIdx, binHz), db: globalPeakDb } : null;
 
   if (iInBandMax <= iInBandMin) return;
 
-  // ---- Compute noise floor for in-band region from adaptive noise
   const noiseSamples = [];
   for (let i = iInBandMin; i <= iInBandMax; i++) {
     if (isFinite(state.diag.adaptiveNoise[i])) noiseSamples.push(state.diag.adaptiveNoise[i]);
   }
-  const noiseFloor = median(noiseSamples);
-  state.diag.noiseDb = noiseFloor;
+  state.diag.noiseDb = median(noiseSamples);
 
-  // ---- Find local maxima in band, top 3
   const peaks = [];
   for (let i = iInBandMin + 1; i < iInBandMax - 1; i++) {
-    if (data[i] > data[i-1] && data[i] > data[i+1]) {
-      peaks.push({ idx: i, db: data[i] });
-    }
+    if (data[i] > data[i-1] && data[i] > data[i+1]) peaks.push({ idx: i, db: data[i] });
   }
   peaks.sort((a, b) => b.db - a.db);
   const top3 = peaks.slice(0, 3);
-
   for (const p of top3) {
     p.hz = refinePeak(data, p.idx, binHz);
     p.rpm = firingHzToRpm(p.hz, cyl, stroke);
   }
   state.peaks = top3;
 
-  if (top3.length === 0) {
-    state.diag.peakDb = null;
-    state.diag.snr = null;
-    state.diag.contrast = null;
-    return;
-  }
+  if (top3.length === 0) { state.diag.peakDb = null; state.diag.snr = null; state.diag.contrast = null; return; }
 
-  const peakDb = top3[0].db;
-  state.diag.peakDb = peakDb;
-  const snr = peakDb - noiseFloor;
-  state.diag.snr = snr;
+  state.diag.peakDb = top3[0].db;
+  state.diag.snr = top3[0].db - state.diag.noiseDb;
+  state.diag.contrast = spectralContrast(data, top3[0].idx, 8);
 
-  // Spectral contrast around the peak (window ~8 bins each side)
-  const contrast = spectralContrast(data, top3[0].idx, 8);
-  state.diag.contrast = contrast;
+  if (state.diag.snr < snrThresh) { state.diag.rejected.push(Date.now()); pruneOld(state.diag.rejected); pruneOld(state.diag.accepted); return; }
+  if (state.diag.contrast < contrastThresh) { state.diag.rejected.push(Date.now()); pruneOld(state.diag.rejected); pruneOld(state.diag.accepted); return; }
 
-  // ---- Filter gates
-  if (snr < snrThresh) {
-    state.diag.rejected.push(Date.now());
-    pruneOld(state.diag.rejected);
-    pruneOld(state.diag.accepted);
-    return;
-  }
+  const candidateRpm = firingHzToRpm(top3[0].hz * harmonic, cyl, stroke);
+  if (candidateRpm < rpmMin * 0.5 || candidateRpm > rpmMax * 2) { state.diag.rejected.push(Date.now()); pruneOld(state.diag.rejected); pruneOld(state.diag.accepted); return; }
 
-  if (contrast < contrastThresh) {
-    state.diag.rejected.push(Date.now());
-    pruneOld(state.diag.rejected);
-    pruneOld(state.diag.accepted);
-    return;
-  }
-
-  const peakHz = top3[0].hz;
-  const candidateRpm = firingHzToRpm(peakHz * harmonic, cyl, stroke);
-
-  if (candidateRpm < rpmMin * 0.5 || candidateRpm > rpmMax * 2) {
-    state.diag.rejected.push(Date.now());
-    pruneOld(state.diag.rejected);
-    pruneOld(state.diag.accepted);
-    return;
-  }
-
-  // ---- Slew rate filter
   const maxSlew = parseFloat($('rpm-slew').value) || 2500;
   const tNow = Date.now();
   if (state.rpm.current !== null && state.rpm.lastUpdate > 0) {
     const dt = (tNow - state.rpm.lastUpdate) / 1000;
     const allowedDelta = maxSlew * dt;
     if (Math.abs(candidateRpm - state.rpm.current) > allowedDelta) {
-      if (dt > 1.0) {
-        state.rpm.current = candidateRpm;
-        state.rpm.lastUpdate = tNow;
-        state.diag.accepted.push(tNow);
-      } else {
-        state.diag.rejected.push(tNow);
-      }
-      pruneOld(state.diag.rejected);
-      pruneOld(state.diag.accepted);
+      if (dt > 1.0) { state.rpm.current = candidateRpm; state.rpm.lastUpdate = tNow; state.diag.accepted.push(tNow); }
+      else { state.diag.rejected.push(tNow); }
+      pruneOld(state.diag.rejected); pruneOld(state.diag.accepted);
       return;
     }
   }
-
   state.rpm.history.push(candidateRpm);
   if (state.rpm.history.length > 3) state.rpm.history.shift();
   state.rpm.current = state.rpm.history.reduce((a, b) => a + b, 0) / state.rpm.history.length;
   state.rpm.lastUpdate = tNow;
   state.diag.accepted.push(tNow);
-  pruneOld(state.diag.rejected);
-  pruneOld(state.diag.accepted);
+  pruneOld(state.diag.rejected); pruneOld(state.diag.accepted);
 }
-
-function pruneOld(arr) {
-  const cutoff = Date.now() - 10000;
-  while (arr.length && arr[0] < cutoff) arr.shift();
-}
-
-function calcTheoreticalKn(rpm, gear, pitchIn) {
-  return ((rpm / gear) * pitchIn) / 1215.2;
-}
+function pruneOld(arr) { const cutoff = Date.now() - 10000; while (arr.length && arr[0] < cutoff) arr.shift(); }
+function calcTheoreticalKn(rpm, gear, pitchIn) { return ((rpm / gear) * pitchIn) / 1215.2; }
 
 function computeBest2SecOver20s() {
   const now = Date.now();
-  const windowStart = now - 20000;
-  const samples = state.speedHistory.filter(s => s.t >= windowStart);
+  const samples = state.speedHistory.filter(s => s.t >= now - 20000);
   if (samples.length < 2) return null;
   let best = null;
   for (let i = 0; i < samples.length; i++) {
-    const winStart = samples[i].t;
-    const winEnd = winStart + 2000;
+    const winStart = samples[i].t, winEnd = winStart + 2000;
     if (winEnd > now) break;
     let sum = 0, cnt = 0;
-    for (let j = i; j < samples.length && samples[j].t <= winEnd; j++) {
-      sum += samples[j].speedMs;
-      cnt++;
-    }
-    if (cnt >= 2) {
-      const avg = sum / cnt;
-      if (best == null || avg > best) best = avg;
-    }
+    for (let j = i; j < samples.length && samples[j].t <= winEnd; j++) { sum += samples[j].speedMs; cnt++; }
+    if (cnt >= 2) { const avg = sum / cnt; if (best == null || avg > best) best = avg; }
   }
   if (samples.length >= 2) {
-    const trailingStart = now - 2000;
-    const trailing = samples.filter(s => s.t >= trailingStart);
+    const trailing = samples.filter(s => s.t >= now - 2000);
     if (trailing.length >= 2) {
       const avg = trailing.reduce((a, b) => a + b.speedMs, 0) / trailing.length;
       if (best == null || avg > best) best = avg;
@@ -1070,31 +877,60 @@ function computeBest2SecOver20s() {
   return best;
 }
 
-// ======================================================
-// Speedometer
-// ======================================================
+// ============ Animated speedometer ============
+function animateLoop(now) {
+  if (!state.anim.lastFrame) state.anim.lastFrame = now;
+  const dt = (now - state.anim.lastFrame) / 1000;
+  state.anim.lastFrame = now;
+
+  // Lerp toward target. Time-constant ~0.4 sec for natural feel.
+  // factor = 1 - exp(-dt / tau)
+  const tau = 0.4;
+  const factor = 1 - Math.exp(-dt / tau);
+
+  const targetSpeed = state.gps.speedMs ?? 0;
+  const targetBest = state.bestTwoSec ?? 0;
+
+  state.anim.speedDisplayed += (targetSpeed - state.anim.speedDisplayed) * factor;
+  state.anim.bestDisplayed += (targetBest - state.anim.bestDisplayed) * factor;
+
+  if (state.speedoVisible) renderSpeedometer();
+  // Also update digital readouts with the smoothed values for consistency
+  updateSpeedReadouts();
+
+  requestAnimationFrame(animateLoop);
+}
+requestAnimationFrame(animateLoop);
+
+function updateSpeedReadouts() {
+  const u = getUnit();
+  // Use animated value for both, but only show '—' if we have no real data
+  if (state.gps.speedMs == null) {
+    $('r-speed').textContent = '—';
+    $('r-best').textContent = '—';
+  } else {
+    $('r-speed').textContent = (state.anim.speedDisplayed * u.factor).toFixed(1);
+    $('r-best').textContent = state.bestTwoSec == null ? '—' : (state.anim.bestDisplayed * u.factor).toFixed(1);
+  }
+  $('r-speed-unit').textContent = u.label;
+  $('r-best-unit').textContent = u.label;
+}
+
 function renderSpeedometer() {
   const svg = $('speedo-svg');
   const u = getUnit();
   const maxSpeed = parseFloat($('speedo-max').value) || 50;
-  const speedMs = state.gps.speedMs;
-  const bestMs = state.bestTwoSec;
 
-  const speedDisplay = speedMs != null ? speedMs * u.factor : null;
-  const bestDisplay = bestMs != null ? bestMs * u.factor : null;
+  // Use animated values
+  const speedMs = state.anim.speedDisplayed;
+  const bestMs = state.anim.bestDisplayed;
+  const speedDisplay = speedMs * u.factor;
+  const bestDisplay = bestMs * u.factor;
 
   const cx = 200, cy = 200, r = 150;
-  const startAngle = 180, endAngle = 360;
-  const arcSpan = endAngle - startAngle;
-
-  function angleForValue(v) {
-    const clamped = Math.max(0, Math.min(maxSpeed, v));
-    return startAngle + (clamped / maxSpeed) * arcSpan;
-  }
-  function pointAt(angle, radius) {
-    const rad = angle * Math.PI / 180;
-    return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
-  }
+  const startAngle = 180, endAngle = 360, arcSpan = endAngle - startAngle;
+  const angleForValue = v => startAngle + (Math.max(0, Math.min(maxSpeed, v)) / maxSpeed) * arcSpan;
+  const pointAt = (angle, radius) => { const rad = angle * Math.PI / 180; return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) }; };
 
   const ticks = [];
   for (let i = 0; i <= 10; i++) {
@@ -1109,26 +945,20 @@ function renderSpeedometer() {
   const arcEnd = pointAt(endAngle, r);
   const arcPath = `M ${arcStart.x} ${arcStart.y} A ${r} ${r} 0 0 1 ${arcEnd.x} ${arcEnd.y}`;
 
-  const needleAngle = speedDisplay != null ? angleForValue(speedDisplay) : startAngle;
+  const needleAngle = angleForValue(speedDisplay);
   const needleTip = pointAt(needleAngle, r - 18);
   const needleBaseLeft = pointAt(needleAngle + 90, 6);
   const needleBaseRight = pointAt(needleAngle - 90, 6);
 
-  const ghostAngle = bestDisplay != null ? angleForValue(bestDisplay) : startAngle;
+  const ghostAngle = angleForValue(bestDisplay);
   const ghostTip = pointAt(ghostAngle, r - 22);
   const ghostBase = pointAt(ghostAngle, r - 4);
 
   let html = `
-    <defs>
-      <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#00d9a3"/>
-        <stop offset="60%" stop-color="#ffb454"/>
-        <stop offset="100%" stop-color="#ff6b6b"/>
-      </linearGradient>
-    </defs>
-    <path d="${arcPath}" stroke="url(#arcGrad)" stroke-width="3" fill="none" opacity="0.6"/>
-  `;
-
+    <defs><linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00d9a3"/><stop offset="60%" stop-color="#ffb454"/><stop offset="100%" stop-color="#ff6b6b"/>
+    </linearGradient></defs>
+    <path d="${arcPath}" stroke="url(#arcGrad)" stroke-width="3" fill="none" opacity="0.6"/>`;
   for (const t of ticks) {
     html += `<line x1="${t.x1}" y1="${t.y1}" x2="${t.x2}" y2="${t.y2}" stroke="#8b97a8" stroke-width="${t.big ? 2 : 1}"/>`;
     if (t.big) {
@@ -1136,42 +966,29 @@ function renderSpeedometer() {
       html += `<text x="${labelPt.x}" y="${labelPt.y + 4}" text-anchor="middle" fill="#8b97a8" font-size="13" font-family="monospace">${Math.round(t.value)}</text>`;
     }
   }
-
   html += `<text x="${cx}" y="${cy - 30}" text-anchor="middle" fill="#8b97a8" font-size="11" letter-spacing="2" font-family="monospace">${u.label.toUpperCase()}</text>`;
-
-  if (bestDisplay != null) {
+  if (state.bestTwoSec != null) {
     html += `<line x1="${ghostBase.x}" y1="${ghostBase.y}" x2="${ghostTip.x}" y2="${ghostTip.y}" stroke="#58a6ff" stroke-width="2" stroke-dasharray="3,2" opacity="0.85"/>`;
     html += `<circle cx="${ghostTip.x}" cy="${ghostTip.y}" r="3" fill="#58a6ff" opacity="0.85"/>`;
   }
-
-  if (speedDisplay != null) {
+  if (state.gps.speedMs != null) {
     html += `<polygon points="${needleTip.x},${needleTip.y} ${needleBaseLeft.x},${needleBaseLeft.y} ${needleBaseRight.x},${needleBaseRight.y}" fill="#00d9a3"/>`;
   }
   html += `<circle cx="${cx}" cy="${cy}" r="8" fill="#1a212d" stroke="#2a3340" stroke-width="2"/>`;
   html += `<circle cx="${cx}" cy="${cy}" r="3" fill="#00d9a3"/>`;
-
   svg.innerHTML = html;
 
-  $('speedo-val').textContent = speedDisplay != null ? speedDisplay.toFixed(1) : '—';
+  $('speedo-val').textContent = state.gps.speedMs == null ? '—' : speedDisplay.toFixed(1);
   $('speedo-unit').textContent = u.label;
-  $('speedo-ghost').textContent = bestDisplay != null ? `${bestDisplay.toFixed(1)} ${u.label}` : '—';
+  $('speedo-ghost').textContent = state.bestTwoSec == null ? '—' : `${bestDisplay.toFixed(1)} ${u.label}`;
 }
 
-// ======================================================
-// Spectrum graph
-// ======================================================
 function renderSpectrum() {
   const svg = $('spectrum-svg');
   const spec = state.diag.spectrum;
-  if (!spec) {
-    svg.innerHTML = '<text x="200" y="100" text-anchor="middle" fill="#8b97a8" font-size="12" font-family="monospace">no signal</text>';
-    return;
-  }
-
-  const W = 400, H = 200;
+  if (!spec) { svg.innerHTML = '<text x="200" y="100" text-anchor="middle" fill="#8b97a8" font-size="12" font-family="monospace">no signal</text>'; return; }
+  const W = 400, H = 200, dbMin = -110, dbMax = -30;
   const data = spec.data;
-  const dbMin = -110, dbMax = -30;
-
   let pts = [];
   for (let i = 0; i < data.length; i++) {
     const x = (i / (data.length - 1)) * W;
@@ -1179,75 +996,43 @@ function renderSpectrum() {
     const y = H - ((dbClamped - dbMin) / (dbMax - dbMin)) * H;
     pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
   }
-
   const fStart = spec.fStart, fEnd = spec.fEnd;
   const freqToX = f => ((f - fStart) / (fEnd - fStart)) * W;
-
   const cyl = parseFloat($('cyl').value) || 4;
   const stroke = parseFloat($('stroke').value) || 4;
-  const rpmMin = parseFloat($('rpm-min').value) || 600;
-  const rpmMax = parseFloat($('rpm-max').value) || 6000;
-  const fLow = rpmToFiringHz(rpmMin, cyl, stroke);
-  const fHigh = rpmToFiringHz(rpmMax, cyl, stroke);
-
+  const fLow = rpmToFiringHz(parseFloat($('rpm-min').value) || 600, cyl, stroke);
+  const fHigh = rpmToFiringHz(parseFloat($('rpm-max').value) || 6000, cyl, stroke);
   let html = '';
-
-  // Grid lines
-  const gridFreqs = [100, 200, 400, 600, 1000, 1500];
-  for (const f of gridFreqs) {
+  for (const f of [100, 200, 400, 600, 1000, 1500]) {
     const x = freqToX(f);
     if (x >= 0 && x <= W) {
       html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#2a3340" stroke-width="1"/>`;
       html += `<text x="${x + 2}" y="${H - 4}" fill="#8b97a8" font-size="9" font-family="monospace">${f}</text>`;
     }
   }
-
-  // RPM band edges
   const xLow = freqToX(fLow), xHigh = freqToX(fHigh);
-  if (xLow >= 0 && xLow <= W) {
-    html += `<line x1="${xLow}" y1="0" x2="${xLow}" y2="${H}" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
-  }
-  if (xHigh >= 0 && xHigh <= W) {
-    html += `<line x1="${xHigh}" y1="0" x2="${xHigh}" y2="${H}" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
-  }
-
-  // Noise floor
+  if (xLow >= 0 && xLow <= W) html += `<line x1="${xLow}" y1="0" x2="${xLow}" y2="${H}" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
+  if (xHigh >= 0 && xHigh <= W) html += `<line x1="${xHigh}" y1="0" x2="${xHigh}" y2="${H}" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
   if (state.diag.noiseDb != null) {
     const noiseY = H - ((Math.max(dbMin, Math.min(dbMax, state.diag.noiseDb)) - dbMin) / (dbMax - dbMin)) * H;
     html += `<line x1="0" y1="${noiseY}" x2="${W}" y2="${noiseY}" stroke="#ffb454" stroke-width="1" stroke-dasharray="4,2" opacity="0.7"/>`;
   }
-
-  // Spectrum
   html += `<polyline points="${pts.join(' ')}" stroke="#e6edf3" stroke-width="1.5" fill="none"/>`;
-
-  // Global peak (magenta)
   if (state.globalPeak) {
     const x = freqToX(state.globalPeak.hz);
-    if (x >= 0 && x <= W) {
-      html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#c678dd" stroke-width="1.5" opacity="0.7"/>`;
-    }
+    if (x >= 0 && x <= W) html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#c678dd" stroke-width="1.5" opacity="0.7"/>`;
   }
-
-  // In-band peak (green)
   if (state.peaks.length > 0) {
     const x = freqToX(state.peaks[0].hz);
-    if (x >= 0 && x <= W) {
-      html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#00d9a3" stroke-width="1.5" opacity="0.9"/>`;
-    }
+    if (x >= 0 && x <= W) html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#00d9a3" stroke-width="1.5" opacity="0.9"/>`;
   }
-
   svg.innerHTML = html;
 }
 
-// ======================================================
-// UI tick
-// ======================================================
 function uiTick() {
   const speedMs = state.gps.speedMs;
   const accMs = state.gps.accuracyMs;
-  $('r-speed').textContent = formatSpeed(speedMs);
   const u = getUnit();
-  $('r-speed-unit').textContent = u.label;
 
   const accEl = $('r-speed-acc');
   accEl.classList.remove('warn', 'danger');
@@ -1262,11 +1047,7 @@ function uiTick() {
   const rpm = state.rpm.current;
   $('r-rpm').textContent = rpm == null ? '—' : Math.round(rpm);
   const rpmSubEl = $('r-rpm-sub');
-  if (rpm != null && state.peaks.length > 0 && state.peaks[0].hz) {
-    rpmSubEl.textContent = `${state.peaks[0].hz.toFixed(1)} Hz`;
-  } else {
-    rpmSubEl.textContent = '—';
-  }
+  rpmSubEl.textContent = (rpm != null && state.peaks.length > 0 && state.peaks[0].hz) ? `${state.peaks[0].hz.toFixed(1)} Hz` : '—';
 
   const gear = parseFloat($('gear').value) || 2;
   const pitch = parseFloat($('pitch').value) || 19;
@@ -1276,43 +1057,29 @@ function uiTick() {
     const theoMs = theoKn / 1.94384;
     $('r-theo').textContent = (theoMs * u.factor).toFixed(1);
     $('r-theo-unit').textContent = u.label;
-
     if (speedMs != null && theoKn > 0.1) {
       const slip = (1 - (speedMs * 1.94384) / theoKn) * 100;
       const slipClamped = Math.max(-50, Math.min(100, slip));
       $('r-slip').textContent = slip.toFixed(1);
-
       const fill = $('slip-fill');
       fill.style.width = Math.max(0, Math.min(100, slipClamped)) + '%';
       if (slipClamped < 15) fill.style.background = 'var(--good)';
       else if (slipClamped < 30) fill.style.background = 'var(--warn)';
       else fill.style.background = 'var(--danger)';
-    } else {
-      $('r-slip').textContent = '—';
-    }
-  } else {
-    $('r-theo').textContent = '—';
-    $('r-slip').textContent = '—';
-  }
+    } else $('r-slip').textContent = '—';
+  } else { $('r-theo').textContent = '—'; $('r-slip').textContent = '—'; }
 
   state.bestTwoSec = computeBest2SecOver20s();
-  $('r-best').textContent = formatSpeed(state.bestTwoSec);
-  $('r-best-unit').textContent = u.label;
 
-  if (state.speedoVisible) renderSpeedometer();
-
-  // Logging at 5 Hz (handled in separate interval below)
   if (state.running) {
     $('log-count').textContent = state.log.length;
     $('log-duration').textContent = Math.floor((Date.now() - state.startTime) / 1000) + 's';
   }
-
   if (state.calibrating) updateCalibrationUI();
   if (state.liveLogVisible) updateLiveLog();
 }
 setInterval(uiTick, 200);
 
-// Logging at 5 Hz
 setInterval(() => {
   if (!state.running) return;
   const now = Date.now();
@@ -1321,21 +1088,16 @@ setInterval(() => {
   const gear = parseFloat($('gear').value) || 2;
   const pitch = parseFloat($('pitch').value) || 19;
   const theoKn = (rpm != null) ? calcTheoreticalKn(rpm, gear, pitch) : null;
-  const slip = (rpm != null && speedMs != null && theoKn > 0.1)
-    ? (1 - (speedMs * 1.94384) / theoKn) * 100 : null;
-
+  const slip = (rpm != null && speedMs != null && theoKn > 0.1) ? (1 - (speedMs * 1.94384) / theoKn) * 100 : null;
   state.log.push({
     t: now - state.startTime,
     rpm: rpm != null ? Math.round(rpm) : null,
     speedMs: speedMs,
     accMs: state.gps.accuracyMs,
     freqHz: state.peaks.length > 0 ? state.peaks[0].hz : null,
-    peakDb: state.diag.peakDb,
-    noiseDb: state.diag.noiseDb,
-    snr: state.diag.snr,
-    contrast: state.diag.contrast,
-    theoKn: theoKn,
-    slip: slip,
+    peakDb: state.diag.peakDb, noiseDb: state.diag.noiseDb,
+    snr: state.diag.snr, contrast: state.diag.contrast,
+    theoKn: theoKn, slip: slip,
   });
 }, 200);
 
@@ -1349,90 +1111,63 @@ function debugTick() {
   $('d-noise').textContent = state.diag.noiseDb == null ? '— dB' : `${state.diag.noiseDb.toFixed(1)} dB`;
   $('d-snr').textContent = state.diag.snr == null ? '— dB' : `${state.diag.snr.toFixed(1)} dB`;
   $('d-contrast').textContent = state.diag.contrast == null ? '— dB' : `${state.diag.contrast.toFixed(1)} dB`;
-
-  pruneOld(state.diag.accepted);
-  pruneOld(state.diag.rejected);
+  pruneOld(state.diag.accepted); pruneOld(state.diag.rejected);
   $('d-accept').textContent = state.diag.accepted.length;
   $('d-reject').textContent = state.diag.rejected.length;
-
-  $('d-gpsrate').textContent = state.gps.updates.length > 0
-    ? `${(state.gps.updates.length / 5).toFixed(1)} Hz` : '— Hz';
+  $('d-gpsrate').textContent = state.gps.updates.length > 0 ? `${(state.gps.updates.length / 5).toFixed(1)} Hz` : '— Hz';
   $('d-fftrate').textContent = `${state.diag.fftRateUpdates.length} Hz`;
-
-  // Update tone expected RPM
   const toneFreq = parseFloat($('tone-freq').value) || 200;
   const cyl = parseFloat($('cyl').value) || 4;
   const stroke = parseFloat($('stroke').value) || 4;
-  const expectedRpm = Math.round(firingHzToRpm(toneFreq, cyl, stroke));
-  $('tone-expected').textContent = `${expectedRpm} RPM`;
-
+  $('tone-expected').textContent = `${Math.round(firingHzToRpm(toneFreq, cyl, stroke))} RPM`;
   renderSpectrum();
 }
 setInterval(debugTick, 500);
 
-// ======================================================
-// Calibration UI
-// ======================================================
 function updateCalibrationUI() {
   const peaks = state.peaks;
   const cont = $('peak-rows');
-
   if (peaks.length === 0) {
     cont.innerHTML = '<div class="peak-row"><div>—</div><div>no signal</div><div></div><div></div></div>';
   } else {
     cont.innerHTML = peaks.map((p, i) => `
       <div class="${i === 0 ? 'peak-row dominant' : 'peak-row'}">
-        <div>${i+1}</div>
-        <div>${p.hz.toFixed(1)} Hz</div>
-        <div>${Math.round(p.rpm)}</div>
+        <div>${i+1}</div><div>${p.hz.toFixed(1)} Hz</div><div>${Math.round(p.rpm)}</div>
         <div class="strength">${p.db.toFixed(0)} dB</div>
-      </div>
-    `).join('');
+      </div>`).join('');
   }
-
   const detected = state.rpm.current;
   $('cal-detected').value = detected == null ? '—' : Math.round(detected);
-
   const tach = parseFloat($('cal-tach').value);
   const verdictEl = $('cal-verdict');
   const applyBtn = $('cal-apply');
   applyBtn.style.display = 'none';
   state.suggestedHarmonic = null;
-
   if (!tach || !detected) {
     verdictEl.className = 'verdict';
     verdictEl.innerHTML = 'Run engine at a steady RPM and enter the tach reading.';
     return;
   }
-
   const ratio = detected / tach;
   if (ratio > 0.85 && ratio < 1.15) {
     verdictEl.className = 'verdict good';
     verdictEl.innerHTML = '<strong>✓ Looks right.</strong> Detected RPM is within 15% of tach reading.';
   } else if (ratio > 1.7 && ratio < 2.3) {
     verdictEl.className = 'verdict bad';
-    verdictEl.innerHTML = '<strong>⚠ Detecting at ~2× true RPM.</strong> Probably picking up second harmonic. Set Harmonic to ×0.5.';
-    state.suggestedHarmonic = 0.5;
-    applyBtn.style.display = 'block';
+    verdictEl.innerHTML = '<strong>⚠ Detecting at ~2× true RPM.</strong> Set Harmonic to ×0.5.';
+    state.suggestedHarmonic = 0.5; applyBtn.style.display = 'block';
   } else if (ratio > 0.4 && ratio < 0.6) {
     verdictEl.className = 'verdict bad';
-    verdictEl.innerHTML = '<strong>⚠ Detecting at ~½ true RPM.</strong> Probably picking up sub-harmonic. Set Harmonic to ×2.';
-    state.suggestedHarmonic = 2;
-    applyBtn.style.display = 'block';
+    verdictEl.innerHTML = '<strong>⚠ Detecting at ~½ true RPM.</strong> Set Harmonic to ×2.';
+    state.suggestedHarmonic = 2; applyBtn.style.display = 'block';
   } else {
     verdictEl.className = 'verdict bad';
-    verdictEl.innerHTML = `<strong>? Mismatch.</strong> Detected ${Math.round(detected)} vs tach ${tach} (ratio ${ratio.toFixed(2)}). Check cylinder/stroke or steady the RPM.`;
+    verdictEl.innerHTML = `<strong>? Mismatch.</strong> Detected ${Math.round(detected)} vs tach ${tach} (ratio ${ratio.toFixed(2)}).`;
   }
 }
 
-// ======================================================
-// Live log
-// ======================================================
 function updateLiveLog() {
-  const log = state.log;
-  const u = getUnit();
-
-  // Show last 30 samples
+  const log = state.log; const u = getUnit();
   const tbody = $('livelog-tbody');
   const recent = log.slice(-30).reverse();
   tbody.innerHTML = recent.map(row => `
@@ -1442,37 +1177,26 @@ function updateLiveLog() {
       <td>${row.speedMs != null ? (row.speedMs * u.factor).toFixed(1) : '—'}</td>
       <td>${row.theoKn != null ? (row.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td>
       <td>${row.slip != null ? row.slip.toFixed(1) : '—'}</td>
-    </tr>
-  `).join('');
-
-  // Summary
-  const summary = computeSummary(log, u);
-  $('livelog-summary').innerHTML = renderSummary(summary, u);
+    </tr>`).join('');
+  $('livelog-summary').innerHTML = renderSummary(computeSummary(log, u), u);
 }
 
 function computeSummary(log, u) {
   const valid = log.filter(r => r.rpm != null && r.speedMs != null);
   if (valid.length === 0) return null;
-  let maxSpeed = -Infinity, sumSpeed = 0, maxRpm = -Infinity, sumRpm = 0;
-  let sumSlip = 0, slipCount = 0;
+  let maxSpeed = -Infinity, sumSpeed = 0, maxRpm = -Infinity, sumRpm = 0, sumSlip = 0, slipCount = 0;
   for (const r of valid) {
-    maxSpeed = Math.max(maxSpeed, r.speedMs);
-    sumSpeed += r.speedMs;
-    maxRpm = Math.max(maxRpm, r.rpm);
-    sumRpm += r.rpm;
+    maxSpeed = Math.max(maxSpeed, r.speedMs); sumSpeed += r.speedMs;
+    maxRpm = Math.max(maxRpm, r.rpm); sumRpm += r.rpm;
     if (r.slip != null) { sumSlip += r.slip; slipCount++; }
   }
   return {
-    samples: log.length,
-    maxSpeed: maxSpeed,
-    avgSpeed: sumSpeed / valid.length,
-    maxRpm: Math.round(maxRpm),
-    avgRpm: Math.round(sumRpm / valid.length),
+    samples: log.length, maxSpeed: maxSpeed, avgSpeed: sumSpeed / valid.length,
+    maxRpm: Math.round(maxRpm), avgRpm: Math.round(sumRpm / valid.length),
     avgSlip: slipCount > 0 ? sumSlip / slipCount : null,
-    duration: log.length > 0 ? Math.floor((log[log.length-1].t) / 1000) : 0,
+    duration: log.length > 0 ? Math.floor(log[log.length-1].t / 1000) : 0,
   };
 }
-
 function renderSummary(s, u) {
   if (!s) return '<div class="empty-state">No data yet</div>';
   return `
@@ -1481,13 +1205,10 @@ function renderSummary(s, u) {
     <div class="summary-stat"><div class="lbl">Duration</div><div class="val">${s.duration}s</div></div>
     <div class="summary-stat"><div class="lbl">Max RPM</div><div class="val">${s.maxRpm}</div></div>
     <div class="summary-stat"><div class="lbl">Avg RPM</div><div class="val">${s.avgRpm}</div></div>
-    <div class="summary-stat"><div class="lbl">Avg slip</div><div class="val">${s.avgSlip != null ? s.avgSlip.toFixed(1) + '%' : '—'}</div></div>
-  `;
+    <div class="summary-stat"><div class="lbl">Avg slip</div><div class="val">${s.avgSlip != null ? s.avgSlip.toFixed(1) + '%' : '—'}</div></div>`;
 }
 
-// ======================================================
-// Sessions UI
-// ======================================================
+// ============ Sessions ============
 async function renderSessionsList() {
   const list = await listSessions();
   const cont = $('sessions-list');
@@ -1506,15 +1227,12 @@ async function renderSessionsList() {
           <span class="session-date">${dateStr}</span>
         </div>
         <div class="session-stats">
-          <span>${s.summary.duration}s</span> · 
-          <span>${s.summary.samples}</span> samples · 
+          <span>${s.summary.duration}s</span> · <span>${s.summary.samples}</span> samples · 
           max <span>${(s.summary.maxSpeed * u.factor).toFixed(1)}</span> ${u.label} · 
           max <span>${s.summary.maxRpm}</span> RPM
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
-
   cont.querySelectorAll('.session-card').forEach(el => {
     el.addEventListener('click', () => openSessionDetail(parseInt(el.dataset.id)));
   });
@@ -1527,16 +1245,29 @@ async function openSessionDetail(id) {
   $('session-detail-title').textContent = session.name || `Session ${id}`;
   const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
   $('session-detail-summary').innerHTML = renderSummary(session.summary, u);
-
-  // Config
   const c = session.config;
   $('session-config').innerHTML = `
     Engine: ${c.cyl} cyl · ${c.stroke}-stroke · RPM ${c.rpmMin}–${c.rpmMax} · harmonic ×${c.harmonic}<br>
     Drive: gear ${c.gear} · pitch ${c.pitch}" · diam ${c.diam}"<br>
-    Filter: SNR ${c.snrThresh} dB · slew ${c.maxSlew} RPM/s · contrast ${c.contrastThresh} dB
-  `;
+    Filter: SNR ${c.snrThresh} dB · slew ${c.maxSlew} RPM/s · contrast ${c.contrastThresh} dB`;
 
-  // Samples (last 200 to keep responsive)
+  // Set up chart
+  state.chart.session = session;
+  // Compute derived series and fill into samples
+  prepareChartSeries(session);
+  // Reset zoom to full
+  if (session.samples.length > 0) {
+    state.chart.xMinFull = session.startTime + session.samples[0].t;
+    state.chart.xMaxFull = session.startTime + session.samples[session.samples.length - 1].t;
+  } else {
+    state.chart.xMinFull = session.startTime;
+    state.chart.xMaxFull = session.startTime + 1000;
+  }
+  state.chart.xMin = state.chart.xMinFull;
+  state.chart.xMax = state.chart.xMaxFull;
+  renderChart();
+
+  // Samples table (last 200)
   const tbody = $('session-detail-tbody');
   const recent = session.samples.slice(-200).reverse();
   tbody.innerHTML = recent.map(row => `
@@ -1546,12 +1277,460 @@ async function openSessionDetail(id) {
       <td>${row.speedMs != null ? (row.speedMs * u.factor).toFixed(1) : '—'}</td>
       <td>${row.theoKn != null ? (row.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td>
       <td>${row.slip != null ? row.slip.toFixed(1) : '—'}</td>
-    </tr>
-  `).join('');
+    </tr>`).join('');
 
   $('session-detail-modal').classList.add('active');
 }
 
+// ============ Chart ============
+function prepareChartSeries(session) {
+  // Compute J and acceleration for each sample; smooth acceleration over ~1 sec
+  const samples = session.samples;
+  const gear = session.config.gear;
+  const diamMeters = session.config.diam * 0.0254;
+
+  // J = V / (n × D), n = rpm/gear/60 rev/sec
+  for (const r of samples) {
+    if (r.rpm != null && r.rpm > 0 && r.speedMs != null) {
+      const n = (r.rpm / gear) / 60;
+      const denom = n * diamMeters;
+      r.j = denom > 0.01 ? r.speedMs / denom : null;
+    } else {
+      r.j = null;
+    }
+  }
+
+  // Acceleration = smoothed dv/dt over ~1 sec window
+  // Use central difference with window
+  const winMs = 1000;
+  for (let i = 0; i < samples.length; i++) {
+    const t = samples[i].t;
+    let lo = i, hi = i;
+    while (lo > 0 && samples[lo].t > t - winMs/2) lo--;
+    while (hi < samples.length - 1 && samples[hi].t < t + winMs/2) hi++;
+    if (samples[lo].speedMs != null && samples[hi].speedMs != null && samples[hi].t > samples[lo].t) {
+      const dv = samples[hi].speedMs - samples[lo].speedMs;
+      const dt = (samples[hi].t - samples[lo].t) / 1000;
+      samples[i].accel = dv / dt;
+    } else {
+      samples[i].accel = null;
+    }
+  }
+}
+
+function getValue(sample, key, u) {
+  if (key === 'speed') return sample.speedMs != null ? sample.speedMs * u.factor : null;
+  if (key === 'rpm') return sample.rpm;
+  if (key === 'slip') return sample.slip;
+  if (key === 'j') return sample.j;
+  if (key === 'accel') return sample.accel;
+  return null;
+}
+
+function renderChart() {
+  const svg = $('chart-svg');
+  const session = state.chart.session;
+  if (!session || session.samples.length === 0) {
+    svg.innerHTML = '<text x="400" y="140" text-anchor="middle" fill="#8b97a8" font-size="12" font-family="monospace">No data</text>';
+    return;
+  }
+  const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
+
+  const W = 800, H = 280;
+  const padLeft = 50, padRight = 50, padTop = 14, padBottom = 28;
+  const plotW = W - padLeft - padRight;
+  const plotH = H - padTop - padBottom;
+
+  // X scale
+  const xMin = state.chart.xMin, xMax = state.chart.xMax;
+  const xToPx = ts => padLeft + ((ts - xMin) / (xMax - xMin)) * plotW;
+
+  // Filter samples in view
+  const samplesInView = session.samples.filter(r => {
+    const ts = session.startTime + r.t;
+    return ts >= xMin && ts <= xMax;
+  });
+
+  // Determine which series are on left axis (speed/rpm) and which on right (slip/j/accel)
+  // Convention: speed and rpm on LEFT, others on RIGHT
+  const leftKeys = ['speed', 'rpm'].filter(k => state.chart.visible[k]);
+  const rightKeys = ['slip', 'j', 'accel'].filter(k => state.chart.visible[k]);
+
+  // Compute axis ranges
+  function axisRange(keys) {
+    let min = Infinity, max = -Infinity;
+    for (const k of keys) {
+      for (const r of samplesInView) {
+        const v = getValue(r, k, u);
+        if (v != null && isFinite(v)) {
+          if (v < min) min = v;
+          if (v > max) max = v;
+        }
+      }
+    }
+    if (!isFinite(min) || !isFinite(max)) return null;
+    if (min === max) { min -= 1; max += 1; }
+    const padding = (max - min) * 0.1;
+    return { min: min - padding, max: max + padding };
+  }
+  const leftR = leftKeys.length > 0 ? axisRange(leftKeys) : null;
+  const rightR = rightKeys.length > 0 ? axisRange(rightKeys) : null;
+
+  let html = '';
+
+  // Background grid
+  // Y grid (5 horizontal lines)
+  for (let i = 0; i <= 5; i++) {
+    const y = padTop + (i / 5) * plotH;
+    html += `<line x1="${padLeft}" y1="${y}" x2="${W - padRight}" y2="${y}" stroke="#2a3340" stroke-width="1"/>`;
+  }
+  // Y axis labels (left)
+  if (leftR) {
+    for (let i = 0; i <= 5; i++) {
+      const y = padTop + (i / 5) * plotH;
+      const v = leftR.max - (i / 5) * (leftR.max - leftR.min);
+      const label = Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(1);
+      const color = leftKeys.length === 1 ? SERIES_COLORS[leftKeys[0]] : '#8b97a8';
+      html += `<text x="${padLeft - 6}" y="${y + 3}" text-anchor="end" fill="${color}" font-size="9" font-family="monospace">${label}</text>`;
+    }
+  }
+  // Y axis labels (right)
+  if (rightR) {
+    for (let i = 0; i <= 5; i++) {
+      const y = padTop + (i / 5) * plotH;
+      const v = rightR.max - (i / 5) * (rightR.max - rightR.min);
+      const label = Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(2);
+      const color = rightKeys.length === 1 ? SERIES_COLORS[rightKeys[0]] : '#8b97a8';
+      html += `<text x="${W - padRight + 6}" y="${y + 3}" text-anchor="start" fill="${color}" font-size="9" font-family="monospace">${label}</text>`;
+    }
+  }
+
+  // X axis labels
+  function formatTime(ts) {
+    if (state.chart.timeMode === 'elapsed') {
+      const sec = (ts - session.startTime) / 1000;
+      const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    } else {
+      const d = new Date(ts);
+      return d.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+  }
+  const numXLabels = 5;
+  for (let i = 0; i <= numXLabels; i++) {
+    const x = padLeft + (i / numXLabels) * plotW;
+    const ts = xMin + (i / numXLabels) * (xMax - xMin);
+    html += `<line x1="${x}" y1="${padTop}" x2="${x}" y2="${H - padBottom}" stroke="#2a3340" stroke-width="1" opacity="0.5"/>`;
+    html += `<text x="${x}" y="${H - 10}" text-anchor="middle" fill="#8b97a8" font-size="9" font-family="monospace">${formatTime(ts)}</text>`;
+  }
+
+  // Plot frame
+  html += `<rect x="${padLeft}" y="${padTop}" width="${plotW}" height="${plotH}" fill="none" stroke="#2a3340" stroke-width="1"/>`;
+
+  // Series
+  function drawSeries(key, axisRange) {
+    if (!axisRange) return '';
+    const valToY = v => padTop + (1 - (v - axisRange.min) / (axisRange.max - axisRange.min)) * plotH;
+    const pts = [];
+    let curRun = [];
+    for (const r of samplesInView) {
+      const v = getValue(r, key, u);
+      const ts = session.startTime + r.t;
+      if (v != null && isFinite(v)) {
+        curRun.push(`${xToPx(ts).toFixed(1)},${valToY(v).toFixed(1)}`);
+      } else if (curRun.length > 0) {
+        pts.push(curRun); curRun = [];
+      }
+    }
+    if (curRun.length > 0) pts.push(curRun);
+    return pts.map(p => `<polyline points="${p.join(' ')}" stroke="${SERIES_COLORS[key]}" stroke-width="1.5" fill="none"/>`).join('');
+  }
+  for (const k of leftKeys) html += drawSeries(k, leftR);
+  for (const k of rightKeys) html += drawSeries(k, rightR);
+
+  // Tooltip line
+  if (state.chart.tooltipIdx != null) {
+    const r = samplesInView[state.chart.tooltipIdx];
+    if (r) {
+      const ts = session.startTime + r.t;
+      const x = xToPx(ts);
+      html += `<line x1="${x}" y1="${padTop}" x2="${x}" y2="${H - padBottom}" stroke="#e6edf3" stroke-width="1" stroke-dasharray="2,3" opacity="0.7"/>`;
+      // Render tooltip box (bottom-right of cursor by default)
+      const lines = [`<tspan x="0" dy="12">${formatTime(ts)}</tspan>`];
+      for (const k of [...leftKeys, ...rightKeys]) {
+        const v = getValue(r, k, u);
+        const label = k === 'speed' ? `Speed (${u.label})` : k === 'rpm' ? 'RPM' : k === 'slip' ? 'Slip %' : k === 'j' ? 'J' : 'Accel';
+        const valStr = v == null ? '—' : (Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(2));
+        lines.push(`<tspan x="0" dy="12" fill="${SERIES_COLORS[k]}">${label}: ${valStr}</tspan>`);
+      }
+      // Position to right of cursor unless near right edge
+      const tipX = x > W - 140 ? x - 130 : x + 8;
+      const tipY = padTop + 8;
+      html += `<rect x="${tipX - 4}" y="${tipY - 4}" width="125" height="${(lines.length * 12) + 6}" fill="#0a0e14" stroke="#2a3340" stroke-width="1" opacity="0.95" rx="3"/>`;
+      html += `<text x="${tipX}" y="${tipY}" font-size="10" font-family="monospace" fill="#e6edf3">${lines.join('')}</text>`;
+    }
+  }
+
+  svg.innerHTML = html;
+
+  // Range bar
+  renderRangeBar();
+}
+
+function renderRangeBar() {
+  const svg = $('chart-rangebar');
+  const session = state.chart.session;
+  if (!session || session.samples.length === 0) { svg.innerHTML = ''; return; }
+  const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
+  const W = 800, H = 50;
+
+  // Mini speed plot for context
+  const xMinFull = state.chart.xMinFull, xMaxFull = state.chart.xMaxFull;
+  const xToPx = ts => ((ts - xMinFull) / (xMaxFull - xMinFull)) * W;
+
+  let speeds = session.samples.map(r => r.speedMs).filter(v => v != null);
+  let maxSpd = Math.max(...speeds, 1);
+  const spdToY = v => H - 4 - (v / maxSpd) * (H - 8);
+
+  let pts = [];
+  let run = [];
+  for (const r of session.samples) {
+    const ts = session.startTime + r.t;
+    if (r.speedMs != null) run.push(`${xToPx(ts).toFixed(1)},${spdToY(r.speedMs).toFixed(1)}`);
+    else if (run.length) { pts.push(run); run = []; }
+  }
+  if (run.length) pts.push(run);
+
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#1a212d"/>`;
+  for (const p of pts) html += `<polyline points="${p.join(' ')}" stroke="#00d9a3" stroke-width="1" fill="none" opacity="0.6"/>`;
+
+  // Selected window overlay
+  const selX1 = xToPx(state.chart.xMin);
+  const selX2 = xToPx(state.chart.xMax);
+  html += `<rect x="0" y="0" width="${selX1}" height="${H}" fill="#000" opacity="0.5"/>`;
+  html += `<rect x="${selX2}" y="0" width="${W - selX2}" height="${H}" fill="#000" opacity="0.5"/>`;
+  html += `<rect x="${selX1}" y="0" width="${selX2 - selX1}" height="${H}" fill="none" stroke="#00d9a3" stroke-width="1.5"/>`;
+  // Drag handles
+  html += `<rect x="${selX1 - 3}" y="0" width="6" height="${H}" fill="#00d9a3" opacity="0.3" data-handle="left"/>`;
+  html += `<rect x="${selX2 - 3}" y="0" width="6" height="${H}" fill="#00d9a3" opacity="0.3" data-handle="right"/>`;
+
+  svg.innerHTML = html;
+}
+
+// Chart event handlers
+function setupChartInteraction() {
+  const svg = $('chart-svg');
+  const rangebar = $('chart-rangebar');
+
+  function svgPointFromEvent(e, target) {
+    const rect = target.getBoundingClientRect();
+    const x = (e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX)) - rect.left;
+    const y = (e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY)) - rect.top;
+    // Convert to viewBox coords
+    const vbX = (x / rect.width) * 800;
+    return { x: vbX, rectX: x, rectWidth: rect.width };
+  }
+
+  function pxToTimestamp(vbX) {
+    const padLeft = 50, padRight = 50, plotW = 800 - padLeft - padRight;
+    const t = (vbX - padLeft) / plotW;
+    return state.chart.xMin + t * (state.chart.xMax - state.chart.xMin);
+  }
+
+  function findClosestSampleIdx(ts) {
+    const session = state.chart.session;
+    if (!session) return null;
+    const samplesInView = session.samples.filter(r => {
+      const t = session.startTime + r.t;
+      return t >= state.chart.xMin && t <= state.chart.xMax;
+    });
+    if (samplesInView.length === 0) return null;
+    let bestIdx = 0, bestDiff = Infinity;
+    for (let i = 0; i < samplesInView.length; i++) {
+      const diff = Math.abs((session.startTime + samplesInView[i].t) - ts);
+      if (diff < bestDiff) { bestDiff = diff; bestIdx = i; }
+    }
+    return bestIdx;
+  }
+
+  // Touch handlers for chart (tooltip)
+  function chartPointerStart(e) {
+    e.preventDefault();
+    const touches = e.touches;
+    if (touches && touches.length === 2) {
+      // Pinch start
+      const rect = svg.getBoundingClientRect();
+      const x1 = (touches[0].clientX - rect.left) / rect.width * 800;
+      const x2 = (touches[1].clientX - rect.left) / rect.width * 800;
+      state.chart.pinch = {
+        x1Start: x1, x2Start: x2,
+        xMinStart: state.chart.xMin, xMaxStart: state.chart.xMax,
+      };
+      state.chart.tooltipIdx = null;
+      renderChart();
+      return;
+    }
+    const pt = svgPointFromEvent(e, svg);
+    const ts = pxToTimestamp(pt.x);
+    state.chart.tooltipIdx = findClosestSampleIdx(ts);
+    renderChart();
+  }
+  function chartPointerMove(e) {
+    e.preventDefault();
+    const touches = e.touches;
+    if (touches && touches.length === 2 && state.chart.pinch) {
+      const rect = svg.getBoundingClientRect();
+      const x1 = (touches[0].clientX - rect.left) / rect.width * 800;
+      const x2 = (touches[1].clientX - rect.left) / rect.width * 800;
+      // Use the original chart-x for these points
+      const padLeft = 50, plotW = 800 - 50 - 50;
+      const p = state.chart.pinch;
+      const startSpan = p.xMaxStart - p.xMinStart;
+      const ts1Start = p.xMinStart + ((p.x1Start - padLeft) / plotW) * startSpan;
+      const ts2Start = p.xMinStart + ((p.x2Start - padLeft) / plotW) * startSpan;
+      // We want pixel x1 to map to ts1Start, x2 to ts2Start. Solve for new xMin, xMax
+      // ts = newMin + ((px - padLeft)/plotW) * (newMax - newMin)
+      const f1 = (x1 - padLeft) / plotW;
+      const f2 = (x2 - padLeft) / plotW;
+      // ts1 = newMin + f1*(newMax-newMin) = newMin*(1-f1) + f1*newMax
+      // ts2 = newMin*(1-f2) + f2*newMax
+      // Solve linear system
+      const det = (1 - f1) * f2 - (1 - f2) * f1;
+      if (Math.abs(det) < 0.01) return;
+      const newMin = (ts1Start * f2 - ts2Start * f1) / det;
+      const newMax = (ts2Start * (1 - f1) - ts1Start * (1 - f2)) / det;
+      // Clamp to full range
+      let nMin = Math.max(state.chart.xMinFull, Math.min(newMin, state.chart.xMaxFull - 100));
+      let nMax = Math.min(state.chart.xMaxFull, Math.max(newMax, nMin + 100));
+      state.chart.xMin = nMin;
+      state.chart.xMax = nMax;
+      renderChart();
+      return;
+    }
+    if (touches && touches.length === 1) {
+      const pt = svgPointFromEvent(e, svg);
+      const ts = pxToTimestamp(pt.x);
+      state.chart.tooltipIdx = findClosestSampleIdx(ts);
+      renderChart();
+    }
+  }
+  function chartPointerEnd(e) {
+    state.chart.pinch = null;
+  }
+
+  svg.addEventListener('touchstart', chartPointerStart, { passive: false });
+  svg.addEventListener('touchmove', chartPointerMove, { passive: false });
+  svg.addEventListener('touchend', chartPointerEnd);
+  svg.addEventListener('mousedown', e => {
+    const pt = svgPointFromEvent(e, svg);
+    const ts = pxToTimestamp(pt.x);
+    state.chart.tooltipIdx = findClosestSampleIdx(ts);
+    renderChart();
+  });
+  svg.addEventListener('mousemove', e => {
+    if (e.buttons !== 1) return;
+    const pt = svgPointFromEvent(e, svg);
+    const ts = pxToTimestamp(pt.x);
+    state.chart.tooltipIdx = findClosestSampleIdx(ts);
+    renderChart();
+  });
+
+  // Range bar interaction
+  let rangeDrag = null;
+  function rangePointerStart(e) {
+    e.preventDefault();
+    const touches = e.touches;
+    const t = (touches && touches[0]) || e;
+    const rect = rangebar.getBoundingClientRect();
+    const x = (t.clientX - rect.left) / rect.width * 800;
+    const xToTs = px => state.chart.xMinFull + (px / 800) * (state.chart.xMaxFull - state.chart.xMinFull);
+    const tsToPx = ts => ((ts - state.chart.xMinFull) / (state.chart.xMaxFull - state.chart.xMinFull)) * 800;
+    const leftPx = tsToPx(state.chart.xMin);
+    const rightPx = tsToPx(state.chart.xMax);
+    if (Math.abs(x - leftPx) < 12) rangeDrag = { type: 'left', startX: x };
+    else if (Math.abs(x - rightPx) < 12) rangeDrag = { type: 'right', startX: x };
+    else if (x > leftPx && x < rightPx) rangeDrag = { type: 'pan', startX: x, startMin: state.chart.xMin, startMax: state.chart.xMax };
+    else {
+      // Click outside selection: jump
+      const newMin = xToTs(Math.max(0, x - (rightPx - leftPx) / 2));
+      const newMax = xToTs(Math.min(800, x + (rightPx - leftPx) / 2));
+      state.chart.xMin = Math.max(state.chart.xMinFull, newMin);
+      state.chart.xMax = Math.min(state.chart.xMaxFull, newMax);
+      renderChart();
+    }
+  }
+  function rangePointerMove(e) {
+    if (!rangeDrag) return;
+    e.preventDefault();
+    const touches = e.touches;
+    const t = (touches && touches[0]) || e;
+    const rect = rangebar.getBoundingClientRect();
+    const x = (t.clientX - rect.left) / rect.width * 800;
+    const xToTs = px => state.chart.xMinFull + (px / 800) * (state.chart.xMaxFull - state.chart.xMinFull);
+    if (rangeDrag.type === 'left') {
+      const newMin = xToTs(x);
+      state.chart.xMin = Math.max(state.chart.xMinFull, Math.min(newMin, state.chart.xMax - 100));
+    } else if (rangeDrag.type === 'right') {
+      const newMax = xToTs(x);
+      state.chart.xMax = Math.min(state.chart.xMaxFull, Math.max(newMax, state.chart.xMin + 100));
+    } else if (rangeDrag.type === 'pan') {
+      const dxPx = x - rangeDrag.startX;
+      const dxTs = (dxPx / 800) * (state.chart.xMaxFull - state.chart.xMinFull);
+      let newMin = rangeDrag.startMin + dxTs;
+      let newMax = rangeDrag.startMax + dxTs;
+      const span = newMax - newMin;
+      if (newMin < state.chart.xMinFull) { newMin = state.chart.xMinFull; newMax = newMin + span; }
+      if (newMax > state.chart.xMaxFull) { newMax = state.chart.xMaxFull; newMin = newMax - span; }
+      state.chart.xMin = newMin; state.chart.xMax = newMax;
+    }
+    renderChart();
+  }
+  function rangePointerEnd() { rangeDrag = null; }
+
+  rangebar.addEventListener('touchstart', rangePointerStart, { passive: false });
+  rangebar.addEventListener('touchmove', rangePointerMove, { passive: false });
+  rangebar.addEventListener('touchend', rangePointerEnd);
+  rangebar.addEventListener('mousedown', rangePointerStart);
+  document.addEventListener('mousemove', rangePointerMove);
+  document.addEventListener('mouseup', rangePointerEnd);
+}
+
+// Series toggle handlers
+function setupChartToggles() {
+  document.querySelectorAll('.series-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.dataset.key;
+      state.chart.visible[k] = !state.chart.visible[k];
+      btn.classList.toggle('active', state.chart.visible[k]);
+      renderChart();
+    });
+  });
+  // Initialize visual state
+  document.querySelectorAll('.series-toggle').forEach(btn => {
+    btn.classList.toggle('active', !!state.chart.visible[btn.dataset.key]);
+  });
+}
+
+$('time-clock').addEventListener('click', () => {
+  state.chart.timeMode = 'clock';
+  $('time-clock').classList.add('active');
+  $('time-elapsed').classList.remove('active');
+  renderChart();
+});
+$('time-elapsed').addEventListener('click', () => {
+  state.chart.timeMode = 'elapsed';
+  $('time-elapsed').classList.add('active');
+  $('time-clock').classList.remove('active');
+  renderChart();
+});
+$('chart-reset').addEventListener('click', () => {
+  state.chart.xMin = state.chart.xMinFull;
+  state.chart.xMax = state.chart.xMaxFull;
+  state.chart.tooltipIdx = null;
+  renderChart();
+});
+
+// CSV export
 function sessionToCSV(session) {
   const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
   const lines = [];
@@ -1561,7 +1740,7 @@ function sessionToCSV(session) {
   lines.push(`# config: cyl=${session.config.cyl} stroke=${session.config.stroke} gear=${session.config.gear} pitch=${session.config.pitch} diam=${session.config.diam}`);
   lines.push(`# filter: snr=${session.config.snrThresh}dB contrast=${session.config.contrastThresh}dB slew=${session.config.maxSlew}rpm/s harmonic=x${session.config.harmonic}`);
   lines.push(`# unit: ${u.label}`);
-  lines.push('t_s,rpm,speed_ms,speed_unit,acc_ms,freq_hz,peak_db,noise_db,snr_db,contrast_db,theo_kn,slip_pct');
+  lines.push('t_s,rpm,speed_ms,speed_unit,acc_ms,freq_hz,peak_db,noise_db,snr_db,contrast_db,theo_kn,slip_pct,j,accel_ms2');
   for (const r of session.samples) {
     lines.push([
       (r.t / 1000).toFixed(2),
@@ -1576,124 +1755,77 @@ function sessionToCSV(session) {
       r.contrast != null ? r.contrast.toFixed(1) : '',
       r.theoKn != null ? r.theoKn.toFixed(2) : '',
       r.slip != null ? r.slip.toFixed(2) : '',
+      r.j != null ? r.j.toFixed(3) : '',
+      r.accel != null ? r.accel.toFixed(3) : '',
     ].join(','));
   }
   return lines.join('\n');
 }
-
 async function exportSession(session) {
   const csv = sessionToCSV(session);
   const fileName = `propslip_${new Date(session.startTime).toISOString().slice(0,16).replace(/[:T-]/g,'')}.csv`;
   const blob = new Blob([csv], { type: 'text/csv' });
-
-  // Try Web Share API with file (iOS Safari supports this)
   if (navigator.canShare) {
     try {
       const file = new File([blob], fileName, { type: 'text/csv' });
-      if (navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Prop Slip Session' });
-        return;
-      }
-    } catch (e) { console.warn('Share failed, falling back to download', e); }
+      if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Prop Slip Session' }); return; }
+    } catch (e) { console.warn('Share failed', e); }
   }
-
-  // Fallback: download link
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  a.href = url; a.download = fileName;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
-// ======================================================
-// Wake Lock
-// ======================================================
+// ============ Wake Lock ============
 async function requestWakeLock() {
-  if (!('wakeLock' in navigator)) {
-    alert('Wake Lock not supported on this device.');
-    $('wake-toggle').checked = false;
-    return;
-  }
+  if (!('wakeLock' in navigator)) { alert('Wake Lock not supported.'); $('wake-toggle').checked = false; return; }
   try {
     state.wakeLock = await navigator.wakeLock.request('screen');
     $('pill-wake').style.display = 'inline-block';
-    state.wakeLock.addEventListener('release', () => {
-      $('pill-wake').style.display = 'none';
-    });
-  } catch (e) {
-    console.warn('Wake lock failed', e);
-    $('wake-toggle').checked = false;
-  }
+    state.wakeLock.addEventListener('release', () => { $('pill-wake').style.display = 'none'; });
+  } catch (e) { console.warn('Wake lock failed', e); $('wake-toggle').checked = false; }
 }
 async function releaseWakeLock() {
-  if (state.wakeLock) {
-    await state.wakeLock.release();
-    state.wakeLock = null;
-    $('pill-wake').style.display = 'none';
-  }
+  if (state.wakeLock) { await state.wakeLock.release(); state.wakeLock = null; $('pill-wake').style.display = 'none'; }
 }
 document.addEventListener('visibilitychange', async () => {
-  if (document.visibilityState === 'visible' && $('wake-toggle').checked && !state.wakeLock) {
-    await requestWakeLock();
-  }
+  if (document.visibilityState === 'visible' && $('wake-toggle').checked && !state.wakeLock) await requestWakeLock();
 });
 
-// ======================================================
-// Test tone
-// ======================================================
+// ============ Test tone ============
 function startTone() {
-  if (!state.audio.ctx) {
-    alert('Start audio first (open Debug to initialize the mic).');
-    return;
-  }
+  if (!state.audio.ctx) { alert('Open Debug to initialize audio first.'); return; }
   const ctx = state.audio.ctx;
   if (state.tone.osc) stopTone();
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
   osc.frequency.value = parseFloat($('tone-freq').value) || 200;
-  gain.gain.value = (parseFloat($('tone-vol').value) || 40) / 100 * 0.3; // cap at 0.3 for safety
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start();
-  state.tone.osc = osc;
-  state.tone.gain = gain;
+  gain.gain.value = (parseFloat($('tone-vol').value) || 40) / 100 * 0.3;
+  osc.connect(gain); gain.connect(ctx.destination); osc.start();
+  state.tone.osc = osc; state.tone.gain = gain;
   $('btn-tone').textContent = '■ Stop Tone';
 }
 function stopTone() {
-  if (state.tone.osc) {
-    state.tone.osc.stop();
-    state.tone.osc.disconnect();
-    state.tone.gain.disconnect();
-    state.tone.osc = null;
-    state.tone.gain = null;
-  }
+  if (state.tone.osc) { state.tone.osc.stop(); state.tone.osc.disconnect(); state.tone.gain.disconnect(); state.tone.osc = null; state.tone.gain = null; }
   $('btn-tone').textContent = '▶ Play Tone';
 }
 
-// ======================================================
-// Event handlers
-// ======================================================
+// ============ Event handlers ============
 $('btn-speedo').addEventListener('click', () => {
   state.speedoVisible = !state.speedoVisible;
   $('speedo-wrap').classList.toggle('active', state.speedoVisible);
   $('btn-speedo').classList.toggle('active', state.speedoVisible);
 });
-
 $('btn-sessions').addEventListener('click', async () => {
   await renderSessionsList();
   $('sessions-modal').classList.add('active');
 });
 $('sessions-close').addEventListener('click', () => $('sessions-modal').classList.remove('active'));
 $('session-detail-close').addEventListener('click', () => $('session-detail-modal').classList.remove('active'));
-
-$('session-export').addEventListener('click', () => {
-  if (state.currentSessionDetail) exportSession(state.currentSessionDetail);
-});
-
+$('session-export').addEventListener('click', () => { if (state.currentSessionDetail) exportSession(state.currentSessionDetail); });
 $('session-delete').addEventListener('click', async () => {
   if (!state.currentSessionDetail) return;
   if (!confirm('Delete this session?')) return;
@@ -1720,7 +1852,6 @@ $('cal-apply').addEventListener('click', () => {
     state.rpm = { current: null, lastUpdate: 0, history: [] };
   }
 });
-
 $('btn-debug').addEventListener('click', async () => {
   state.debugging = true;
   $('debug-modal').classList.add('active');
@@ -1733,39 +1864,16 @@ $('debug-close').addEventListener('click', () => {
   if (state.tone.osc) stopTone();
   if (!state.running && !state.calibrating) {
     stopAudio();
-    if (!state.running) {
-      stopGPS();
-      setPill('pill-gps', null, 'GPS');
-    }
+    if (!state.running) { stopGPS(); setPill('pill-gps', null, 'GPS'); }
     setPill('pill-mic', null, 'Mic');
   }
 });
-
-$('btn-tone').addEventListener('click', () => {
-  if (state.tone.osc) stopTone();
-  else startTone();
-});
-$('tone-freq').addEventListener('input', () => {
-  if (state.tone.osc) state.tone.osc.frequency.value = parseFloat($('tone-freq').value) || 200;
-});
-$('tone-vol').addEventListener('input', () => {
-  if (state.tone.gain) state.tone.gain.gain.value = (parseFloat($('tone-vol').value) || 0) / 100 * 0.3;
-});
-
-$('btn-livelog').addEventListener('click', () => {
-  state.liveLogVisible = true;
-  $('livelog-modal').classList.add('active');
-  updateLiveLog();
-});
-$('livelog-close').addEventListener('click', () => {
-  state.liveLogVisible = false;
-  $('livelog-modal').classList.remove('active');
-});
-
-$('wake-toggle').addEventListener('change', async (e) => {
-  if (e.target.checked) await requestWakeLock();
-  else await releaseWakeLock();
-});
+$('btn-tone').addEventListener('click', () => { if (state.tone.osc) stopTone(); else startTone(); });
+$('tone-freq').addEventListener('input', () => { if (state.tone.osc) state.tone.osc.frequency.value = parseFloat($('tone-freq').value) || 200; });
+$('tone-vol').addEventListener('input', () => { if (state.tone.gain) state.tone.gain.gain.value = (parseFloat($('tone-vol').value) || 0) / 100 * 0.3; });
+$('btn-livelog').addEventListener('click', () => { state.liveLogVisible = true; $('livelog-modal').classList.add('active'); updateLiveLog(); });
+$('livelog-close').addEventListener('click', () => { state.liveLogVisible = false; $('livelog-modal').classList.remove('active'); });
+$('wake-toggle').addEventListener('change', async (e) => { if (e.target.checked) await requestWakeLock(); else await releaseWakeLock(); });
 
 $('btn-start').addEventListener('click', async () => {
   if (!state.running) {
@@ -1778,7 +1886,6 @@ $('btn-start').addEventListener('click', async () => {
     $('pill-rec').style.display = 'inline-block';
     setPill('pill-rec', false, 'REC');
     $('log-summary').style.display = 'block';
-
     if (!state.gps.watchId) startGPS();
     if (!state.audio.ctx) await startAudio();
   } else {
@@ -1786,20 +1893,14 @@ $('btn-start').addEventListener('click', async () => {
     $('btn-start').textContent = '▶ Start Logging';
     $('btn-start').classList.remove('stop');
     $('pill-rec').style.display = 'none';
-
-    // Save session if there's data
     if (state.log.length > 0) {
       const u = getUnit();
       const summary = computeSummary(state.log, u);
       const config = {
-        cyl: parseFloat($('cyl').value),
-        stroke: parseFloat($('stroke').value),
-        rpmMin: parseFloat($('rpm-min').value),
-        rpmMax: parseFloat($('rpm-max').value),
+        cyl: parseFloat($('cyl').value), stroke: parseFloat($('stroke').value),
+        rpmMin: parseFloat($('rpm-min').value), rpmMax: parseFloat($('rpm-max').value),
         harmonic: parseFloat($('harmonic').value),
-        gear: parseFloat($('gear').value),
-        pitch: parseFloat($('pitch').value),
-        diam: parseFloat($('diam').value),
+        gear: parseFloat($('gear').value), pitch: parseFloat($('pitch').value), diam: parseFloat($('diam').value),
         speedUnit: $('speed-unit').value,
         maxSlew: parseFloat($('rpm-slew').value),
         snrThresh: parseFloat($('snr-thresh').value),
@@ -1808,28 +1909,19 @@ $('btn-start').addEventListener('click', async () => {
       const session = {
         startTime: state.startTime,
         name: `Session ${new Date(state.startTime).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })}`,
-        config: config,
-        samples: state.log,
+        config: config, samples: state.log,
         summary: summary || { samples: 0, maxSpeed: 0, avgSpeed: 0, maxRpm: 0, avgRpm: 0, duration: 0 },
       };
-      try {
-        await saveSession(session);
-      } catch (e) {
-        console.error('Save failed', e);
-        alert('Failed to save session: ' + e.message);
-      }
+      try { await saveSession(session); } catch (e) { console.error('Save failed', e); alert('Failed to save: ' + e.message); }
     }
-
-    if (!state.debugging) {
-      stopGPS();
-      setPill('pill-gps', null, 'GPS');
-    }
-    if (!state.calibrating && !state.debugging) {
-      stopAudio();
-      setPill('pill-mic', null, 'Mic');
-    }
+    if (!state.debugging) { stopGPS(); setPill('pill-gps', null, 'GPS'); }
+    if (!state.calibrating && !state.debugging) { stopAudio(); setPill('pill-mic', null, 'Mic'); }
   }
 });
+
+// Init
+setupChartInteraction();
+setupChartToggles();
 </script>
 </body>
 </html>
