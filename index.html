@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" data-theme="midnight">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,219 +9,265 @@
 <meta name="theme-color" content="#0a0e14">
 <title>Prop Slip Logger</title>
 <style>
-  :root {
-    --bg: #0a0e14;
-    --panel: #131922;
-    --panel-2: #1a212d;
-    --border: #2a3340;
-    --text: #e6edf3;
-    --text-dim: #8b97a8;
-    --accent: #00d9a3;
-    --warn: #ffb454;
-    --danger: #ff6b6b;
-    --good: #00d9a3;
-    --ghost: #58a6ff;
-    --magenta: #c678dd;
+  /* ===== THEMES ===== */
+  html[data-theme="midnight"] {
+    --bg: #0a0e14; --panel: #131922; --panel-2: #1a212d; --border: #2a3340;
+    --text: #ffffff; --text-dim: #b8c5d6; --text-faint: #6b7889;
+    --accent: #00f5b8; --warn: #ffc26b; --danger: #ff7a7a;
+    --good: #00f5b8; --ghost: #7ab8ff; --magenta: #d68dec;
+    --c-speed: #00f5b8; --c-rpm: #ffc26b; --c-slip: #7ab8ff; --c-j: #d68dec; --c-accel: #ffffff;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html[data-theme="nautical-modern"] {
+    --bg: #0a1929; --panel: #122538; --panel-2: #1a3047; --border: #2a4560;
+    --text: #ffffff; --text-dim: #c9d6e3; --text-faint: #7a8da0;
+    --accent: #f4c95d; --warn: #ff9f40; --danger: #ff6b6b;
+    --good: #4ade80; --ghost: #60a5fa; --magenta: #c084fc;
+    --c-speed: #4ade80; --c-rpm: #f4c95d; --c-slip: #60a5fa; --c-j: #c084fc; --c-accel: #ffffff;
+  }
+  html[data-theme="nautical-classic"] {
+    --bg: #f4ead5; --panel: #ede1c5; --panel-2: #e3d4af; --border: #b89968;
+    --text: #2a1f0d; --text-dim: #5a4626; --text-faint: #8a6e3e;
+    --accent: #8b3a1a; --warn: #b8761c; --danger: #a01818;
+    --good: #2d5f3f; --ghost: #1f4e7a; --magenta: #6b2a6b;
+    --c-speed: #2d5f3f; --c-rpm: #b8761c; --c-slip: #1f4e7a; --c-j: #6b2a6b; --c-accel: #2a1f0d;
+  }
+  html[data-theme="daylight"] {
+    --bg: #ffffff; --panel: #f0f2f5; --panel-2: #e1e5eb; --border: #4a5568;
+    --text: #000000; --text-dim: #2d3748; --text-faint: #4a5568;
+    --accent: #006b3f; --warn: #b85c00; --danger: #b80000;
+    --good: #006b3f; --ghost: #003d99; --magenta: #800080;
+    --c-speed: #006b3f; --c-rpm: #b85c00; --c-slip: #003d99; --c-j: #800080; --c-accel: #000000;
+  }
+  html[data-theme="dusk"] {
+    --bg: #0d0606; --panel: #1a0e0e; --panel-2: #261515; --border: #3a2424;
+    --text: #ffd4d4; --text-dim: #c99898; --text-faint: #8b6868;
+    --accent: #ff5050; --warn: #ff8855; --danger: #ff3030;
+    --good: #ff5050; --ghost: #d99090; --magenta: #ff80a0;
+    --c-speed: #ff5050; --c-rpm: #ff8855; --c-slip: #d99090; --c-j: #ff80a0; --c-accel: #ffd4d4;
+  }
+
+- { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-    margin: 0; padding: 0; background: var(--bg); color: var(--text);
-    font-family: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
-    -webkit-font-smoothing: antialiased; overscroll-behavior: none;
+  margin: 0; padding: 0; background: var(–bg); color: var(–text);
+  font-family: ‘JetBrains Mono’, ‘Menlo’, ‘Courier New’, monospace;
+  -webkit-font-smoothing: antialiased; overscroll-behavior: none;
+  transition: background 0.2s, color 0.2s;
   }
   body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); min-height: 100vh; }
-  .header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .header {
+  padding: 16px 20px 12px; border-bottom: 1px solid var(–border);
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  }
   .header h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-  .header .v { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; }
-  .header-actions { display: flex; gap: 8px; align-items: center; }
-  .icon-btn { background: var(--panel); border: 1px solid var(--border); color: var(--text-dim); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
-  .icon-btn.active { background: var(--accent); color: #001b14; border-color: var(--accent); }
-
-  .container { padding: 16px 20px 100px; }
-  .section { margin-bottom: 20px; }
-  .section-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-  .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
-  .field input, .field select {
-    background: var(--panel); border: 1px solid var(--border); color: var(--text);
-    padding: 10px 12px; font-family: inherit; font-size: 15px;
-    border-radius: 6px; width: 100%; -webkit-appearance: none; appearance: none;
+  .header .v { font-size: 10px; color: var(–text-faint); letter-spacing: 0.1em; }
+  .header-actions { display: flex; gap: 6px; align-items: center; }
+  .icon-btn { background: var(–panel); border: 1px solid var(–border); color: var(–text-dim); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
+  .icon-btn.active { background: var(–accent); color: var(–bg); border-color: var(–accent); }
+  .theme-select {
+  background: var(–panel); border: 1px solid var(–border); color: var(–text);
+  font-family: inherit; font-size: 11px; padding: 5px 22px 5px 8px;
+  border-radius: 6px; -webkit-appearance: none; appearance: none; cursor: pointer; height: 32px;
+  background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>”);
+  background-repeat: no-repeat; background-position: right 6px center;
   }
-  .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
-  .field select {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>");
-    background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
-  }
-  .field input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; padding: 0; background: var(--panel-2); }
-  .field input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-  .speedometer-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 14px; display: none; }
-  .speedometer-wrap.active { display: block; }
-  .speedometer { width: 100%; aspect-ratio: 2 / 1.1; display: block; }
-  .speedometer-readout { text-align: center; margin-top: -12px; font-variant-numeric: tabular-nums; }
-  .speedometer-readout .big { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(--accent); }
-  .speedometer-readout .ghost-text { font-size: 11px; color: var(--ghost); margin-top: 2px; letter-spacing: 0.1em; }
+.container { padding: 16px 20px 100px; }
+.section { margin-bottom: 20px; }
+.section-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(–text-dim); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.section-title::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 10px; color: var(–text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+.field input, .field select {
+background: var(–panel); border: 1px solid var(–border); color: var(–text);
+padding: 10px 12px; font-family: inherit; font-size: 15px;
+border-radius: 6px; width: 100%; -webkit-appearance: none; appearance: none;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(–accent); }
+.field select {
+background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>”);
+background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+}
+.field input[type=“range”] { -webkit-appearance: none; appearance: none; height: 6px; padding: 0; background: var(–panel-2); }
+.field input[type=“range”]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(–accent); cursor: pointer; }
 
-  .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-  .readout { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
-  .readout .label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
-  .readout .value { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
-  .readout .unit { font-size: 12px; color: var(--text-dim); margin-left: 4px; font-weight: 400; }
-  .readout .sub { font-size: 10px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.05em; }
-  .readout .sub.warn { color: var(--warn); }
-  .readout .sub.danger { color: var(--danger); }
-  .readout.accent .value { color: var(--accent); }
-  .readout.warn .value { color: var(--warn); }
-  .readout.ghost .value { color: var(--ghost); }
-  .readout.wide { grid-column: span 2; }
+.speedometer-wrap { background: var(–panel); border: 1px solid var(–border); border-radius: 10px; padding: 16px; margin-bottom: 14px; display: none; }
+.speedometer-wrap.active { display: block; }
+.speedometer { width: 100%; aspect-ratio: 2 / 1.1; display: block; }
+.speedometer-readout { text-align: center; margin-top: -12px; font-variant-numeric: tabular-nums; }
+.speedometer-readout .big { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(–accent); }
+.speedometer-readout .ghost-text { font-size: 11px; color: var(–ghost); margin-top: 2px; letter-spacing: 0.1em; }
 
-  .slip-bar { height: 6px; background: var(--panel-2); border-radius: 3px; margin-top: 10px; overflow: hidden; }
-  .slip-bar-fill { height: 100%; background: var(--accent); transition: width 0.2s ease, background 0.3s; width: 0%; }
+.readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.readout { background: var(–panel); border: 1px solid var(–border); border-radius: 8px; padding: 14px; }
+.readout .label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(–text-dim); margin-bottom: 6px; }
+.readout .value { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.readout .unit { font-size: 12px; color: var(–text-dim); margin-left: 4px; font-weight: 400; }
+.readout .sub { font-size: 10px; color: var(–text-dim); margin-top: 6px; letter-spacing: 0.05em; }
+.readout .sub.warn { color: var(–warn); }
+.readout .sub.danger { color: var(–danger); }
+.readout.accent .value { color: var(–accent); }
+.readout.warn .value { color: var(–warn); }
+.readout.ghost .value { color: var(–ghost); }
+.readout.wide { grid-column: span 2; }
 
-  .btn { display: block; width: 100%; padding: 18px; background: var(--accent); color: #001b14; border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
-  .btn:active { transform: scale(0.98); }
-  .btn.stop { background: var(--danger); color: #2a0000; }
-  .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); padding: 12px; font-size: 11px; }
-  .btn.tiny { padding: 8px; font-size: 10px; }
-  .btn.danger { background: var(--danger); color: #2a0000; }
-  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-  .btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
-  .btn-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 10; }
+.slip-bar { height: 6px; background: var(–panel-2); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+.slip-bar-fill { height: 100%; background: var(–accent); transition: width 0.2s ease, background 0.3s; width: 0%; }
 
-  .status { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-  .pill { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: var(--panel-2); color: var(--text-dim); border: 1px solid var(--border); }
-  .pill.ok { color: var(--good); border-color: rgba(0,217,163,0.3); }
-  .pill.err { color: var(--danger); border-color: rgba(255,107,107,0.3); }
-  .pill .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 4px; vertical-align: middle; }
-  .pill.ok .dot { animation: pulse 2s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.btn { display: block; width: 100%; padding: 18px; background: var(–accent); color: var(–bg); border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+.btn:active { transform: scale(0.98); }
+.btn.stop { background: var(–danger); color: var(–bg); }
+.btn.secondary { background: var(–panel); color: var(–text); border: 1px solid var(–border); padding: 12px; font-size: 11px; }
+.btn.tiny { padding: 8px; font-size: 10px; }
+.btn.danger { background: var(–danger); color: var(–bg); }
+.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
+.btn-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(–bg) 70%, transparent); z-index: 10; }
 
-  details { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(--text-dim); }
-  details summary { cursor: pointer; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
-  details p { margin: 8px 0 4px; line-height: 1.5; }
+.status { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.pill { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: var(–panel-2); color: var(–text-dim); border: 1px solid var(–border); }
+.pill.ok { color: var(–good); border-color: var(–good); }
+.pill.err { color: var(–danger); border-color: var(–danger); }
+.pill.warn { color: var(–warn); border-color: var(–warn); }
+.pill .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 4px; vertical-align: middle; }
+.pill.ok .dot { animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-  .log-summary { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 12px; color: var(--text-dim); margin-top: 10px; }
-  .log-summary span { color: var(--text); font-variant-numeric: tabular-nums; }
+details { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(–text-dim); }
+details summary { cursor: pointer; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+details p { margin: 8px 0 4px; line-height: 1.5; }
 
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; overflow-y: auto; }
-  .modal-overlay.active { display: block; }
-  .modal { background: var(--bg); margin: 20px auto; max-width: 700px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .modal-header h2 { margin: 0; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
-  .modal-close { background: none; border: none; color: var(--text-dim); font-size: 22px; cursor: pointer; padding: 4px 8px; }
-  .modal-body { padding: 16px 20px; }
+.log-summary { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 12px; font-size: 12px; color: var(–text-dim); margin-top: 10px; }
+.log-summary span { color: var(–text); font-variant-numeric: tabular-nums; }
 
-  .peaks-list { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-top: 10px; }
-  .peak-row { display: grid; grid-template-columns: 30px 1fr 1fr 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-variant-numeric: tabular-nums; }
-  .peak-row:last-child { border-bottom: none; }
-  .peak-row.header { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
-  .peak-row .strength { color: var(--text-dim); }
-  .peak-row.dominant { color: var(--accent); }
-  .peak-row.dominant .strength { color: var(--accent); }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; overflow-y: auto; }
+.modal-overlay.active { display: block; }
+.modal { background: var(–bg); margin: 20px auto; max-width: 700px; border: 1px solid var(–border); border-radius: 10px; overflow: hidden; }
+.modal-header { padding: 16px 20px; border-bottom: 1px solid var(–border); display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { margin: 0; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
+.modal-close { background: none; border: none; color: var(–text-dim); font-size: 22px; cursor: pointer; padding: 4px 8px; }
+.modal-body { padding: 16px 20px; }
 
-  .verdict { margin-top: 14px; padding: 12px; border-radius: 6px; font-size: 13px; border: 1px solid var(--border); background: var(--panel); line-height: 1.5; }
-  .verdict.good { border-color: rgba(0,217,163,0.4); background: rgba(0,217,163,0.05); }
-  .verdict.bad { border-color: rgba(255,180,84,0.4); background: rgba(255,180,84,0.05); }
-  .verdict strong { color: var(--text); }
+.peaks-list { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 12px; margin-top: 10px; }
+.peak-row { display: grid; grid-template-columns: 30px 1fr 1fr 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(–border); font-size: 13px; font-variant-numeric: tabular-nums; }
+.peak-row:last-child { border-bottom: none; }
+.peak-row.header { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(–text-dim); }
+.peak-row .strength { color: var(–text-dim); }
+.peak-row.dominant { color: var(–accent); }
+.peak-row.dominant .strength { color: var(–accent); }
 
-  .debug-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-  .debug-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
-  .debug-stat .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
-  .debug-stat .val { font-size: 16px; font-variant-numeric: tabular-nums; color: var(--text); font-weight: 500; }
-  .debug-stat .val.dim { color: var(--text-dim); font-size: 13px; }
-  .debug-stat .val.accent { color: var(--accent); }
-  .debug-stat .val.warn { color: var(--warn); }
-  .debug-stat .val.magenta { color: var(--magenta); }
+.verdict { margin-top: 14px; padding: 12px; border-radius: 6px; font-size: 13px; border: 1px solid var(–border); background: var(–panel); line-height: 1.5; }
+.verdict.good { border-color: var(–good); }
+.verdict.bad { border-color: var(–warn); }
+.verdict strong { color: var(–text); }
 
-  .spectrum { width: 100%; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; display: block; }
+.debug-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.debug-stat { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 10px 12px; }
+.debug-stat .lbl { font-size: 9px; color: var(–text-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+.debug-stat .val { font-size: 16px; font-variant-numeric: tabular-nums; color: var(–text); font-weight: 500; }
+.debug-stat .val.dim { color: var(–text-dim); font-size: 13px; }
+.debug-stat .val.accent { color: var(–accent); }
+.debug-stat .val.warn { color: var(–warn); }
+.debug-stat .val.magenta { color: var(–magenta); }
 
-  .test-tone { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-top: 14px; }
-  .test-tone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
+.spectrum { width: 100%; background: var(–panel); border: 1px solid var(–border); border-radius: 6px; display: block; }
 
-  .session-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
-  .session-card:active { background: var(--panel-2); }
-  .session-card-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
-  .session-name { font-size: 14px; color: var(--text); font-weight: 500; }
-  .session-date { font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em; }
-  .session-stats { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
-  .session-stats span { color: var(--text); font-variant-numeric: tabular-nums; }
+.test-tone { background: var(–panel-2); border: 1px solid var(–border); border-radius: 6px; padding: 12px; margin-top: 14px; }
+.test-tone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
 
-  .log-table-wrap { max-height: 50vh; overflow-y: auto; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; }
-  .log-table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums; }
-  .log-table th, .log-table td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--border); }
-  .log-table th { position: sticky; top: 0; background: var(--panel-2); color: var(--text-dim); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
-  .log-table tr:last-child td { border-bottom: none; }
-  .log-table .col-t { text-align: left; }
+.session-card { background: var(–panel); border: 1px solid var(–border); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
+.session-card:active { background: var(–panel-2); }
+.session-card-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.session-name { font-size: 14px; color: var(–text); font-weight: 500; }
+.session-date { font-size: 10px; color: var(–text-dim); letter-spacing: 0.05em; }
+.session-stats { font-size: 11px; color: var(–text-dim); margin-top: 4px; }
+.session-stats span { color: var(–text); font-variant-numeric: tabular-nums; }
 
-  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-  .summary-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
-  .summary-stat .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .summary-stat .val { font-size: 18px; font-variant-numeric: tabular-nums; color: var(--text); font-weight: 600; }
+.log-table-wrap { max-height: 50vh; overflow-y: auto; background: var(–panel); border: 1px solid var(–border); border-radius: 6px; }
+.log-table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums; }
+.log-table th, .log-table td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(–border); }
+.log-table th { position: sticky; top: 0; background: var(–panel-2); color: var(–text-dim); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+.log-table tr:last-child td { border-bottom: none; }
+.log-table .col-t { text-align: left; }
 
-  .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; }
-  .toggle-row label { font-size: 12px; color: var(--text); }
-  .toggle-row .desc { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-  .switch { position: relative; width: 44px; height: 24px; }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .slider { position: absolute; cursor: pointer; inset: 0; background: var(--panel-2); border: 1px solid var(--border); border-radius: 24px; transition: 0.2s; }
-  .slider::before { content: ""; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: var(--text-dim); border-radius: 50%; transition: 0.2s; }
-  .switch input:checked + .slider { background: var(--accent); border-color: var(--accent); }
-  .switch input:checked + .slider::before { transform: translateX(20px); background: #001b14; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.summary-stat { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 10px; }
+.summary-stat .lbl { font-size: 9px; color: var(–text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.summary-stat .val { font-size: 18px; font-variant-numeric: tabular-nums; color: var(–text); font-weight: 600; }
 
-  .empty-state { text-align: center; padding: 30px 20px; color: var(--text-dim); font-size: 13px; }
+.toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(–panel); border: 1px solid var(–border); border-radius: 6px; margin-bottom: 8px; }
+.toggle-row label { font-size: 12px; color: var(–text); }
+.toggle-row .desc { font-size: 10px; color: var(–text-dim); margin-top: 2px; }
+.switch { position: relative; width: 44px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; inset: 0; background: var(–panel-2); border: 1px solid var(–border); border-radius: 24px; transition: 0.2s; }
+.slider::before { content: “”; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: var(–text-dim); border-radius: 50%; transition: 0.2s; }
+.switch input:checked + .slider { background: var(–accent); border-color: var(–accent); }
+.switch input:checked + .slider::before { transform: translateX(20px); background: var(–bg); }
 
-  /* Chart viewer */
-  .chart-toggles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .series-toggle {
-    padding: 6px 10px; font-size: 10px; letter-spacing: 0.1em;
-    text-transform: uppercase; border-radius: 4px;
-    border: 1px solid var(--border); background: var(--panel-2);
-    color: var(--text-dim); cursor: pointer; font-family: inherit;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .series-toggle .swatch { width: 10px; height: 10px; border-radius: 2px; background: var(--text-dim); }
-  .series-toggle.active { color: var(--text); }
-  .series-toggle.active .swatch { background: currentColor; }
-  .series-toggle.spd.active { border-color: var(--accent); color: var(--accent); }
-  .series-toggle.rpm.active { border-color: var(--warn); color: var(--warn); }
-  .series-toggle.slp.active { border-color: var(--ghost); color: var(--ghost); }
-  .series-toggle.j.active { border-color: var(--magenta); color: var(--magenta); }
-  .series-toggle.acc.active { border-color: var(--text); color: var(--text); }
+.empty-state { text-align: center; padding: 30px 20px; color: var(–text-dim); font-size: 13px; }
 
-  .chart-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 8px; user-select: none; -webkit-user-select: none; }
-  .chart-svg { width: 100%; height: 280px; display: block; touch-action: none; }
-  .chart-rangebar { width: 100%; height: 50px; display: block; margin-top: 6px; touch-action: none; }
-  .chart-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
-  .chart-time-mode { display: flex; gap: 4px; }
-  .chart-time-mode button {
-    padding: 4px 8px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    border-radius: 3px; border: 1px solid var(--border); background: var(--panel-2);
-    color: var(--text-dim); cursor: pointer; font-family: inherit;
-  }
-  .chart-time-mode button.active { background: var(--accent); color: #001b14; border-color: var(--accent); }
+/* Chart viewer */
+.chart-toggles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.series-toggle {
+padding: 6px 10px; font-size: 10px; letter-spacing: 0.1em;
+text-transform: uppercase; border-radius: 4px;
+border: 1px solid var(–border); background: var(–panel-2);
+color: var(–text-dim); cursor: pointer; font-family: inherit;
+display: flex; align-items: center; gap: 6px;
+}
+.series-toggle .swatch { width: 10px; height: 10px; border-radius: 2px; background: var(–text-dim); }
+.series-toggle.active { color: var(–text); }
+.series-toggle.active .swatch { background: currentColor; }
+.series-toggle.spd.active { border-color: var(–c-speed); color: var(–c-speed); }
+.series-toggle.rpm.active { border-color: var(–c-rpm); color: var(–c-rpm); }
+.series-toggle.slp.active { border-color: var(–c-slip); color: var(–c-slip); }
+.series-toggle.j.active { border-color: var(–c-j); color: var(–c-j); }
+.series-toggle.acc.active { border-color: var(–c-accel); color: var(–c-accel); }
 
-  .chart-tooltip {
-    position: absolute; background: var(--bg); border: 1px solid var(--border);
-    border-radius: 6px; padding: 8px; font-size: 11px;
-    pointer-events: none; z-index: 5;
-    font-variant-numeric: tabular-nums; min-width: 130px;
-  }
-  .chart-tooltip .tt-time { color: var(--text-dim); font-size: 10px; margin-bottom: 4px; }
-  .chart-tooltip .tt-row { display: flex; justify-content: space-between; gap: 10px; }
-  .chart-tooltip .tt-row .name { color: var(--text-dim); }
+.chart-wrap { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 8px; user-select: none; -webkit-user-select: none; position: relative; }
+.chart-svg { width: 100%; height: 320px; display: block; touch-action: none; }
+.chart-rangebar { width: 100%; height: 50px; display: block; margin-top: 6px; touch-action: none; }
+.chart-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
+.chart-time-mode { display: flex; gap: 4px; }
+.chart-time-mode button {
+padding: 4px 8px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+border-radius: 3px; border: 1px solid var(–border); background: var(–panel-2);
+color: var(–text-dim); cursor: pointer; font-family: inherit;
+}
+.chart-time-mode button.active { background: var(–accent); color: var(–bg); border-color: var(–accent); }
+
+/* HTML tooltip overlay - much more reliable than SVG text */
+.chart-tooltip {
+position: absolute; pointer-events: none;
+background: var(–bg); border: 1px solid var(–border);
+border-radius: 6px; padding: 8px 10px; font-size: 13px;
+font-variant-numeric: tabular-nums; min-width: 130px; z-index: 5;
+display: none;
+}
+.chart-tooltip.active { display: block; }
+.chart-tooltip .tt-time { color: var(–text-dim); font-size: 11px; margin-bottom: 6px; letter-spacing: 0.05em; }
+.chart-tooltip .tt-row { display: flex; justify-content: space-between; gap: 12px; line-height: 1.5; }
+.chart-tooltip .tt-row .tt-name { color: var(–text-dim); }
 </style>
+
 </head>
 <body>
 
 <div class="header">
   <h1>◣ Prop Slip Logger</h1>
   <div class="header-actions">
+    <select class="theme-select" id="theme-select">
+      <option value="midnight">Midnight</option>
+      <option value="nautical-modern">Nautical Modern</option>
+      <option value="nautical-classic">Nautical Classic</option>
+      <option value="daylight">Daylight</option>
+      <option value="dusk">Dusk</option>
+    </select>
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
     <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
-    <span class="v">v0.5</span>
+    <span class="v">v0.6</span>
   </div>
 </div>
 
@@ -233,49 +280,52 @@
       <span class="pill" id="pill-wake" style="display:none">⌁ Awake</span>
     </div>
 
-    <div class="speedometer-wrap" id="speedo-wrap">
-      <svg class="speedometer" id="speedo-svg" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid meet"></svg>
-      <div class="speedometer-readout">
-        <div><span class="big" id="speedo-val">—</span><span style="color:var(--text-dim); font-size:14px; margin-left:4px" id="speedo-unit">kn</span></div>
-        <div class="ghost-text">BEST 2s / 20s: <span id="speedo-ghost">—</span></div>
-      </div>
-    </div>
+```
+<div class="speedometer-wrap" id="speedo-wrap">
+  <svg class="speedometer" id="speedo-svg" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="speedometer-readout">
+    <div><span class="big" id="speedo-val">—</span><span style="color:var(--text-dim); font-size:14px; margin-left:4px" id="speedo-unit">kn</span></div>
+    <div class="ghost-text">BEST 2s / 20s: <span id="speedo-ghost">—</span></div>
+  </div>
+</div>
 
-    <div class="readouts">
-      <div class="readout accent">
-        <div class="label">Speed</div>
-        <div><span class="value" id="r-speed">—</span><span class="unit" id="r-speed-unit">kn</span></div>
-        <div class="sub" id="r-speed-acc">—</div>
-      </div>
-      <div class="readout warn">
-        <div class="label">RPM</div>
-        <div><span class="value" id="r-rpm">—</span></div>
-        <div class="sub" id="r-rpm-sub">—</div>
-      </div>
-      <div class="readout">
-        <div class="label">Theoretical</div>
-        <div><span class="value" id="r-theo" style="font-size:24px">—</span><span class="unit" id="r-theo-unit">kn</span></div>
-      </div>
-      <div class="readout">
-        <div class="label">Slip</div>
-        <div><span class="value" id="r-slip" style="font-size:24px">—</span><span class="unit">%</span></div>
-        <div class="slip-bar"><div class="slip-bar-fill" id="slip-fill"></div></div>
-      </div>
-      <div class="readout ghost wide">
-        <div class="label">Best 2-sec speed (rolling 20s)</div>
-        <div><span class="value" id="r-best" style="font-size:28px">—</span><span class="unit" id="r-best-unit">kn</span></div>
-      </div>
-    </div>
+<div class="readouts">
+  <div class="readout accent">
+    <div class="label">Speed</div>
+    <div><span class="value" id="r-speed">—</span><span class="unit" id="r-speed-unit">kn</span></div>
+    <div class="sub" id="r-speed-acc">—</div>
+  </div>
+  <div class="readout warn">
+    <div class="label">RPM</div>
+    <div><span class="value" id="r-rpm">—</span></div>
+    <div class="sub" id="r-rpm-sub">—</div>
+  </div>
+  <div class="readout">
+    <div class="label">Theoretical</div>
+    <div><span class="value" id="r-theo" style="font-size:24px">—</span><span class="unit" id="r-theo-unit">kn</span></div>
+  </div>
+  <div class="readout">
+    <div class="label">Slip</div>
+    <div><span class="value" id="r-slip" style="font-size:24px">—</span><span class="unit">%</span></div>
+    <div class="slip-bar"><div class="slip-bar-fill" id="slip-fill"></div></div>
+  </div>
+  <div class="readout ghost wide">
+    <div class="label">Best 2-sec speed (rolling 20s)</div>
+    <div><span class="value" id="r-best" style="font-size:28px">—</span><span class="unit" id="r-best-unit">kn</span></div>
+  </div>
+</div>
 
-    <div class="log-summary" id="log-summary" style="display:none">
-      Logged: <span id="log-count">0</span> samples · Duration: <span id="log-duration">0s</span>
-    </div>
+<div class="log-summary" id="log-summary" style="display:none">
+  Logged: <span id="log-count">0</span> samples · Duration: <span id="log-duration">0s</span>
+</div>
 
-    <div class="btn-row three">
-      <button class="btn secondary" id="btn-calibrate">⚙ Cal</button>
-      <button class="btn secondary" id="btn-debug">◍ Debug</button>
-      <button class="btn secondary" id="btn-livelog">▤ Live</button>
-    </div>
+<div class="btn-row three">
+  <button class="btn secondary" id="btn-calibrate">⚙ Cal</button>
+  <button class="btn secondary" id="btn-debug">◍ Debug</button>
+  <button class="btn secondary" id="btn-livelog">▤ Live</button>
+</div>
+```
+
   </div>
 
   <div class="section">
@@ -336,7 +386,7 @@
     <div class="toggle-row">
       <div>
         <label>Keep screen on</label>
-        <div class="desc">Wake Lock — prevents iOS from sleeping during logging</div>
+        <div class="desc">Prevents iOS from sleeping during logging</div>
       </div>
       <label class="switch"><input type="checkbox" id="wake-toggle"><span class="slider"></span></label>
     </div>
@@ -344,10 +394,9 @@
 
   <details>
     <summary>How it works</summary>
-    <p><strong>FFT pipeline:</strong> high-pass → adaptive noise floor → SNR gate → spectral contrast → slew rate filter.</p>
-    <p><strong>Logging:</strong> sessions are saved to your phone (IndexedDB). View charts inline and export as CSV via Share Sheet.</p>
-    <p><strong>Advance ratio J:</strong> J = V / (n × D) where V = boat speed (m/s), n = prop revs/sec, D = prop diameter (m).</p>
-    <p><strong>Acceleration:</strong> smoothed GPS-speed derivative over ~1 sec window.</p>
+    <p><strong>Auto-recovery:</strong> If GPS stops sending updates, the app restarts the watch automatically. Status pill turns yellow when stale.</p>
+    <p><strong>Persistence:</strong> All settings, theme choice, and speedometer toggle are saved between sessions.</p>
+    <p><strong>FFT pipeline:</strong> high-pass (30 Hz) → adaptive noise floor → SNR gate → spectral contrast → slew rate filter.</p>
   </details>
 </div>
 
@@ -356,6 +405,7 @@
 </div>
 
 <!-- CALIBRATION MODAL -->
+
 <div class="modal-overlay" id="cal-modal">
   <div class="modal">
     <div class="modal-header">
@@ -381,6 +431,7 @@
 </div>
 
 <!-- DEBUG MODAL -->
+
 <div class="modal-overlay" id="debug-modal">
   <div class="modal">
     <div class="modal-header">
@@ -409,15 +460,9 @@
       </div>
       <div class="section-title">Spectrum 20–1500 Hz</div>
       <svg class="spectrum" id="spectrum-svg" viewBox="0 0 400 200" preserveAspectRatio="none" style="height:200px"></svg>
-      <p style="color:var(--text-dim); font-size:11px; margin-top:8px; line-height:1.5">
-        <span style="color:var(--accent)">Green</span> = in-band peak.
-        <span style="color:var(--magenta)">Magenta</span> = global peak.
-        <span style="color:var(--warn)">Orange dashed</span> = noise floor.
-        <span style="color:var(--ghost)">Blue dashed</span> = RPM band edges.
-      </p>
       <div class="test-tone">
         <div class="section-title">Test Tone Generator</div>
-        <p style="color:var(--text-dim); font-size:11px; margin: 0 0 10px; line-height:1.5">Plays sine wave through the speaker. FFT should match.</p>
+        <p style="color:var(--text-dim); font-size:11px; margin: 0 0 10px; line-height:1.5">Plays sine wave through speaker. FFT should match.</p>
         <div class="test-tone-row" style="margin-bottom:10px">
           <div class="field"><label>Frequency (Hz)</label><input type="number" id="tone-freq" value="200" min="40" max="2000" step="10"></div>
           <div class="field"><label>Volume</label><input type="range" id="tone-vol" min="0" max="100" value="40"></div>
@@ -430,6 +475,7 @@
 </div>
 
 <!-- LIVE LOG MODAL -->
+
 <div class="modal-overlay" id="livelog-modal">
   <div class="modal">
     <div class="modal-header">
@@ -449,6 +495,7 @@
 </div>
 
 <!-- SESSIONS MODAL -->
+
 <div class="modal-overlay" id="sessions-modal">
   <div class="modal">
     <div class="modal-header">
@@ -460,6 +507,7 @@
 </div>
 
 <!-- SESSION DETAIL MODAL -->
+
 <div class="modal-overlay" id="session-detail-modal">
   <div class="modal">
     <div class="modal-header">
@@ -469,116 +517,126 @@
     <div class="modal-body">
       <div class="summary-grid" id="session-detail-summary"></div>
 
-      <div class="btn-row" style="margin-bottom:14px">
-        <button class="btn secondary tiny" id="session-export">⤓ Export CSV</button>
-        <button class="btn secondary tiny danger" id="session-delete">🗑 Delete</button>
-      </div>
+```
+  <div class="btn-row" style="margin-bottom:14px">
+    <button class="btn secondary tiny" id="session-export">⤓ Export CSV</button>
+    <button class="btn secondary tiny danger" id="session-delete">🗑 Delete</button>
+  </div>
 
-      <!-- Chart viewer -->
-      <div class="section-title">Chart</div>
-      <div class="chart-toggles" id="chart-toggles">
-        <button class="series-toggle spd active" data-key="speed"><span class="swatch"></span>Speed</button>
-        <button class="series-toggle rpm active" data-key="rpm"><span class="swatch"></span>RPM</button>
-        <button class="series-toggle slp" data-key="slip"><span class="swatch"></span>Slip</button>
-        <button class="series-toggle j" data-key="j"><span class="swatch"></span>J</button>
-        <button class="series-toggle acc" data-key="accel"><span class="swatch"></span>Accel</button>
+  <div class="section-title">Chart</div>
+  <div class="chart-toggles" id="chart-toggles">
+    <button class="series-toggle spd active" data-key="speed"><span class="swatch"></span>Speed</button>
+    <button class="series-toggle rpm active" data-key="rpm"><span class="swatch"></span>RPM</button>
+    <button class="series-toggle slp" data-key="slip"><span class="swatch"></span>Slip</button>
+    <button class="series-toggle j" data-key="j"><span class="swatch"></span>J</button>
+    <button class="series-toggle acc" data-key="accel"><span class="swatch"></span>Accel</button>
+  </div>
+  <div class="chart-wrap">
+    <svg class="chart-svg" id="chart-svg" viewBox="0 0 800 320" preserveAspectRatio="none"></svg>
+    <div class="chart-tooltip" id="chart-tooltip"></div>
+    <svg class="chart-rangebar" id="chart-rangebar" viewBox="0 0 800 50" preserveAspectRatio="none"></svg>
+    <div class="chart-controls">
+      <div class="chart-time-mode">
+        <button id="time-clock" class="active">Clock</button>
+        <button id="time-elapsed">Elapsed</button>
       </div>
-      <div class="chart-wrap" style="position:relative">
-        <svg class="chart-svg" id="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none"></svg>
-        <svg class="chart-rangebar" id="chart-rangebar" viewBox="0 0 800 50" preserveAspectRatio="none"></svg>
-        <div class="chart-controls">
-          <div class="chart-time-mode">
-            <button id="time-clock" class="active">Clock</button>
-            <button id="time-elapsed">Elapsed</button>
-          </div>
-          <button class="btn secondary tiny" id="chart-reset" style="width:auto">Reset zoom</button>
-        </div>
-      </div>
-
-      <div class="section-title" style="margin-top:20px">Configuration</div>
-      <div id="session-config" style="background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:10px; font-size:12px; color:var(--text-dim); margin-bottom:14px"></div>
-
-      <div class="section-title">Samples (last 200)</div>
-      <div class="log-table-wrap">
-        <table class="log-table">
-          <thead><tr><th class="col-t">t (s)</th><th>RPM</th><th>Speed</th><th>Theo</th><th>Slip</th></tr></thead>
-          <tbody id="session-detail-tbody"></tbody>
-        </table>
-      </div>
+      <button class="btn secondary tiny" id="chart-reset" style="width:auto">Reset zoom</button>
     </div>
+  </div>
+
+  <div class="section-title" style="margin-top:20px">Configuration</div>
+  <div id="session-config" style="background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:10px; font-size:12px; color:var(--text-dim); margin-bottom:14px"></div>
+
+  <div class="section-title">Samples (last 200)</div>
+  <div class="log-table-wrap">
+    <table class="log-table">
+      <thead><tr><th class="col-t">t (s)</th><th>RPM</th><th>Speed</th><th>Theo</th><th>Slip</th></tr></thead>
+      <tbody id="session-detail-tbody"></tbody>
+    </table>
+  </div>
+</div>
+```
+
   </div>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
 
+// ============ Persistence ============
+const STORAGE_KEY = 'propslip_settings_v1';
+const PERSIST_FIELDS = ['cyl','stroke','rpm-min','rpm-max','harmonic','gear','pitch','diam',
+  'speed-unit','rpm-slew','snr-thresh','contrast-thresh','speedo-max','tone-freq','tone-vol','cal-tach'];
+
+function loadSettings() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (data.theme) {
+      document.documentElement.setAttribute('data-theme', data.theme);
+      $('theme-select').value = data.theme;
+    }
+    for (const id of PERSIST_FIELDS) {
+      if (data[id] != null) {
+        const el = $(id);
+        if (el) el.value = data[id];
+      }
+    }
+    if (data.speedoVisible) {
+      state.speedoVisible = true;
+      $('speedo-wrap').classList.add('active');
+      $('btn-speedo').classList.add('active');
+    }
+    if (data.chartVisible) {
+      state.chart.visible = data.chartVisible;
+    }
+  } catch (e) { console.warn('Load settings failed', e); }
+}
+function saveSettings() {
+  try {
+    const data = { theme: document.documentElement.getAttribute('data-theme'), speedoVisible: state.speedoVisible, chartVisible: state.chart.visible };
+    for (const id of PERSIST_FIELDS) {
+      const el = $(id);
+      if (el) data[id] = el.value;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) { console.warn('Save settings failed', e); }
+}
+
 const state = {
-  running: false,
-  calibrating: false,
-  debugging: false,
-  liveLogVisible: false,
+  running: false, calibrating: false, debugging: false, liveLogVisible: false,
   speedoVisible: false,
-  gps: { speedMs: null, accuracyMs: null, lastUpdate: 0, watchId: null, updates: [] },
+  gps: { speedMs: null, accuracyMs: null, lastUpdate: 0, watchId: null, updates: [], lastRecoveryAttempt: 0 },
   audio: { ctx: null, analyser: null, stream: null, rafId: null, hpFilter: null },
   tone: { osc: null, gain: null },
   rpm: { current: null, lastUpdate: 0, history: [] },
-  peaks: [],
-  globalPeak: null,
-  diag: {
-    peakDb: null, noiseDb: null, snr: null, contrast: null,
-    accepted: [], rejected: [],
-    spectrum: null, spectrumSmoothing: null, adaptiveNoise: null,
-    fftRateUpdates: [],
-  },
-  speedHistory: [],
-  bestTwoSec: null,
-  log: [],
-  startTime: 0,
-  suggestedHarmonic: null,
-  wakeLock: null,
-  currentSessionDetail: null,
-  // Animated speedometer values (m/s)
-  anim: {
-    speedDisplayed: 0,
-    bestDisplayed: 0,
-    lastFrame: 0,
-  },
-  // Chart state
+  peaks: [], globalPeak: null,
+  diag: { peakDb: null, noiseDb: null, snr: null, contrast: null, accepted: [], rejected: [],
+    spectrum: null, spectrumSmoothing: null, adaptiveNoise: null, fftRateUpdates: [] },
+  speedHistory: [], bestTwoSec: null, log: [], startTime: 0,
+  suggestedHarmonic: null, wakeLock: null, currentSessionDetail: null,
+  anim: { speedDisplayed: 0, bestDisplayed: 0, lastFrame: 0 },
   chart: {
     session: null,
-    // Series visibility
     visible: { speed: true, rpm: true, slip: false, j: false, accel: false },
-    // X-domain in ms (timestamps)
-    xMin: null, xMax: null,
-    xMinFull: null, xMaxFull: null,
-    timeMode: 'clock', // 'clock' | 'elapsed'
-    // Drag state
-    drag: null, // {type, startX, startMin, startMax}
-    // Pinch state
-    pinch: null,
-    // Tooltip
-    tooltipIdx: null,
+    xMin: null, xMax: null, xMinFull: null, xMaxFull: null,
+    timeMode: 'clock', drag: null, pinch: null, tooltipIdx: null, tooltipX: 0,
   },
 };
 
 const speedUnits = {
-  kn:  { label: 'kn',   factor: 1.94384 },
-  mph: { label: 'mph',  factor: 2.23694 },
-  kmh: { label: 'km/h', factor: 3.6 },
-  ms:  { label: 'm/s',  factor: 1 },
+  kn: { label: 'kn', factor: 1.94384 }, mph: { label: 'mph', factor: 2.23694 },
+  kmh: { label: 'km/h', factor: 3.6 }, ms: { label: 'm/s', factor: 1 },
 };
-
-const SERIES_COLORS = {
-  speed: '#00d9a3', rpm: '#ffb454', slip: '#58a6ff', j: '#c678dd', accel: '#e6edf3'
-};
-
 function getUnit() { return speedUnits[$('speed-unit').value]; }
-function formatSpeed(ms) { if (ms == null) return '—'; return (ms * getUnit().factor).toFixed(1); }
+function getThemeColor(varName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+}
 function setPill(id, ok, label) {
   const el = $(id); if (!el) return;
-  el.classList.remove('ok', 'err');
+  el.classList.remove('ok', 'err', 'warn');
   if (ok === true) el.classList.add('ok');
   else if (ok === false) el.classList.add('err');
+  else if (ok === 'warn') el.classList.add('warn');
   el.innerHTML = `<span class="dot"></span>${label}`;
 }
 
@@ -597,46 +655,15 @@ function openDB() {
     req.onerror = e => reject(e.target.error);
   });
 }
-async function saveSession(session) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('sessions', 'readwrite');
-    const req = tx.objectStore('sessions').add(session);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-async function listSessions() {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('sessions', 'readonly');
-    const req = tx.objectStore('sessions').index('startTime').getAll();
-    req.onsuccess = () => resolve(req.result.sort((a, b) => b.startTime - a.startTime));
-    req.onerror = () => reject(req.error);
-  });
-}
-async function getSession(id) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('sessions', 'readonly');
-    const req = tx.objectStore('sessions').get(id);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-async function deleteSession(id) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('sessions', 'readwrite');
-    const req = tx.objectStore('sessions').delete(id);
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
-  });
-}
+async function saveSession(s) { const db = await openDB(); return new Promise((r, j) => { const t = db.transaction('sessions', 'readwrite'); const q = t.objectStore('sessions').add(s); q.onsuccess = () => r(q.result); q.onerror = () => j(q.error); }); }
+async function listSessions() { const db = await openDB(); return new Promise((r, j) => { const t = db.transaction('sessions', 'readonly'); const q = t.objectStore('sessions').index('startTime').getAll(); q.onsuccess = () => r(q.result.sort((a,b) => b.startTime - a.startTime)); q.onerror = () => j(q.error); }); }
+async function getSession(id) { const db = await openDB(); return new Promise((r, j) => { const t = db.transaction('sessions', 'readonly'); const q = t.objectStore('sessions').get(id); q.onsuccess = () => r(q.result); q.onerror = () => j(q.error); }); }
+async function deleteSession(id) { const db = await openDB(); return new Promise((r, j) => { const t = db.transaction('sessions', 'readwrite'); const q = t.objectStore('sessions').delete(id); q.onsuccess = () => r(); q.onerror = () => j(q.error); }); }
 
-// ============ GPS ============
+// ============ GPS with auto-recovery ============
 function startGPS() {
   if (!navigator.geolocation) { setPill('pill-gps', false, 'GPS unavailable'); return; }
+  if (state.gps.watchId !== null) return; // already running
   setPill('pill-gps', null, 'GPS…');
   state.gps.watchId = navigator.geolocation.watchPosition(
     pos => {
@@ -653,13 +680,42 @@ function startGPS() {
       setPill('pill-gps', true, 'GPS');
       setPill('pill-debug-gps', true, 'GPS');
     },
-    err => { console.warn('GPS error', err); setPill('pill-gps', false, 'GPS err'); setPill('pill-debug-gps', false, 'GPS err'); },
+    err => {
+      console.warn('GPS error', err);
+      setPill('pill-gps', false, 'GPS err');
+      setPill('pill-debug-gps', false, 'GPS err');
+    },
     { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
   );
 }
 function stopGPS() { if (state.gps.watchId !== null) { navigator.geolocation.clearWatch(state.gps.watchId); state.gps.watchId = null; } }
+function restartGPS() { stopGPS(); state.gps.lastRecoveryAttempt = Date.now(); startGPS(); }
 
-// ============ Audio ============
+// Auto-recovery: check every second if GPS data is stale
+setInterval(() => {
+  if (state.gps.watchId === null) return;
+  const now = Date.now();
+  const age = state.gps.lastUpdate > 0 ? now - state.gps.lastUpdate : 0;
+  if (state.gps.lastUpdate === 0) return; // never had data yet
+  if (age > 3000 && age < 5000) {
+    setPill('pill-gps', 'warn', `GPS stale ${Math.floor(age/1000)}s`);
+    setPill('pill-debug-gps', 'warn', `Stale ${Math.floor(age/1000)}s`);
+  } else if (age >= 5000 && now - state.gps.lastRecoveryAttempt > 10000) {
+    console.warn('GPS stale > 5s, attempting recovery');
+    setPill('pill-gps', 'warn', 'Recovering…');
+    restartGPS();
+  }
+}, 1000);
+
+// Visibility: when page comes back into view, ensure GPS is alive
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible') {
+    if (state.gps.watchId === null) startGPS();
+    if ($('wake-toggle').checked && !state.wakeLock) await requestWakeLock();
+  }
+});
+
+// ============ Audio (manual start) ============
 async function startAudio() {
   setPill('pill-mic', null, 'Mic…');
   setPill('pill-cal-mic', null, 'Mic…');
@@ -705,48 +761,38 @@ let lastRpmTimestamp = 0;
 const RPM_LOOP_INTERVAL_MS = 100;
 function rpmLoop() {
   const now = performance.now();
-  if (now - lastRpmTimestamp >= RPM_LOOP_INTERVAL_MS) {
-    lastRpmTimestamp = now;
-    estimateRPM();
-  }
+  if (now - lastRpmTimestamp >= RPM_LOOP_INTERVAL_MS) { lastRpmTimestamp = now; estimateRPM(); }
   state.audio.rafId = requestAnimationFrame(rpmLoop);
 }
 function median(arr) {
   if (arr.length === 0) return -100;
-  const sorted = [...arr].sort((a, b) => a - b);
-  const m = Math.floor(sorted.length / 2);
-  return sorted.length % 2 ? sorted[m] : (sorted[m-1] + sorted[m]) / 2;
+  const s = [...arr].sort((a,b) => a-b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m-1] + s[m]) / 2;
 }
 function refinePeak(data, idx, binHz) {
   if (idx <= 0 || idx >= data.length - 1) return idx * binHz;
-  const a = data[idx - 1], b = data[idx], c = data[idx + 1];
-  const denom = (a - 2 * b + c);
-  if (denom === 0) return idx * binHz;
-  const offset = 0.5 * (a - c) / denom;
-  if (Math.abs(offset) >= 1) return idx * binHz;
-  return (idx + offset) * binHz;
+  const a = data[idx-1], b = data[idx], c = data[idx+1];
+  const d = (a - 2*b + c);
+  if (d === 0) return idx * binHz;
+  const o = 0.5 * (a - c) / d;
+  if (Math.abs(o) >= 1) return idx * binHz;
+  return (idx + o) * binHz;
 }
-function spectralContrast(data, peakIdx, windowBins) {
-  const lo = Math.max(0, peakIdx - windowBins);
-  const hi = Math.min(data.length - 1, peakIdx + windowBins);
-  let sum = 0, cnt = 0;
-  for (let i = lo; i <= hi; i++) {
-    if (i === peakIdx) continue;
-    if (isFinite(data[i])) { sum += data[i]; cnt++; }
-  }
-  if (cnt === 0) return 0;
-  return data[peakIdx] - (sum / cnt);
+function spectralContrast(data, peakIdx, w) {
+  const lo = Math.max(0, peakIdx - w), hi = Math.min(data.length - 1, peakIdx + w);
+  let s = 0, c = 0;
+  for (let i = lo; i <= hi; i++) { if (i === peakIdx) continue; if (isFinite(data[i])) { s += data[i]; c++; } }
+  return c === 0 ? 0 : data[peakIdx] - s/c;
 }
 
 function estimateRPM() {
-  const a = state.audio.analyser;
-  if (!a) return;
+  const a = state.audio.analyser; if (!a) return;
   const ctx = state.audio.ctx;
   const sampleRate = ctx.sampleRate;
   const bins = a.frequencyBinCount;
   const data = new Float32Array(bins);
   a.getFloatFrequencyData(data);
-
   state.diag.fftRateUpdates.push(performance.now());
   while (state.diag.fftRateUpdates.length && state.diag.fftRateUpdates[0] < performance.now() - 1000) state.diag.fftRateUpdates.shift();
 
@@ -759,7 +805,6 @@ function estimateRPM() {
   const contrastThresh = parseFloat($('contrast-thresh').value) || 6;
   const binHz = sampleRate / (bins * 2);
 
-  // Adaptive noise floor
   if (!state.diag.adaptiveNoise || state.diag.adaptiveNoise.length !== bins) {
     state.diag.adaptiveNoise = new Float32Array(bins);
     for (let i = 0; i < bins; i++) state.diag.adaptiveNoise[i] = data[i];
@@ -787,38 +832,27 @@ function estimateRPM() {
       state.diag.spectrumSmoothing = new Float32Array(specRaw.length);
       for (let i = 0; i < specRaw.length; i++) state.diag.spectrumSmoothing[i] = specRaw[i];
     } else {
-      const alpha = 0.3;
-      for (let i = 0; i < specRaw.length; i++) {
-        state.diag.spectrumSmoothing[i] = alpha * specRaw[i] + (1 - alpha) * state.diag.spectrumSmoothing[i];
-      }
+      const a2 = 0.3;
+      for (let i = 0; i < specRaw.length; i++) state.diag.spectrumSmoothing[i] = a2 * specRaw[i] + (1 - a2) * state.diag.spectrumSmoothing[i];
     }
     state.diag.spectrum = { data: state.diag.spectrumSmoothing, fStart: iGlobalMin * binHz, fEnd: iGlobalMax * binHz };
   }
 
-  let globalPeakIdx = -1, globalPeakDb = -Infinity;
-  for (let i = iGlobalMin; i <= iGlobalMax; i++) {
-    if (data[i] > globalPeakDb) { globalPeakDb = data[i]; globalPeakIdx = i; }
-  }
-  state.globalPeak = globalPeakIdx > 0 ? { hz: refinePeak(data, globalPeakIdx, binHz), db: globalPeakDb } : null;
+  let gIdx = -1, gDb = -Infinity;
+  for (let i = iGlobalMin; i <= iGlobalMax; i++) if (data[i] > gDb) { gDb = data[i]; gIdx = i; }
+  state.globalPeak = gIdx > 0 ? { hz: refinePeak(data, gIdx, binHz), db: gDb } : null;
 
   if (iInBandMax <= iInBandMin) return;
 
-  const noiseSamples = [];
-  for (let i = iInBandMin; i <= iInBandMax; i++) {
-    if (isFinite(state.diag.adaptiveNoise[i])) noiseSamples.push(state.diag.adaptiveNoise[i]);
-  }
-  state.diag.noiseDb = median(noiseSamples);
+  const ns = [];
+  for (let i = iInBandMin; i <= iInBandMax; i++) if (isFinite(state.diag.adaptiveNoise[i])) ns.push(state.diag.adaptiveNoise[i]);
+  state.diag.noiseDb = median(ns);
 
   const peaks = [];
-  for (let i = iInBandMin + 1; i < iInBandMax - 1; i++) {
-    if (data[i] > data[i-1] && data[i] > data[i+1]) peaks.push({ idx: i, db: data[i] });
-  }
+  for (let i = iInBandMin + 1; i < iInBandMax - 1; i++) if (data[i] > data[i-1] && data[i] > data[i+1]) peaks.push({ idx: i, db: data[i] });
   peaks.sort((a, b) => b.db - a.db);
   const top3 = peaks.slice(0, 3);
-  for (const p of top3) {
-    p.hz = refinePeak(data, p.idx, binHz);
-    p.rpm = firingHzToRpm(p.hz, cyl, stroke);
-  }
+  for (const p of top3) { p.hz = refinePeak(data, p.idx, binHz); p.rpm = firingHzToRpm(p.hz, cyl, stroke); }
   state.peaks = top3;
 
   if (top3.length === 0) { state.diag.peakDb = null; state.diag.snr = null; state.diag.contrast = null; return; }
@@ -830,29 +864,29 @@ function estimateRPM() {
   if (state.diag.snr < snrThresh) { state.diag.rejected.push(Date.now()); pruneOld(state.diag.rejected); pruneOld(state.diag.accepted); return; }
   if (state.diag.contrast < contrastThresh) { state.diag.rejected.push(Date.now()); pruneOld(state.diag.rejected); pruneOld(state.diag.accepted); return; }
 
-  const candidateRpm = firingHzToRpm(top3[0].hz * harmonic, cyl, stroke);
-  if (candidateRpm < rpmMin * 0.5 || candidateRpm > rpmMax * 2) { state.diag.rejected.push(Date.now()); pruneOld(state.diag.rejected); pruneOld(state.diag.accepted); return; }
+  const candRpm = firingHzToRpm(top3[0].hz * harmonic, cyl, stroke);
+  if (candRpm < rpmMin * 0.5 || candRpm > rpmMax * 2) { state.diag.rejected.push(Date.now()); pruneOld(state.diag.rejected); pruneOld(state.diag.accepted); return; }
 
   const maxSlew = parseFloat($('rpm-slew').value) || 2500;
   const tNow = Date.now();
   if (state.rpm.current !== null && state.rpm.lastUpdate > 0) {
     const dt = (tNow - state.rpm.lastUpdate) / 1000;
-    const allowedDelta = maxSlew * dt;
-    if (Math.abs(candidateRpm - state.rpm.current) > allowedDelta) {
-      if (dt > 1.0) { state.rpm.current = candidateRpm; state.rpm.lastUpdate = tNow; state.diag.accepted.push(tNow); }
-      else { state.diag.rejected.push(tNow); }
+    const allowed = maxSlew * dt;
+    if (Math.abs(candRpm - state.rpm.current) > allowed) {
+      if (dt > 1.0) { state.rpm.current = candRpm; state.rpm.lastUpdate = tNow; state.diag.accepted.push(tNow); }
+      else state.diag.rejected.push(tNow);
       pruneOld(state.diag.rejected); pruneOld(state.diag.accepted);
       return;
     }
   }
-  state.rpm.history.push(candidateRpm);
+  state.rpm.history.push(candRpm);
   if (state.rpm.history.length > 3) state.rpm.history.shift();
-  state.rpm.current = state.rpm.history.reduce((a, b) => a + b, 0) / state.rpm.history.length;
+  state.rpm.current = state.rpm.history.reduce((a,b) => a+b, 0) / state.rpm.history.length;
   state.rpm.lastUpdate = tNow;
   state.diag.accepted.push(tNow);
   pruneOld(state.diag.rejected); pruneOld(state.diag.accepted);
 }
-function pruneOld(arr) { const cutoff = Date.now() - 10000; while (arr.length && arr[0] < cutoff) arr.shift(); }
+function pruneOld(arr) { const c = Date.now() - 10000; while (arr.length && arr[0] < c) arr.shift(); }
 function calcTheoreticalKn(rpm, gear, pitchIn) { return ((rpm / gear) * pitchIn) / 1215.2; }
 
 function computeBest2SecOver20s() {
@@ -869,10 +903,7 @@ function computeBest2SecOver20s() {
   }
   if (samples.length >= 2) {
     const trailing = samples.filter(s => s.t >= now - 2000);
-    if (trailing.length >= 2) {
-      const avg = trailing.reduce((a, b) => a + b.speedMs, 0) / trailing.length;
-      if (best == null || avg > best) best = avg;
-    }
+    if (trailing.length >= 2) { const avg = trailing.reduce((a,b) => a+b.speedMs, 0) / trailing.length; if (best == null || avg > best) best = avg; }
   }
   return best;
 }
@@ -882,29 +913,20 @@ function animateLoop(now) {
   if (!state.anim.lastFrame) state.anim.lastFrame = now;
   const dt = (now - state.anim.lastFrame) / 1000;
   state.anim.lastFrame = now;
-
-  // Lerp toward target. Time-constant ~0.4 sec for natural feel.
-  // factor = 1 - exp(-dt / tau)
   const tau = 0.4;
   const factor = 1 - Math.exp(-dt / tau);
-
   const targetSpeed = state.gps.speedMs ?? 0;
   const targetBest = state.bestTwoSec ?? 0;
-
   state.anim.speedDisplayed += (targetSpeed - state.anim.speedDisplayed) * factor;
   state.anim.bestDisplayed += (targetBest - state.anim.bestDisplayed) * factor;
-
   if (state.speedoVisible) renderSpeedometer();
-  // Also update digital readouts with the smoothed values for consistency
   updateSpeedReadouts();
-
   requestAnimationFrame(animateLoop);
 }
 requestAnimationFrame(animateLoop);
 
 function updateSpeedReadouts() {
   const u = getUnit();
-  // Use animated value for both, but only show '—' if we have no real data
   if (state.gps.speedMs == null) {
     $('r-speed').textContent = '—';
     $('r-best').textContent = '—';
@@ -920,26 +942,14 @@ function renderSpeedometer() {
   const svg = $('speedo-svg');
   const u = getUnit();
   const maxSpeed = parseFloat($('speedo-max').value) || 50;
-
-  // Use animated values
   const speedMs = state.anim.speedDisplayed;
   const bestMs = state.anim.bestDisplayed;
   const speedDisplay = speedMs * u.factor;
   const bestDisplay = bestMs * u.factor;
-
   const cx = 200, cy = 200, r = 150;
   const startAngle = 180, endAngle = 360, arcSpan = endAngle - startAngle;
   const angleForValue = v => startAngle + (Math.max(0, Math.min(maxSpeed, v)) / maxSpeed) * arcSpan;
-  const pointAt = (angle, radius) => { const rad = angle * Math.PI / 180; return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) }; };
-
-  const ticks = [];
-  for (let i = 0; i <= 10; i++) {
-    const v = (i / 10) * maxSpeed;
-    const angle = startAngle + (i / 10) * arcSpan;
-    const inner = pointAt(angle, r - 12);
-    const outer = pointAt(angle, r);
-    ticks.push({ x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y, big: i % 2 === 0, value: v, angle });
-  }
+  const pointAt = (a, rad) => { const r2 = a * Math.PI / 180; return { x: cx + rad * Math.cos(r2), y: cy + rad * Math.sin(r2) }; };
 
   const arcStart = pointAt(startAngle, r);
   const arcEnd = pointAt(endAngle, r);
@@ -949,33 +959,44 @@ function renderSpeedometer() {
   const needleTip = pointAt(needleAngle, r - 18);
   const needleBaseLeft = pointAt(needleAngle + 90, 6);
   const needleBaseRight = pointAt(needleAngle - 90, 6);
-
   const ghostAngle = angleForValue(bestDisplay);
   const ghostTip = pointAt(ghostAngle, r - 22);
   const ghostBase = pointAt(ghostAngle, r - 4);
 
-  let html = `
-    <defs><linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#00d9a3"/><stop offset="60%" stop-color="#ffb454"/><stop offset="100%" stop-color="#ff6b6b"/>
+  const cAccent = getThemeColor('--accent');
+  const cWarn = getThemeColor('--warn');
+  const cDanger = getThemeColor('--danger');
+  const cTextDim = getThemeColor('--text-dim');
+  const cBorder = getThemeColor('--border');
+  const cPanel2 = getThemeColor('--panel-2');
+  const cGhost = getThemeColor('--ghost');
+
+  let html = `<defs><linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="${cAccent}"/><stop offset="60%" stop-color="${cWarn}"/><stop offset="100%" stop-color="${cDanger}"/>
     </linearGradient></defs>
-    <path d="${arcPath}" stroke="url(#arcGrad)" stroke-width="3" fill="none" opacity="0.6"/>`;
-  for (const t of ticks) {
-    html += `<line x1="${t.x1}" y1="${t.y1}" x2="${t.x2}" y2="${t.y2}" stroke="#8b97a8" stroke-width="${t.big ? 2 : 1}"/>`;
-    if (t.big) {
-      const labelPt = pointAt(t.angle, r - 28);
-      html += `<text x="${labelPt.x}" y="${labelPt.y + 4}" text-anchor="middle" fill="#8b97a8" font-size="13" font-family="monospace">${Math.round(t.value)}</text>`;
+    <path d="${arcPath}" stroke="url(#arcGrad)" stroke-width="3" fill="none" opacity="0.7"/>`;
+
+  for (let i = 0; i <= 10; i++) {
+    const angle = startAngle + (i / 10) * arcSpan;
+    const inner = pointAt(angle, r - 12);
+    const outer = pointAt(angle, r);
+    const big = i % 2 === 0;
+    html += `<line x1="${inner.x}" y1="${inner.y}" x2="${outer.x}" y2="${outer.y}" stroke="${cTextDim}" stroke-width="${big ? 2 : 1}"/>`;
+    if (big) {
+      const labelPt = pointAt(angle, r - 28);
+      html += `<text x="${labelPt.x}" y="${labelPt.y + 5}" text-anchor="middle" fill="${cTextDim}" font-size="14" font-family="monospace" font-weight="500">${Math.round((i/10) * maxSpeed)}</text>`;
     }
   }
-  html += `<text x="${cx}" y="${cy - 30}" text-anchor="middle" fill="#8b97a8" font-size="11" letter-spacing="2" font-family="monospace">${u.label.toUpperCase()}</text>`;
+  html += `<text x="${cx}" y="${cy - 30}" text-anchor="middle" fill="${cTextDim}" font-size="12" letter-spacing="2" font-family="monospace">${u.label.toUpperCase()}</text>`;
   if (state.bestTwoSec != null) {
-    html += `<line x1="${ghostBase.x}" y1="${ghostBase.y}" x2="${ghostTip.x}" y2="${ghostTip.y}" stroke="#58a6ff" stroke-width="2" stroke-dasharray="3,2" opacity="0.85"/>`;
-    html += `<circle cx="${ghostTip.x}" cy="${ghostTip.y}" r="3" fill="#58a6ff" opacity="0.85"/>`;
+    html += `<line x1="${ghostBase.x}" y1="${ghostBase.y}" x2="${ghostTip.x}" y2="${ghostTip.y}" stroke="${cGhost}" stroke-width="2" stroke-dasharray="3,2" opacity="0.85"/>`;
+    html += `<circle cx="${ghostTip.x}" cy="${ghostTip.y}" r="3" fill="${cGhost}" opacity="0.85"/>`;
   }
   if (state.gps.speedMs != null) {
-    html += `<polygon points="${needleTip.x},${needleTip.y} ${needleBaseLeft.x},${needleBaseLeft.y} ${needleBaseRight.x},${needleBaseRight.y}" fill="#00d9a3"/>`;
+    html += `<polygon points="${needleTip.x},${needleTip.y} ${needleBaseLeft.x},${needleBaseLeft.y} ${needleBaseRight.x},${needleBaseRight.y}" fill="${cAccent}"/>`;
   }
-  html += `<circle cx="${cx}" cy="${cy}" r="8" fill="#1a212d" stroke="#2a3340" stroke-width="2"/>`;
-  html += `<circle cx="${cx}" cy="${cy}" r="3" fill="#00d9a3"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="8" fill="${cPanel2}" stroke="${cBorder}" stroke-width="2"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="3" fill="${cAccent}"/>`;
   svg.innerHTML = html;
 
   $('speedo-val').textContent = state.gps.speedMs == null ? '—' : speedDisplay.toFixed(1);
@@ -986,46 +1007,47 @@ function renderSpeedometer() {
 function renderSpectrum() {
   const svg = $('spectrum-svg');
   const spec = state.diag.spectrum;
-  if (!spec) { svg.innerHTML = '<text x="200" y="100" text-anchor="middle" fill="#8b97a8" font-size="12" font-family="monospace">no signal</text>'; return; }
+  if (!spec) { svg.innerHTML = `<text x="200" y="100" text-anchor="middle" fill="${getThemeColor('--text-dim')}" font-size="12" font-family="monospace">no signal</text>`; return; }
   const W = 400, H = 200, dbMin = -110, dbMax = -30;
   const data = spec.data;
   let pts = [];
   for (let i = 0; i < data.length; i++) {
     const x = (i / (data.length - 1)) * W;
-    const dbClamped = Math.max(dbMin, Math.min(dbMax, data[i]));
-    const y = H - ((dbClamped - dbMin) / (dbMax - dbMin)) * H;
+    const v = Math.max(dbMin, Math.min(dbMax, data[i]));
+    const y = H - ((v - dbMin) / (dbMax - dbMin)) * H;
     pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
   }
   const fStart = spec.fStart, fEnd = spec.fEnd;
-  const freqToX = f => ((f - fStart) / (fEnd - fStart)) * W;
+  const f2x = f => ((f - fStart) / (fEnd - fStart)) * W;
   const cyl = parseFloat($('cyl').value) || 4;
   const stroke = parseFloat($('stroke').value) || 4;
   const fLow = rpmToFiringHz(parseFloat($('rpm-min').value) || 600, cyl, stroke);
   const fHigh = rpmToFiringHz(parseFloat($('rpm-max').value) || 6000, cyl, stroke);
+  const cBorder = getThemeColor('--border');
+  const cTextDim = getThemeColor('--text-dim');
+  const cWarn = getThemeColor('--warn');
+  const cGhost = getThemeColor('--ghost');
+  const cMagenta = getThemeColor('--magenta');
+  const cAccent = getThemeColor('--accent');
+  const cText = getThemeColor('--text');
   let html = '';
   for (const f of [100, 200, 400, 600, 1000, 1500]) {
-    const x = freqToX(f);
+    const x = f2x(f);
     if (x >= 0 && x <= W) {
-      html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#2a3340" stroke-width="1"/>`;
-      html += `<text x="${x + 2}" y="${H - 4}" fill="#8b97a8" font-size="9" font-family="monospace">${f}</text>`;
+      html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="${cBorder}" stroke-width="1"/>`;
+      html += `<text x="${x + 2}" y="${H - 4}" fill="${cTextDim}" font-size="10" font-family="monospace">${f}</text>`;
     }
   }
-  const xLow = freqToX(fLow), xHigh = freqToX(fHigh);
-  if (xLow >= 0 && xLow <= W) html += `<line x1="${xLow}" y1="0" x2="${xLow}" y2="${H}" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
-  if (xHigh >= 0 && xHigh <= W) html += `<line x1="${xHigh}" y1="0" x2="${xHigh}" y2="${H}" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
+  const xLow = f2x(fLow), xHigh = f2x(fHigh);
+  if (xLow >= 0 && xLow <= W) html += `<line x1="${xLow}" y1="0" x2="${xLow}" y2="${H}" stroke="${cGhost}" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
+  if (xHigh >= 0 && xHigh <= W) html += `<line x1="${xHigh}" y1="0" x2="${xHigh}" y2="${H}" stroke="${cGhost}" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
   if (state.diag.noiseDb != null) {
-    const noiseY = H - ((Math.max(dbMin, Math.min(dbMax, state.diag.noiseDb)) - dbMin) / (dbMax - dbMin)) * H;
-    html += `<line x1="0" y1="${noiseY}" x2="${W}" y2="${noiseY}" stroke="#ffb454" stroke-width="1" stroke-dasharray="4,2" opacity="0.7"/>`;
+    const ny = H - ((Math.max(dbMin, Math.min(dbMax, state.diag.noiseDb)) - dbMin) / (dbMax - dbMin)) * H;
+    html += `<line x1="0" y1="${ny}" x2="${W}" y2="${ny}" stroke="${cWarn}" stroke-width="1" stroke-dasharray="4,2" opacity="0.7"/>`;
   }
-  html += `<polyline points="${pts.join(' ')}" stroke="#e6edf3" stroke-width="1.5" fill="none"/>`;
-  if (state.globalPeak) {
-    const x = freqToX(state.globalPeak.hz);
-    if (x >= 0 && x <= W) html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#c678dd" stroke-width="1.5" opacity="0.7"/>`;
-  }
-  if (state.peaks.length > 0) {
-    const x = freqToX(state.peaks[0].hz);
-    if (x >= 0 && x <= W) html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#00d9a3" stroke-width="1.5" opacity="0.9"/>`;
-  }
+  html += `<polyline points="${pts.join(' ')}" stroke="${cText}" stroke-width="1.5" fill="none"/>`;
+  if (state.globalPeak) { const x = f2x(state.globalPeak.hz); if (x >= 0 && x <= W) html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="${cMagenta}" stroke-width="1.5" opacity="0.7"/>`; }
+  if (state.peaks.length > 0) { const x = f2x(state.peaks[0].hz); if (x >= 0 && x <= W) html += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="${cAccent}" stroke-width="1.5" opacity="0.9"/>`; }
   svg.innerHTML = html;
 }
 
@@ -1033,25 +1055,15 @@ function uiTick() {
   const speedMs = state.gps.speedMs;
   const accMs = state.gps.accuracyMs;
   const u = getUnit();
-
   const accEl = $('r-speed-acc');
   accEl.classList.remove('warn', 'danger');
-  if (accMs == null || speedMs == null) {
-    accEl.textContent = state.gps.watchId ? 'acquiring…' : '—';
-  } else {
-    accEl.textContent = `± ${(accMs * u.factor).toFixed(2)} ${u.label}`;
-    if (accMs > 1.0) accEl.classList.add('danger');
-    else if (accMs > 0.5) accEl.classList.add('warn');
-  }
-
+  if (accMs == null || speedMs == null) accEl.textContent = state.gps.watchId ? 'acquiring…' : '—';
+  else { accEl.textContent = `± ${(accMs * u.factor).toFixed(2)} ${u.label}`; if (accMs > 1.0) accEl.classList.add('danger'); else if (accMs > 0.5) accEl.classList.add('warn'); }
   const rpm = state.rpm.current;
   $('r-rpm').textContent = rpm == null ? '—' : Math.round(rpm);
-  const rpmSubEl = $('r-rpm-sub');
-  rpmSubEl.textContent = (rpm != null && state.peaks.length > 0 && state.peaks[0].hz) ? `${state.peaks[0].hz.toFixed(1)} Hz` : '—';
-
+  $('r-rpm-sub').textContent = (rpm != null && state.peaks.length > 0 && state.peaks[0].hz) ? `${state.peaks[0].hz.toFixed(1)} Hz` : '—';
   const gear = parseFloat($('gear').value) || 2;
   const pitch = parseFloat($('pitch').value) || 19;
-
   if (rpm != null && rpm > 100) {
     const theoKn = calcTheoreticalKn(rpm, gear, pitch);
     const theoMs = theoKn / 1.94384;
@@ -1059,18 +1071,16 @@ function uiTick() {
     $('r-theo-unit').textContent = u.label;
     if (speedMs != null && theoKn > 0.1) {
       const slip = (1 - (speedMs * 1.94384) / theoKn) * 100;
-      const slipClamped = Math.max(-50, Math.min(100, slip));
+      const sc = Math.max(-50, Math.min(100, slip));
       $('r-slip').textContent = slip.toFixed(1);
       const fill = $('slip-fill');
-      fill.style.width = Math.max(0, Math.min(100, slipClamped)) + '%';
-      if (slipClamped < 15) fill.style.background = 'var(--good)';
-      else if (slipClamped < 30) fill.style.background = 'var(--warn)';
+      fill.style.width = Math.max(0, Math.min(100, sc)) + '%';
+      if (sc < 15) fill.style.background = 'var(--good)';
+      else if (sc < 30) fill.style.background = 'var(--warn)';
       else fill.style.background = 'var(--danger)';
     } else $('r-slip').textContent = '—';
   } else { $('r-theo').textContent = '—'; $('r-slip').textContent = '—'; }
-
   state.bestTwoSec = computeBest2SecOver20s();
-
   if (state.running) {
     $('log-count').textContent = state.log.length;
     $('log-duration').textContent = Math.floor((Date.now() - state.startTime) / 1000) + 's';
@@ -1092,8 +1102,7 @@ setInterval(() => {
   state.log.push({
     t: now - state.startTime,
     rpm: rpm != null ? Math.round(rpm) : null,
-    speedMs: speedMs,
-    accMs: state.gps.accuracyMs,
+    speedMs: speedMs, accMs: state.gps.accuracyMs,
     freqHz: state.peaks.length > 0 ? state.peaks[0].hz : null,
     peakDb: state.diag.peakDb, noiseDb: state.diag.noiseDb,
     snr: state.diag.snr, contrast: state.diag.contrast,
@@ -1116,10 +1125,10 @@ function debugTick() {
   $('d-reject').textContent = state.diag.rejected.length;
   $('d-gpsrate').textContent = state.gps.updates.length > 0 ? `${(state.gps.updates.length / 5).toFixed(1)} Hz` : '— Hz';
   $('d-fftrate').textContent = `${state.diag.fftRateUpdates.length} Hz`;
-  const toneFreq = parseFloat($('tone-freq').value) || 200;
+  const tf = parseFloat($('tone-freq').value) || 200;
   const cyl = parseFloat($('cyl').value) || 4;
-  const stroke = parseFloat($('stroke').value) || 4;
-  $('tone-expected').textContent = `${Math.round(firingHzToRpm(toneFreq, cyl, stroke))} RPM`;
+  const st = parseFloat($('stroke').value) || 4;
+  $('tone-expected').textContent = `${Math.round(firingHzToRpm(tf, cyl, st))} RPM`;
   renderSpectrum();
 }
 setInterval(debugTick, 500);
@@ -1127,80 +1136,43 @@ setInterval(debugTick, 500);
 function updateCalibrationUI() {
   const peaks = state.peaks;
   const cont = $('peak-rows');
-  if (peaks.length === 0) {
-    cont.innerHTML = '<div class="peak-row"><div>—</div><div>no signal</div><div></div><div></div></div>';
-  } else {
-    cont.innerHTML = peaks.map((p, i) => `
-      <div class="${i === 0 ? 'peak-row dominant' : 'peak-row'}">
-        <div>${i+1}</div><div>${p.hz.toFixed(1)} Hz</div><div>${Math.round(p.rpm)}</div>
-        <div class="strength">${p.db.toFixed(0)} dB</div>
-      </div>`).join('');
-  }
+  if (peaks.length === 0) cont.innerHTML = '<div class="peak-row"><div>—</div><div>no signal</div><div></div><div></div></div>';
+  else cont.innerHTML = peaks.map((p, i) => `<div class="${i === 0 ? 'peak-row dominant' : 'peak-row'}"><div>${i+1}</div><div>${p.hz.toFixed(1)} Hz</div><div>${Math.round(p.rpm)}</div><div class="strength">${p.db.toFixed(0)} dB</div></div>`).join('');
   const detected = state.rpm.current;
   $('cal-detected').value = detected == null ? '—' : Math.round(detected);
   const tach = parseFloat($('cal-tach').value);
-  const verdictEl = $('cal-verdict');
-  const applyBtn = $('cal-apply');
-  applyBtn.style.display = 'none';
-  state.suggestedHarmonic = null;
-  if (!tach || !detected) {
-    verdictEl.className = 'verdict';
-    verdictEl.innerHTML = 'Run engine at a steady RPM and enter the tach reading.';
-    return;
-  }
-  const ratio = detected / tach;
-  if (ratio > 0.85 && ratio < 1.15) {
-    verdictEl.className = 'verdict good';
-    verdictEl.innerHTML = '<strong>✓ Looks right.</strong> Detected RPM is within 15% of tach reading.';
-  } else if (ratio > 1.7 && ratio < 2.3) {
-    verdictEl.className = 'verdict bad';
-    verdictEl.innerHTML = '<strong>⚠ Detecting at ~2× true RPM.</strong> Set Harmonic to ×0.5.';
-    state.suggestedHarmonic = 0.5; applyBtn.style.display = 'block';
-  } else if (ratio > 0.4 && ratio < 0.6) {
-    verdictEl.className = 'verdict bad';
-    verdictEl.innerHTML = '<strong>⚠ Detecting at ~½ true RPM.</strong> Set Harmonic to ×2.';
-    state.suggestedHarmonic = 2; applyBtn.style.display = 'block';
-  } else {
-    verdictEl.className = 'verdict bad';
-    verdictEl.innerHTML = `<strong>? Mismatch.</strong> Detected ${Math.round(detected)} vs tach ${tach} (ratio ${ratio.toFixed(2)}).`;
-  }
+  const v = $('cal-verdict'); const ab = $('cal-apply');
+  ab.style.display = 'none'; state.suggestedHarmonic = null;
+  if (!tach || !detected) { v.className = 'verdict'; v.innerHTML = 'Run engine at a steady RPM and enter the tach reading.'; return; }
+  const r = detected / tach;
+  if (r > 0.85 && r < 1.15) { v.className = 'verdict good'; v.innerHTML = '<strong>✓ Looks right.</strong> Detected RPM is within 15% of tach reading.'; }
+  else if (r > 1.7 && r < 2.3) { v.className = 'verdict bad'; v.innerHTML = '<strong>⚠ Detecting at ~2× true RPM.</strong> Set Harmonic to ×0.5.'; state.suggestedHarmonic = 0.5; ab.style.display = 'block'; }
+  else if (r > 0.4 && r < 0.6) { v.className = 'verdict bad'; v.innerHTML = '<strong>⚠ Detecting at ~½ true RPM.</strong> Set Harmonic to ×2.'; state.suggestedHarmonic = 2; ab.style.display = 'block'; }
+  else { v.className = 'verdict bad'; v.innerHTML = `<strong>? Mismatch.</strong> Detected ${Math.round(detected)} vs tach ${tach} (ratio ${r.toFixed(2)}).`; }
 }
 
 function updateLiveLog() {
   const log = state.log; const u = getUnit();
   const tbody = $('livelog-tbody');
   const recent = log.slice(-30).reverse();
-  tbody.innerHTML = recent.map(row => `
-    <tr>
-      <td class="col-t">${(row.t / 1000).toFixed(1)}</td>
-      <td>${row.rpm != null ? row.rpm : '—'}</td>
-      <td>${row.speedMs != null ? (row.speedMs * u.factor).toFixed(1) : '—'}</td>
-      <td>${row.theoKn != null ? (row.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td>
-      <td>${row.slip != null ? row.slip.toFixed(1) : '—'}</td>
-    </tr>`).join('');
+  tbody.innerHTML = recent.map(r => `<tr><td class="col-t">${(r.t / 1000).toFixed(1)}</td><td>${r.rpm ?? '—'}</td><td>${r.speedMs != null ? (r.speedMs * u.factor).toFixed(1) : '—'}</td><td>${r.theoKn != null ? (r.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td><td>${r.slip != null ? r.slip.toFixed(1) : '—'}</td></tr>`).join('');
   $('livelog-summary').innerHTML = renderSummary(computeSummary(log, u), u);
 }
 
 function computeSummary(log, u) {
   const valid = log.filter(r => r.rpm != null && r.speedMs != null);
   if (valid.length === 0) return null;
-  let maxSpeed = -Infinity, sumSpeed = 0, maxRpm = -Infinity, sumRpm = 0, sumSlip = 0, slipCount = 0;
+  let maxS = -Infinity, sumS = 0, maxR = -Infinity, sumR = 0, sumSl = 0, slC = 0;
   for (const r of valid) {
-    maxSpeed = Math.max(maxSpeed, r.speedMs); sumSpeed += r.speedMs;
-    maxRpm = Math.max(maxRpm, r.rpm); sumRpm += r.rpm;
-    if (r.slip != null) { sumSlip += r.slip; slipCount++; }
+    maxS = Math.max(maxS, r.speedMs); sumS += r.speedMs;
+    maxR = Math.max(maxR, r.rpm); sumR += r.rpm;
+    if (r.slip != null) { sumSl += r.slip; slC++; }
   }
-  return {
-    samples: log.length, maxSpeed: maxSpeed, avgSpeed: sumSpeed / valid.length,
-    maxRpm: Math.round(maxRpm), avgRpm: Math.round(sumRpm / valid.length),
-    avgSlip: slipCount > 0 ? sumSlip / slipCount : null,
-    duration: log.length > 0 ? Math.floor(log[log.length-1].t / 1000) : 0,
-  };
+  return { samples: log.length, maxSpeed: maxS, avgSpeed: sumS / valid.length, maxRpm: Math.round(maxR), avgRpm: Math.round(sumR / valid.length), avgSlip: slC > 0 ? sumSl / slC : null, duration: log.length > 0 ? Math.floor(log[log.length-1].t / 1000) : 0 };
 }
 function renderSummary(s, u) {
   if (!s) return '<div class="empty-state">No data yet</div>';
-  return `
-    <div class="summary-stat"><div class="lbl">Max ${u.label}</div><div class="val">${(s.maxSpeed * u.factor).toFixed(1)}</div></div>
+  return `<div class="summary-stat"><div class="lbl">Max ${u.label}</div><div class="val">${(s.maxSpeed * u.factor).toFixed(1)}</div></div>
     <div class="summary-stat"><div class="lbl">Avg ${u.label}</div><div class="val">${(s.avgSpeed * u.factor).toFixed(1)}</div></div>
     <div class="summary-stat"><div class="lbl">Duration</div><div class="val">${s.duration}s</div></div>
     <div class="summary-stat"><div class="lbl">Max RPM</div><div class="val">${s.maxRpm}</div></div>
@@ -1212,30 +1184,14 @@ function renderSummary(s, u) {
 async function renderSessionsList() {
   const list = await listSessions();
   const cont = $('sessions-list');
-  if (list.length === 0) {
-    cont.innerHTML = '<div class="empty-state">No sessions yet.<br>Tap "Start Logging" to record one.</div>';
-    return;
-  }
+  if (list.length === 0) { cont.innerHTML = '<div class="empty-state">No sessions yet.<br>Tap "Start Logging" to record one.</div>'; return; }
   cont.innerHTML = list.map(s => {
     const date = new Date(s.startTime);
     const dateStr = date.toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' });
     const u = speedUnits[s.config.speedUnit] || speedUnits.kn;
-    return `
-      <div class="session-card" data-id="${s.id}">
-        <div class="session-card-row">
-          <span class="session-name">${s.name || `Session ${s.id}`}</span>
-          <span class="session-date">${dateStr}</span>
-        </div>
-        <div class="session-stats">
-          <span>${s.summary.duration}s</span> · <span>${s.summary.samples}</span> samples · 
-          max <span>${(s.summary.maxSpeed * u.factor).toFixed(1)}</span> ${u.label} · 
-          max <span>${s.summary.maxRpm}</span> RPM
-        </div>
-      </div>`;
+    return `<div class="session-card" data-id="${s.id}"><div class="session-card-row"><span class="session-name">${s.name || `Session ${s.id}`}</span><span class="session-date">${dateStr}</span></div><div class="session-stats"><span>${s.summary.duration}s</span> · <span>${s.summary.samples}</span> samples · max <span>${(s.summary.maxSpeed * u.factor).toFixed(1)}</span> ${u.label} · max <span>${s.summary.maxRpm}</span> RPM</div></div>`;
   }).join('');
-  cont.querySelectorAll('.session-card').forEach(el => {
-    el.addEventListener('click', () => openSessionDetail(parseInt(el.dataset.id)));
-  });
+  cont.querySelectorAll('.session-card').forEach(el => el.addEventListener('click', () => openSessionDetail(parseInt(el.dataset.id))));
 }
 
 async function openSessionDetail(id) {
@@ -1246,62 +1202,37 @@ async function openSessionDetail(id) {
   const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
   $('session-detail-summary').innerHTML = renderSummary(session.summary, u);
   const c = session.config;
-  $('session-config').innerHTML = `
-    Engine: ${c.cyl} cyl · ${c.stroke}-stroke · RPM ${c.rpmMin}–${c.rpmMax} · harmonic ×${c.harmonic}<br>
-    Drive: gear ${c.gear} · pitch ${c.pitch}" · diam ${c.diam}"<br>
-    Filter: SNR ${c.snrThresh} dB · slew ${c.maxSlew} RPM/s · contrast ${c.contrastThresh} dB`;
+  $('session-config').innerHTML = `Engine: ${c.cyl} cyl · ${c.stroke}-stroke · RPM ${c.rpmMin}–${c.rpmMax} · harmonic ×${c.harmonic}<br>Drive: gear ${c.gear} · pitch ${c.pitch}" · diam ${c.diam}"<br>Filter: SNR ${c.snrThresh} dB · slew ${c.maxSlew} RPM/s · contrast ${c.contrastThresh} dB`;
 
-  // Set up chart
   state.chart.session = session;
-  // Compute derived series and fill into samples
   prepareChartSeries(session);
-  // Reset zoom to full
   if (session.samples.length > 0) {
     state.chart.xMinFull = session.startTime + session.samples[0].t;
     state.chart.xMaxFull = session.startTime + session.samples[session.samples.length - 1].t;
-  } else {
-    state.chart.xMinFull = session.startTime;
-    state.chart.xMaxFull = session.startTime + 1000;
-  }
+  } else { state.chart.xMinFull = session.startTime; state.chart.xMaxFull = session.startTime + 1000; }
   state.chart.xMin = state.chart.xMinFull;
   state.chart.xMax = state.chart.xMaxFull;
+  state.chart.tooltipIdx = null;
+  $('chart-tooltip').classList.remove('active');
   renderChart();
 
-  // Samples table (last 200)
   const tbody = $('session-detail-tbody');
   const recent = session.samples.slice(-200).reverse();
-  tbody.innerHTML = recent.map(row => `
-    <tr>
-      <td class="col-t">${(row.t / 1000).toFixed(1)}</td>
-      <td>${row.rpm != null ? row.rpm : '—'}</td>
-      <td>${row.speedMs != null ? (row.speedMs * u.factor).toFixed(1) : '—'}</td>
-      <td>${row.theoKn != null ? (row.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td>
-      <td>${row.slip != null ? row.slip.toFixed(1) : '—'}</td>
-    </tr>`).join('');
-
+  tbody.innerHTML = recent.map(r => `<tr><td class="col-t">${(r.t / 1000).toFixed(1)}</td><td>${r.rpm ?? '—'}</td><td>${r.speedMs != null ? (r.speedMs * u.factor).toFixed(1) : '—'}</td><td>${r.theoKn != null ? (r.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td><td>${r.slip != null ? r.slip.toFixed(1) : '—'}</td></tr>`).join('');
   $('session-detail-modal').classList.add('active');
 }
 
-// ============ Chart ============
 function prepareChartSeries(session) {
-  // Compute J and acceleration for each sample; smooth acceleration over ~1 sec
   const samples = session.samples;
   const gear = session.config.gear;
   const diamMeters = session.config.diam * 0.0254;
-
-  // J = V / (n × D), n = rpm/gear/60 rev/sec
   for (const r of samples) {
     if (r.rpm != null && r.rpm > 0 && r.speedMs != null) {
       const n = (r.rpm / gear) / 60;
       const denom = n * diamMeters;
       r.j = denom > 0.01 ? r.speedMs / denom : null;
-    } else {
-      r.j = null;
-    }
+    } else r.j = null;
   }
-
-  // Acceleration = smoothed dv/dt over ~1 sec window
-  // Use central difference with window
   const winMs = 1000;
   for (let i = 0; i < samples.length; i++) {
     const t = samples[i].t;
@@ -1309,171 +1240,184 @@ function prepareChartSeries(session) {
     while (lo > 0 && samples[lo].t > t - winMs/2) lo--;
     while (hi < samples.length - 1 && samples[hi].t < t + winMs/2) hi++;
     if (samples[lo].speedMs != null && samples[hi].speedMs != null && samples[hi].t > samples[lo].t) {
-      const dv = samples[hi].speedMs - samples[lo].speedMs;
-      const dt = (samples[hi].t - samples[lo].t) / 1000;
-      samples[i].accel = dv / dt;
-    } else {
-      samples[i].accel = null;
-    }
+      samples[i].accel = (samples[hi].speedMs - samples[lo].speedMs) / ((samples[hi].t - samples[lo].t) / 1000);
+    } else samples[i].accel = null;
   }
 }
 
-function getValue(sample, key, u) {
-  if (key === 'speed') return sample.speedMs != null ? sample.speedMs * u.factor : null;
-  if (key === 'rpm') return sample.rpm;
-  if (key === 'slip') return sample.slip;
-  if (key === 'j') return sample.j;
-  if (key === 'accel') return sample.accel;
+function getValue(s, k, u) {
+  if (k === 'speed') return s.speedMs != null ? s.speedMs * u.factor : null;
+  if (k === 'rpm') return s.rpm;
+  if (k === 'slip') return s.slip;
+  if (k === 'j') return s.j;
+  if (k === 'accel') return s.accel;
   return null;
 }
+
+// Chart constants — using larger fonts and dual independent axes
+const CHART_W = 800, CHART_H = 320;
+const CHART_PAD_LEFT = 60, CHART_PAD_RIGHT = 60, CHART_PAD_TOP = 16, CHART_PAD_BOTTOM = 36;
+const CHART_PLOT_W = CHART_W - CHART_PAD_LEFT - CHART_PAD_RIGHT;
+const CHART_PLOT_H = CHART_H - CHART_PAD_TOP - CHART_PAD_BOTTOM;
 
 function renderChart() {
   const svg = $('chart-svg');
   const session = state.chart.session;
   if (!session || session.samples.length === 0) {
-    svg.innerHTML = '<text x="400" y="140" text-anchor="middle" fill="#8b97a8" font-size="12" font-family="monospace">No data</text>';
+    svg.innerHTML = `<text x="400" y="160" text-anchor="middle" fill="${getThemeColor('--text-dim')}" font-size="14" font-family="monospace">No data</text>`;
     return;
   }
   const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
-
-  const W = 800, H = 280;
-  const padLeft = 50, padRight = 50, padTop = 14, padBottom = 28;
-  const plotW = W - padLeft - padRight;
-  const plotH = H - padTop - padBottom;
-
-  // X scale
   const xMin = state.chart.xMin, xMax = state.chart.xMax;
-  const xToPx = ts => padLeft + ((ts - xMin) / (xMax - xMin)) * plotW;
+  const xToPx = ts => CHART_PAD_LEFT + ((ts - xMin) / (xMax - xMin)) * CHART_PLOT_W;
 
-  // Filter samples in view
   const samplesInView = session.samples.filter(r => {
     const ts = session.startTime + r.t;
     return ts >= xMin && ts <= xMax;
   });
 
-  // Determine which series are on left axis (speed/rpm) and which on right (slip/j/accel)
-  // Convention: speed and rpm on LEFT, others on RIGHT
-  const leftKeys = ['speed', 'rpm'].filter(k => state.chart.visible[k]);
-  const rightKeys = ['slip', 'j', 'accel'].filter(k => state.chart.visible[k]);
+  // Dual axes: speed on LEFT, all others share RIGHT axis
+  // If RPM is the only one visible (no speed), then RPM goes on left for prominence
+  const visKeys = ['speed', 'rpm', 'slip', 'j', 'accel'].filter(k => state.chart.visible[k]);
+  let leftKey = null, rightKeys = [];
+  if (state.chart.visible.speed) {
+    leftKey = 'speed';
+    rightKeys = visKeys.filter(k => k !== 'speed');
+  } else if (state.chart.visible.rpm) {
+    leftKey = 'rpm';
+    rightKeys = visKeys.filter(k => k !== 'rpm');
+  } else {
+    rightKeys = visKeys;
+  }
 
-  // Compute axis ranges
   function axisRange(keys) {
+    if (typeof keys === 'string') keys = [keys];
     let min = Infinity, max = -Infinity;
     for (const k of keys) {
       for (const r of samplesInView) {
         const v = getValue(r, k, u);
-        if (v != null && isFinite(v)) {
-          if (v < min) min = v;
-          if (v > max) max = v;
-        }
+        if (v != null && isFinite(v)) { if (v < min) min = v; if (v > max) max = v; }
       }
     }
     if (!isFinite(min) || !isFinite(max)) return null;
     if (min === max) { min -= 1; max += 1; }
-    const padding = (max - min) * 0.1;
+    const padding = (max - min) * 0.08;
     return { min: min - padding, max: max + padding };
   }
-  const leftR = leftKeys.length > 0 ? axisRange(leftKeys) : null;
+  const leftR = leftKey ? axisRange(leftKey) : null;
   const rightR = rightKeys.length > 0 ? axisRange(rightKeys) : null;
+
+  const cBorder = getThemeColor('--border');
+  const cTextDim = getThemeColor('--text-dim');
+  const cSpeed = getThemeColor('--c-speed');
+  const cRpm = getThemeColor('--c-rpm');
+  const cText = getThemeColor('--text');
+  const SCOLORS = { speed: cSpeed, rpm: cRpm, slip: getThemeColor('--c-slip'), j: getThemeColor('--c-j'), accel: getThemeColor('--c-accel') };
 
   let html = '';
 
-  // Background grid
   // Y grid (5 horizontal lines)
   for (let i = 0; i <= 5; i++) {
-    const y = padTop + (i / 5) * plotH;
-    html += `<line x1="${padLeft}" y1="${y}" x2="${W - padRight}" y2="${y}" stroke="#2a3340" stroke-width="1"/>`;
+    const y = CHART_PAD_TOP + (i / 5) * CHART_PLOT_H;
+    html += `<line x1="${CHART_PAD_LEFT}" y1="${y}" x2="${CHART_W - CHART_PAD_RIGHT}" y2="${y}" stroke="${cBorder}" stroke-width="1" opacity="0.5"/>`;
   }
-  // Y axis labels (left)
+
+  // Left axis labels
   if (leftR) {
     for (let i = 0; i <= 5; i++) {
-      const y = padTop + (i / 5) * plotH;
+      const y = CHART_PAD_TOP + (i / 5) * CHART_PLOT_H;
       const v = leftR.max - (i / 5) * (leftR.max - leftR.min);
       const label = Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(1);
-      const color = leftKeys.length === 1 ? SERIES_COLORS[leftKeys[0]] : '#8b97a8';
-      html += `<text x="${padLeft - 6}" y="${y + 3}" text-anchor="end" fill="${color}" font-size="9" font-family="monospace">${label}</text>`;
+      const color = SCOLORS[leftKey];
+      html += `<text x="${CHART_PAD_LEFT - 8}" y="${y + 5}" text-anchor="end" fill="${color}" font-size="14" font-family="monospace" font-weight="500">${label}</text>`;
     }
   }
-  // Y axis labels (right)
+  // Right axis labels
   if (rightR) {
     for (let i = 0; i <= 5; i++) {
-      const y = padTop + (i / 5) * plotH;
+      const y = CHART_PAD_TOP + (i / 5) * CHART_PLOT_H;
       const v = rightR.max - (i / 5) * (rightR.max - rightR.min);
       const label = Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(2);
-      const color = rightKeys.length === 1 ? SERIES_COLORS[rightKeys[0]] : '#8b97a8';
-      html += `<text x="${W - padRight + 6}" y="${y + 3}" text-anchor="start" fill="${color}" font-size="9" font-family="monospace">${label}</text>`;
+      const color = rightKeys.length === 1 ? SCOLORS[rightKeys[0]] : cTextDim;
+      html += `<text x="${CHART_W - CHART_PAD_RIGHT + 8}" y="${y + 5}" text-anchor="start" fill="${color}" font-size="14" font-family="monospace" font-weight="500">${label}</text>`;
     }
   }
 
-  // X axis labels
   function formatTime(ts) {
     if (state.chart.timeMode === 'elapsed') {
       const sec = (ts - session.startTime) / 1000;
       const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
       return `${m}:${s.toString().padStart(2, '0')}`;
     } else {
-      const d = new Date(ts);
-      return d.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      return new Date(ts).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
   }
   const numXLabels = 5;
   for (let i = 0; i <= numXLabels; i++) {
-    const x = padLeft + (i / numXLabels) * plotW;
+    const x = CHART_PAD_LEFT + (i / numXLabels) * CHART_PLOT_W;
     const ts = xMin + (i / numXLabels) * (xMax - xMin);
-    html += `<line x1="${x}" y1="${padTop}" x2="${x}" y2="${H - padBottom}" stroke="#2a3340" stroke-width="1" opacity="0.5"/>`;
-    html += `<text x="${x}" y="${H - 10}" text-anchor="middle" fill="#8b97a8" font-size="9" font-family="monospace">${formatTime(ts)}</text>`;
+    html += `<line x1="${x}" y1="${CHART_PAD_TOP}" x2="${x}" y2="${CHART_H - CHART_PAD_BOTTOM}" stroke="${cBorder}" stroke-width="1" opacity="0.4"/>`;
+    html += `<text x="${x}" y="${CHART_H - 14}" text-anchor="middle" fill="${cTextDim}" font-size="13" font-family="monospace">${formatTime(ts)}</text>`;
   }
 
-  // Plot frame
-  html += `<rect x="${padLeft}" y="${padTop}" width="${plotW}" height="${plotH}" fill="none" stroke="#2a3340" stroke-width="1"/>`;
+  html += `<rect x="${CHART_PAD_LEFT}" y="${CHART_PAD_TOP}" width="${CHART_PLOT_W}" height="${CHART_PLOT_H}" fill="none" stroke="${cBorder}" stroke-width="1"/>`;
 
-  // Series
-  function drawSeries(key, axisRange) {
-    if (!axisRange) return '';
-    const valToY = v => padTop + (1 - (v - axisRange.min) / (axisRange.max - axisRange.min)) * plotH;
-    const pts = [];
-    let curRun = [];
+  function drawSeries(key, range) {
+    if (!range) return '';
+    const valToY = v => CHART_PAD_TOP + (1 - (v - range.min) / (range.max - range.min)) * CHART_PLOT_H;
+    const runs = [];
+    let cur = [];
     for (const r of samplesInView) {
       const v = getValue(r, key, u);
       const ts = session.startTime + r.t;
-      if (v != null && isFinite(v)) {
-        curRun.push(`${xToPx(ts).toFixed(1)},${valToY(v).toFixed(1)}`);
-      } else if (curRun.length > 0) {
-        pts.push(curRun); curRun = [];
-      }
+      if (v != null && isFinite(v)) cur.push(`${xToPx(ts).toFixed(1)},${valToY(v).toFixed(1)}`);
+      else if (cur.length > 0) { runs.push(cur); cur = []; }
     }
-    if (curRun.length > 0) pts.push(curRun);
-    return pts.map(p => `<polyline points="${p.join(' ')}" stroke="${SERIES_COLORS[key]}" stroke-width="1.5" fill="none"/>`).join('');
+    if (cur.length > 0) runs.push(cur);
+    return runs.map(p => `<polyline points="${p.join(' ')}" stroke="${SCOLORS[key]}" stroke-width="2" fill="none"/>`).join('');
   }
-  for (const k of leftKeys) html += drawSeries(k, leftR);
+  if (leftKey) html += drawSeries(leftKey, leftR);
   for (const k of rightKeys) html += drawSeries(k, rightR);
 
-  // Tooltip line
-  if (state.chart.tooltipIdx != null) {
+  // Tooltip vertical line only — actual tooltip is HTML overlay
+  if (state.chart.tooltipIdx != null && state.chart.tooltipIdx >= 0 && state.chart.tooltipIdx < samplesInView.length) {
     const r = samplesInView[state.chart.tooltipIdx];
-    if (r) {
-      const ts = session.startTime + r.t;
-      const x = xToPx(ts);
-      html += `<line x1="${x}" y1="${padTop}" x2="${x}" y2="${H - padBottom}" stroke="#e6edf3" stroke-width="1" stroke-dasharray="2,3" opacity="0.7"/>`;
-      // Render tooltip box (bottom-right of cursor by default)
-      const lines = [`<tspan x="0" dy="12">${formatTime(ts)}</tspan>`];
-      for (const k of [...leftKeys, ...rightKeys]) {
-        const v = getValue(r, k, u);
-        const label = k === 'speed' ? `Speed (${u.label})` : k === 'rpm' ? 'RPM' : k === 'slip' ? 'Slip %' : k === 'j' ? 'J' : 'Accel';
-        const valStr = v == null ? '—' : (Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(2));
-        lines.push(`<tspan x="0" dy="12" fill="${SERIES_COLORS[k]}">${label}: ${valStr}</tspan>`);
-      }
-      // Position to right of cursor unless near right edge
-      const tipX = x > W - 140 ? x - 130 : x + 8;
-      const tipY = padTop + 8;
-      html += `<rect x="${tipX - 4}" y="${tipY - 4}" width="125" height="${(lines.length * 12) + 6}" fill="#0a0e14" stroke="#2a3340" stroke-width="1" opacity="0.95" rx="3"/>`;
-      html += `<text x="${tipX}" y="${tipY}" font-size="10" font-family="monospace" fill="#e6edf3">${lines.join('')}</text>`;
-    }
+    const ts = session.startTime + r.t;
+    const x = xToPx(ts);
+    html += `<line x1="${x}" y1="${CHART_PAD_TOP}" x2="${x}" y2="${CHART_H - CHART_PAD_BOTTOM}" stroke="${cText}" stroke-width="1" stroke-dasharray="2,3" opacity="0.7"/>`;
+    state.chart.tooltipX = x;
   }
 
   svg.innerHTML = html;
 
-  // Range bar
+  // HTML tooltip overlay (much more reliable than SVG text)
+  if (state.chart.tooltipIdx != null && state.chart.tooltipIdx >= 0 && state.chart.tooltipIdx < samplesInView.length) {
+    const r = samplesInView[state.chart.tooltipIdx];
+    const ts = session.startTime + r.t;
+    const tt = $('chart-tooltip');
+    let lines = `<div class="tt-time">${formatTime(ts)}</div>`;
+    for (const k of [leftKey, ...rightKeys].filter(Boolean)) {
+      const v = getValue(r, k, u);
+      const label = k === 'speed' ? `Speed (${u.label})` : k === 'rpm' ? 'RPM' : k === 'slip' ? 'Slip %' : k === 'j' ? 'J' : 'Accel';
+      const valStr = v == null ? '—' : (Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(2));
+      lines += `<div class="tt-row" style="color:${SCOLORS[k]}"><span class="tt-name">${label}</span><span>${valStr}</span></div>`;
+    }
+    tt.innerHTML = lines;
+    // Convert SVG x-coord to pixel position
+    const svgRect = svg.getBoundingClientRect();
+    const wrapRect = svg.parentElement.getBoundingClientRect();
+    const pxX = (state.chart.tooltipX / CHART_W) * svgRect.width;
+    const screenX = svgRect.left - wrapRect.left + pxX;
+    const tipWidth = 150;
+    let tipX = screenX + 10;
+    if (tipX + tipWidth > wrapRect.width) tipX = screenX - tipWidth - 10;
+    tt.style.left = tipX + 'px';
+    tt.style.top = '12px';
+    tt.classList.add('active');
+  } else {
+    $('chart-tooltip').classList.remove('active');
+  }
+
   renderRangeBar();
 }
 
@@ -1481,326 +1425,225 @@ function renderRangeBar() {
   const svg = $('chart-rangebar');
   const session = state.chart.session;
   if (!session || session.samples.length === 0) { svg.innerHTML = ''; return; }
-  const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
   const W = 800, H = 50;
-
-  // Mini speed plot for context
   const xMinFull = state.chart.xMinFull, xMaxFull = state.chart.xMaxFull;
   const xToPx = ts => ((ts - xMinFull) / (xMaxFull - xMinFull)) * W;
-
-  let speeds = session.samples.map(r => r.speedMs).filter(v => v != null);
-  let maxSpd = Math.max(...speeds, 1);
+  const speeds = session.samples.map(r => r.speedMs).filter(v => v != null);
+  const maxSpd = Math.max(...speeds, 1);
   const spdToY = v => H - 4 - (v / maxSpd) * (H - 8);
-
-  let pts = [];
-  let run = [];
+  let pts = []; let run = [];
   for (const r of session.samples) {
     const ts = session.startTime + r.t;
     if (r.speedMs != null) run.push(`${xToPx(ts).toFixed(1)},${spdToY(r.speedMs).toFixed(1)}`);
     else if (run.length) { pts.push(run); run = []; }
   }
   if (run.length) pts.push(run);
-
-  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#1a212d"/>`;
-  for (const p of pts) html += `<polyline points="${p.join(' ')}" stroke="#00d9a3" stroke-width="1" fill="none" opacity="0.6"/>`;
-
-  // Selected window overlay
-  const selX1 = xToPx(state.chart.xMin);
-  const selX2 = xToPx(state.chart.xMax);
-  html += `<rect x="0" y="0" width="${selX1}" height="${H}" fill="#000" opacity="0.5"/>`;
-  html += `<rect x="${selX2}" y="0" width="${W - selX2}" height="${H}" fill="#000" opacity="0.5"/>`;
-  html += `<rect x="${selX1}" y="0" width="${selX2 - selX1}" height="${H}" fill="none" stroke="#00d9a3" stroke-width="1.5"/>`;
-  // Drag handles
-  html += `<rect x="${selX1 - 3}" y="0" width="6" height="${H}" fill="#00d9a3" opacity="0.3" data-handle="left"/>`;
-  html += `<rect x="${selX2 - 3}" y="0" width="6" height="${H}" fill="#00d9a3" opacity="0.3" data-handle="right"/>`;
-
+  const cAccent = getThemeColor('--c-speed');
+  const cPanel2 = getThemeColor('--panel-2');
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="${cPanel2}"/>`;
+  for (const p of pts) html += `<polyline points="${p.join(' ')}" stroke="${cAccent}" stroke-width="1" fill="none" opacity="0.6"/>`;
+  const sx1 = xToPx(state.chart.xMin), sx2 = xToPx(state.chart.xMax);
+  html += `<rect x="0" y="0" width="${sx1}" height="${H}" fill="#000" opacity="0.5"/>`;
+  html += `<rect x="${sx2}" y="0" width="${W - sx2}" height="${H}" fill="#000" opacity="0.5"/>`;
+  html += `<rect x="${sx1}" y="0" width="${sx2 - sx1}" height="${H}" fill="none" stroke="${cAccent}" stroke-width="1.5"/>`;
+  html += `<rect x="${sx1 - 3}" y="0" width="6" height="${H}" fill="${cAccent}" opacity="0.3"/>`;
+  html += `<rect x="${sx2 - 3}" y="0" width="6" height="${H}" fill="${cAccent}" opacity="0.3"/>`;
   svg.innerHTML = html;
 }
 
-// Chart event handlers
 function setupChartInteraction() {
   const svg = $('chart-svg');
   const rangebar = $('chart-rangebar');
 
-  function svgPointFromEvent(e, target) {
-    const rect = target.getBoundingClientRect();
-    const x = (e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX)) - rect.left;
-    const y = (e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY)) - rect.top;
-    // Convert to viewBox coords
-    const vbX = (x / rect.width) * 800;
-    return { x: vbX, rectX: x, rectWidth: rect.width };
-  }
-
   function pxToTimestamp(vbX) {
-    const padLeft = 50, padRight = 50, plotW = 800 - padLeft - padRight;
-    const t = (vbX - padLeft) / plotW;
+    const t = (vbX - CHART_PAD_LEFT) / CHART_PLOT_W;
     return state.chart.xMin + t * (state.chart.xMax - state.chart.xMin);
   }
-
   function findClosestSampleIdx(ts) {
     const session = state.chart.session;
     if (!session) return null;
-    const samplesInView = session.samples.filter(r => {
-      const t = session.startTime + r.t;
-      return t >= state.chart.xMin && t <= state.chart.xMax;
-    });
-    if (samplesInView.length === 0) return null;
-    let bestIdx = 0, bestDiff = Infinity;
-    for (let i = 0; i < samplesInView.length; i++) {
-      const diff = Math.abs((session.startTime + samplesInView[i].t) - ts);
-      if (diff < bestDiff) { bestDiff = diff; bestIdx = i; }
+    const inView = session.samples.filter(r => { const t = session.startTime + r.t; return t >= state.chart.xMin && t <= state.chart.xMax; });
+    if (inView.length === 0) return null;
+    let bi = 0, bd = Infinity;
+    for (let i = 0; i < inView.length; i++) {
+      const d = Math.abs((session.startTime + inView[i].t) - ts);
+      if (d < bd) { bd = d; bi = i; }
     }
-    return bestIdx;
+    return bi;
+  }
+  function eventToVBX(e, target) {
+    const rect = target.getBoundingClientRect();
+    const tt = e.touches && e.touches[0];
+    const cx = tt ? tt.clientX : e.clientX;
+    return ((cx - rect.left) / rect.width) * 800;
   }
 
-  // Touch handlers for chart (tooltip)
   function chartPointerStart(e) {
     e.preventDefault();
-    const touches = e.touches;
-    if (touches && touches.length === 2) {
-      // Pinch start
+    const t = e.touches;
+    if (t && t.length === 2) {
       const rect = svg.getBoundingClientRect();
-      const x1 = (touches[0].clientX - rect.left) / rect.width * 800;
-      const x2 = (touches[1].clientX - rect.left) / rect.width * 800;
-      state.chart.pinch = {
-        x1Start: x1, x2Start: x2,
-        xMinStart: state.chart.xMin, xMaxStart: state.chart.xMax,
-      };
+      const x1 = (t[0].clientX - rect.left) / rect.width * 800;
+      const x2 = (t[1].clientX - rect.left) / rect.width * 800;
+      state.chart.pinch = { x1Start: x1, x2Start: x2, xMinStart: state.chart.xMin, xMaxStart: state.chart.xMax };
       state.chart.tooltipIdx = null;
       renderChart();
       return;
     }
-    const pt = svgPointFromEvent(e, svg);
-    const ts = pxToTimestamp(pt.x);
+    const x = eventToVBX(e, svg);
+    const ts = pxToTimestamp(x);
     state.chart.tooltipIdx = findClosestSampleIdx(ts);
     renderChart();
   }
   function chartPointerMove(e) {
     e.preventDefault();
-    const touches = e.touches;
-    if (touches && touches.length === 2 && state.chart.pinch) {
+    const t = e.touches;
+    if (t && t.length === 2 && state.chart.pinch) {
       const rect = svg.getBoundingClientRect();
-      const x1 = (touches[0].clientX - rect.left) / rect.width * 800;
-      const x2 = (touches[1].clientX - rect.left) / rect.width * 800;
-      // Use the original chart-x for these points
-      const padLeft = 50, plotW = 800 - 50 - 50;
+      const x1 = (t[0].clientX - rect.left) / rect.width * 800;
+      const x2 = (t[1].clientX - rect.left) / rect.width * 800;
       const p = state.chart.pinch;
-      const startSpan = p.xMaxStart - p.xMinStart;
-      const ts1Start = p.xMinStart + ((p.x1Start - padLeft) / plotW) * startSpan;
-      const ts2Start = p.xMinStart + ((p.x2Start - padLeft) / plotW) * startSpan;
-      // We want pixel x1 to map to ts1Start, x2 to ts2Start. Solve for new xMin, xMax
-      // ts = newMin + ((px - padLeft)/plotW) * (newMax - newMin)
-      const f1 = (x1 - padLeft) / plotW;
-      const f2 = (x2 - padLeft) / plotW;
-      // ts1 = newMin + f1*(newMax-newMin) = newMin*(1-f1) + f1*newMax
-      // ts2 = newMin*(1-f2) + f2*newMax
-      // Solve linear system
-      const det = (1 - f1) * f2 - (1 - f2) * f1;
+      const ss = p.xMaxStart - p.xMinStart;
+      const ts1 = p.xMinStart + ((p.x1Start - CHART_PAD_LEFT) / CHART_PLOT_W) * ss;
+      const ts2 = p.xMinStart + ((p.x2Start - CHART_PAD_LEFT) / CHART_PLOT_W) * ss;
+      const f1 = (x1 - CHART_PAD_LEFT) / CHART_PLOT_W;
+      const f2 = (x2 - CHART_PAD_LEFT) / CHART_PLOT_W;
+      const det = (1-f1)*f2 - (1-f2)*f1;
       if (Math.abs(det) < 0.01) return;
-      const newMin = (ts1Start * f2 - ts2Start * f1) / det;
-      const newMax = (ts2Start * (1 - f1) - ts1Start * (1 - f2)) / det;
-      // Clamp to full range
-      let nMin = Math.max(state.chart.xMinFull, Math.min(newMin, state.chart.xMaxFull - 100));
-      let nMax = Math.min(state.chart.xMaxFull, Math.max(newMax, nMin + 100));
-      state.chart.xMin = nMin;
-      state.chart.xMax = nMax;
+      const newMin = (ts1 * f2 - ts2 * f1) / det;
+      const newMax = (ts2 * (1-f1) - ts1 * (1-f2)) / det;
+      state.chart.xMin = Math.max(state.chart.xMinFull, Math.min(newMin, state.chart.xMaxFull - 100));
+      state.chart.xMax = Math.min(state.chart.xMaxFull, Math.max(newMax, state.chart.xMin + 100));
       renderChart();
       return;
     }
-    if (touches && touches.length === 1) {
-      const pt = svgPointFromEvent(e, svg);
-      const ts = pxToTimestamp(pt.x);
+    if (t && t.length === 1) {
+      const x = eventToVBX(e, svg);
+      const ts = pxToTimestamp(x);
       state.chart.tooltipIdx = findClosestSampleIdx(ts);
       renderChart();
     }
   }
-  function chartPointerEnd(e) {
-    state.chart.pinch = null;
-  }
-
+  function chartPointerEnd() { state.chart.pinch = null; }
   svg.addEventListener('touchstart', chartPointerStart, { passive: false });
   svg.addEventListener('touchmove', chartPointerMove, { passive: false });
   svg.addEventListener('touchend', chartPointerEnd);
-  svg.addEventListener('mousedown', e => {
-    const pt = svgPointFromEvent(e, svg);
-    const ts = pxToTimestamp(pt.x);
-    state.chart.tooltipIdx = findClosestSampleIdx(ts);
-    renderChart();
-  });
-  svg.addEventListener('mousemove', e => {
-    if (e.buttons !== 1) return;
-    const pt = svgPointFromEvent(e, svg);
-    const ts = pxToTimestamp(pt.x);
-    state.chart.tooltipIdx = findClosestSampleIdx(ts);
-    renderChart();
-  });
+  svg.addEventListener('mousedown', e => { const x = eventToVBX(e, svg); const ts = pxToTimestamp(x); state.chart.tooltipIdx = findClosestSampleIdx(ts); renderChart(); });
+  svg.addEventListener('mousemove', e => { if (e.buttons !== 1) return; const x = eventToVBX(e, svg); const ts = pxToTimestamp(x); state.chart.tooltipIdx = findClosestSampleIdx(ts); renderChart(); });
 
-  // Range bar interaction
-  let rangeDrag = null;
-  function rangePointerStart(e) {
+  let rd = null;
+  function rPointerStart(e) {
     e.preventDefault();
-    const touches = e.touches;
-    const t = (touches && touches[0]) || e;
-    const rect = rangebar.getBoundingClientRect();
-    const x = (t.clientX - rect.left) / rect.width * 800;
+    const x = eventToVBX(e, rangebar);
     const xToTs = px => state.chart.xMinFull + (px / 800) * (state.chart.xMaxFull - state.chart.xMinFull);
     const tsToPx = ts => ((ts - state.chart.xMinFull) / (state.chart.xMaxFull - state.chart.xMinFull)) * 800;
-    const leftPx = tsToPx(state.chart.xMin);
-    const rightPx = tsToPx(state.chart.xMax);
-    if (Math.abs(x - leftPx) < 12) rangeDrag = { type: 'left', startX: x };
-    else if (Math.abs(x - rightPx) < 12) rangeDrag = { type: 'right', startX: x };
-    else if (x > leftPx && x < rightPx) rangeDrag = { type: 'pan', startX: x, startMin: state.chart.xMin, startMax: state.chart.xMax };
+    const lp = tsToPx(state.chart.xMin), rp = tsToPx(state.chart.xMax);
+    if (Math.abs(x - lp) < 14) rd = { type: 'left' };
+    else if (Math.abs(x - rp) < 14) rd = { type: 'right' };
+    else if (x > lp && x < rp) rd = { type: 'pan', startX: x, startMin: state.chart.xMin, startMax: state.chart.xMax };
     else {
-      // Click outside selection: jump
-      const newMin = xToTs(Math.max(0, x - (rightPx - leftPx) / 2));
-      const newMax = xToTs(Math.min(800, x + (rightPx - leftPx) / 2));
+      const newMin = xToTs(Math.max(0, x - (rp - lp) / 2));
+      const newMax = xToTs(Math.min(800, x + (rp - lp) / 2));
       state.chart.xMin = Math.max(state.chart.xMinFull, newMin);
       state.chart.xMax = Math.min(state.chart.xMaxFull, newMax);
       renderChart();
     }
   }
-  function rangePointerMove(e) {
-    if (!rangeDrag) return;
+  function rPointerMove(e) {
+    if (!rd) return;
     e.preventDefault();
-    const touches = e.touches;
-    const t = (touches && touches[0]) || e;
-    const rect = rangebar.getBoundingClientRect();
-    const x = (t.clientX - rect.left) / rect.width * 800;
+    const x = eventToVBX(e, rangebar);
     const xToTs = px => state.chart.xMinFull + (px / 800) * (state.chart.xMaxFull - state.chart.xMinFull);
-    if (rangeDrag.type === 'left') {
-      const newMin = xToTs(x);
-      state.chart.xMin = Math.max(state.chart.xMinFull, Math.min(newMin, state.chart.xMax - 100));
-    } else if (rangeDrag.type === 'right') {
-      const newMax = xToTs(x);
-      state.chart.xMax = Math.min(state.chart.xMaxFull, Math.max(newMax, state.chart.xMin + 100));
-    } else if (rangeDrag.type === 'pan') {
-      const dxPx = x - rangeDrag.startX;
+    if (rd.type === 'left') state.chart.xMin = Math.max(state.chart.xMinFull, Math.min(xToTs(x), state.chart.xMax - 100));
+    else if (rd.type === 'right') state.chart.xMax = Math.min(state.chart.xMaxFull, Math.max(xToTs(x), state.chart.xMin + 100));
+    else if (rd.type === 'pan') {
+      const dxPx = x - rd.startX;
       const dxTs = (dxPx / 800) * (state.chart.xMaxFull - state.chart.xMinFull);
-      let newMin = rangeDrag.startMin + dxTs;
-      let newMax = rangeDrag.startMax + dxTs;
-      const span = newMax - newMin;
-      if (newMin < state.chart.xMinFull) { newMin = state.chart.xMinFull; newMax = newMin + span; }
-      if (newMax > state.chart.xMaxFull) { newMax = state.chart.xMaxFull; newMin = newMax - span; }
-      state.chart.xMin = newMin; state.chart.xMax = newMax;
+      let nMin = rd.startMin + dxTs, nMax = rd.startMax + dxTs;
+      const span = nMax - nMin;
+      if (nMin < state.chart.xMinFull) { nMin = state.chart.xMinFull; nMax = nMin + span; }
+      if (nMax > state.chart.xMaxFull) { nMax = state.chart.xMaxFull; nMin = nMax - span; }
+      state.chart.xMin = nMin; state.chart.xMax = nMax;
     }
     renderChart();
   }
-  function rangePointerEnd() { rangeDrag = null; }
-
-  rangebar.addEventListener('touchstart', rangePointerStart, { passive: false });
-  rangebar.addEventListener('touchmove', rangePointerMove, { passive: false });
-  rangebar.addEventListener('touchend', rangePointerEnd);
-  rangebar.addEventListener('mousedown', rangePointerStart);
-  document.addEventListener('mousemove', rangePointerMove);
-  document.addEventListener('mouseup', rangePointerEnd);
+  function rPointerEnd() { rd = null; }
+  rangebar.addEventListener('touchstart', rPointerStart, { passive: false });
+  rangebar.addEventListener('touchmove', rPointerMove, { passive: false });
+  rangebar.addEventListener('touchend', rPointerEnd);
+  rangebar.addEventListener('mousedown', rPointerStart);
+  document.addEventListener('mousemove', rPointerMove);
+  document.addEventListener('mouseup', rPointerEnd);
 }
 
-// Series toggle handlers
 function setupChartToggles() {
   document.querySelectorAll('.series-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const k = btn.dataset.key;
       state.chart.visible[k] = !state.chart.visible[k];
       btn.classList.toggle('active', state.chart.visible[k]);
+      saveSettings();
       renderChart();
     });
   });
-  // Initialize visual state
-  document.querySelectorAll('.series-toggle').forEach(btn => {
-    btn.classList.toggle('active', !!state.chart.visible[btn.dataset.key]);
-  });
+  document.querySelectorAll('.series-toggle').forEach(btn => btn.classList.toggle('active', !!state.chart.visible[btn.dataset.key]));
 }
 
-$('time-clock').addEventListener('click', () => {
-  state.chart.timeMode = 'clock';
-  $('time-clock').classList.add('active');
-  $('time-elapsed').classList.remove('active');
-  renderChart();
-});
-$('time-elapsed').addEventListener('click', () => {
-  state.chart.timeMode = 'elapsed';
-  $('time-elapsed').classList.add('active');
-  $('time-clock').classList.remove('active');
-  renderChart();
-});
-$('chart-reset').addEventListener('click', () => {
-  state.chart.xMin = state.chart.xMinFull;
-  state.chart.xMax = state.chart.xMaxFull;
-  state.chart.tooltipIdx = null;
-  renderChart();
-});
+$('time-clock').addEventListener('click', () => { state.chart.timeMode = 'clock'; $('time-clock').classList.add('active'); $('time-elapsed').classList.remove('active'); renderChart(); });
+$('time-elapsed').addEventListener('click', () => { state.chart.timeMode = 'elapsed'; $('time-elapsed').classList.add('active'); $('time-clock').classList.remove('active'); renderChart(); });
+$('chart-reset').addEventListener('click', () => { state.chart.xMin = state.chart.xMinFull; state.chart.xMax = state.chart.xMaxFull; state.chart.tooltipIdx = null; renderChart(); });
 
-// CSV export
 function sessionToCSV(session) {
   const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
-  const lines = [];
-  lines.push('# Prop Slip Logger session');
-  lines.push(`# name: ${session.name}`);
-  lines.push(`# started: ${new Date(session.startTime).toISOString()}`);
-  lines.push(`# config: cyl=${session.config.cyl} stroke=${session.config.stroke} gear=${session.config.gear} pitch=${session.config.pitch} diam=${session.config.diam}`);
-  lines.push(`# filter: snr=${session.config.snrThresh}dB contrast=${session.config.contrastThresh}dB slew=${session.config.maxSlew}rpm/s harmonic=x${session.config.harmonic}`);
-  lines.push(`# unit: ${u.label}`);
-  lines.push('t_s,rpm,speed_ms,speed_unit,acc_ms,freq_hz,peak_db,noise_db,snr_db,contrast_db,theo_kn,slip_pct,j,accel_ms2');
+  const lines = ['# Prop Slip Logger session', `# name: ${session.name}`, `# started: ${new Date(session.startTime).toISOString()}`,
+    `# config: cyl=${session.config.cyl} stroke=${session.config.stroke} gear=${session.config.gear} pitch=${session.config.pitch} diam=${session.config.diam}`,
+    `# filter: snr=${session.config.snrThresh}dB contrast=${session.config.contrastThresh}dB slew=${session.config.maxSlew}rpm/s harmonic=x${session.config.harmonic}`,
+    `# unit: ${u.label}`,
+    't_s,rpm,speed_ms,speed_unit,acc_ms,freq_hz,peak_db,noise_db,snr_db,contrast_db,theo_kn,slip_pct,j,accel_ms2'];
   for (const r of session.samples) {
     lines.push([
-      (r.t / 1000).toFixed(2),
-      r.rpm != null ? r.rpm : '',
-      r.speedMs != null ? r.speedMs.toFixed(3) : '',
+      (r.t / 1000).toFixed(2), r.rpm ?? '', r.speedMs != null ? r.speedMs.toFixed(3) : '',
       r.speedMs != null ? (r.speedMs * u.factor).toFixed(3) : '',
-      r.accMs != null ? r.accMs.toFixed(3) : '',
-      r.freqHz != null ? r.freqHz.toFixed(2) : '',
-      r.peakDb != null ? r.peakDb.toFixed(1) : '',
-      r.noiseDb != null ? r.noiseDb.toFixed(1) : '',
-      r.snr != null ? r.snr.toFixed(1) : '',
-      r.contrast != null ? r.contrast.toFixed(1) : '',
-      r.theoKn != null ? r.theoKn.toFixed(2) : '',
-      r.slip != null ? r.slip.toFixed(2) : '',
-      r.j != null ? r.j.toFixed(3) : '',
-      r.accel != null ? r.accel.toFixed(3) : '',
+      r.accMs != null ? r.accMs.toFixed(3) : '', r.freqHz != null ? r.freqHz.toFixed(2) : '',
+      r.peakDb != null ? r.peakDb.toFixed(1) : '', r.noiseDb != null ? r.noiseDb.toFixed(1) : '',
+      r.snr != null ? r.snr.toFixed(1) : '', r.contrast != null ? r.contrast.toFixed(1) : '',
+      r.theoKn != null ? r.theoKn.toFixed(2) : '', r.slip != null ? r.slip.toFixed(2) : '',
+      r.j != null ? r.j.toFixed(3) : '', r.accel != null ? r.accel.toFixed(3) : '',
     ].join(','));
   }
   return lines.join('\n');
 }
 async function exportSession(session) {
   const csv = sessionToCSV(session);
-  const fileName = `propslip_${new Date(session.startTime).toISOString().slice(0,16).replace(/[:T-]/g,'')}.csv`;
+  const fn = `propslip_${new Date(session.startTime).toISOString().slice(0,16).replace(/[:T-]/g,'')}.csv`;
   const blob = new Blob([csv], { type: 'text/csv' });
   if (navigator.canShare) {
     try {
-      const file = new File([blob], fileName, { type: 'text/csv' });
+      const file = new File([blob], fn, { type: 'text/csv' });
       if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Prop Slip Session' }); return; }
     } catch (e) { console.warn('Share failed', e); }
   }
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = fileName;
+  const a = document.createElement('a'); a.href = url; a.download = fn;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
-// ============ Wake Lock ============
 async function requestWakeLock() {
   if (!('wakeLock' in navigator)) { alert('Wake Lock not supported.'); $('wake-toggle').checked = false; return; }
   try {
     state.wakeLock = await navigator.wakeLock.request('screen');
     $('pill-wake').style.display = 'inline-block';
-    state.wakeLock.addEventListener('release', () => { $('pill-wake').style.display = 'none'; });
+    state.wakeLock.addEventListener('release', () => $('pill-wake').style.display = 'none');
   } catch (e) { console.warn('Wake lock failed', e); $('wake-toggle').checked = false; }
 }
-async function releaseWakeLock() {
-  if (state.wakeLock) { await state.wakeLock.release(); state.wakeLock = null; $('pill-wake').style.display = 'none'; }
-}
-document.addEventListener('visibilitychange', async () => {
-  if (document.visibilityState === 'visible' && $('wake-toggle').checked && !state.wakeLock) await requestWakeLock();
-});
+async function releaseWakeLock() { if (state.wakeLock) { await state.wakeLock.release(); state.wakeLock = null; $('pill-wake').style.display = 'none'; } }
 
-// ============ Test tone ============
 function startTone() {
   if (!state.audio.ctx) { alert('Open Debug to initialize audio first.'); return; }
   const ctx = state.audio.ctx;
   if (state.tone.osc) stopTone();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
+  const osc = ctx.createOscillator(); const gain = ctx.createGain();
   osc.type = 'sine';
   osc.frequency.value = parseFloat($('tone-freq').value) || 200;
   gain.gain.value = (parseFloat($('tone-vol').value) || 40) / 100 * 0.3;
@@ -1813,80 +1656,52 @@ function stopTone() {
   $('btn-tone').textContent = '▶ Play Tone';
 }
 
-// ============ Event handlers ============
+// Theme switcher
+$('theme-select').addEventListener('change', (e) => {
+  document.documentElement.setAttribute('data-theme', e.target.value);
+  saveSettings();
+  if (state.speedoVisible) renderSpeedometer();
+  if (state.debugging) renderSpectrum();
+  if (state.chart.session) renderChart();
+});
+
 $('btn-speedo').addEventListener('click', () => {
   state.speedoVisible = !state.speedoVisible;
   $('speedo-wrap').classList.toggle('active', state.speedoVisible);
   $('btn-speedo').classList.toggle('active', state.speedoVisible);
+  saveSettings();
 });
-$('btn-sessions').addEventListener('click', async () => {
-  await renderSessionsList();
-  $('sessions-modal').classList.add('active');
-});
+$('btn-sessions').addEventListener('click', async () => { await renderSessionsList(); $('sessions-modal').classList.add('active'); });
 $('sessions-close').addEventListener('click', () => $('sessions-modal').classList.remove('active'));
 $('session-detail-close').addEventListener('click', () => $('session-detail-modal').classList.remove('active'));
 $('session-export').addEventListener('click', () => { if (state.currentSessionDetail) exportSession(state.currentSessionDetail); });
-$('session-delete').addEventListener('click', async () => {
-  if (!state.currentSessionDetail) return;
-  if (!confirm('Delete this session?')) return;
-  await deleteSession(state.currentSessionDetail.id);
-  $('session-detail-modal').classList.remove('active');
-  await renderSessionsList();
-});
+$('session-delete').addEventListener('click', async () => { if (!state.currentSessionDetail) return; if (!confirm('Delete this session?')) return; await deleteSession(state.currentSessionDetail.id); $('session-detail-modal').classList.remove('active'); await renderSessionsList(); });
 
-$('btn-calibrate').addEventListener('click', async () => {
-  state.calibrating = true;
-  state.peaks = [];
-  state.rpm = { current: null, lastUpdate: 0, history: [] };
-  $('cal-modal').classList.add('active');
-  if (!state.audio.ctx) await startAudio();
-});
-$('cal-close').addEventListener('click', () => {
-  state.calibrating = false;
-  $('cal-modal').classList.remove('active');
-  if (!state.running && !state.debugging) stopAudio();
-});
-$('cal-apply').addEventListener('click', () => {
-  if (state.suggestedHarmonic) {
-    $('harmonic').value = String(state.suggestedHarmonic);
-    state.rpm = { current: null, lastUpdate: 0, history: [] };
-  }
-});
-$('btn-debug').addEventListener('click', async () => {
-  state.debugging = true;
-  $('debug-modal').classList.add('active');
-  if (!state.audio.ctx) await startAudio();
-  if (!state.gps.watchId) startGPS();
-});
-$('debug-close').addEventListener('click', () => {
-  state.debugging = false;
-  $('debug-modal').classList.remove('active');
-  if (state.tone.osc) stopTone();
-  if (!state.running && !state.calibrating) {
-    stopAudio();
-    if (!state.running) { stopGPS(); setPill('pill-gps', null, 'GPS'); }
-    setPill('pill-mic', null, 'Mic');
-  }
-});
+$('btn-calibrate').addEventListener('click', async () => { state.calibrating = true; state.peaks = []; state.rpm = { current: null, lastUpdate: 0, history: [] }; $('cal-modal').classList.add('active'); if (!state.audio.ctx) await startAudio(); });
+$('cal-close').addEventListener('click', () => { state.calibrating = false; $('cal-modal').classList.remove('active'); if (!state.running && !state.debugging) stopAudio(); });
+$('cal-apply').addEventListener('click', () => { if (state.suggestedHarmonic) { $('harmonic').value = String(state.suggestedHarmonic); state.rpm = { current: null, lastUpdate: 0, history: [] }; saveSettings(); } });
+
+$('btn-debug').addEventListener('click', async () => { state.debugging = true; $('debug-modal').classList.add('active'); if (!state.audio.ctx) await startAudio(); });
+$('debug-close').addEventListener('click', () => { state.debugging = false; $('debug-modal').classList.remove('active'); if (state.tone.osc) stopTone(); if (!state.running && !state.calibrating) { stopAudio(); setPill('pill-mic', null, 'Mic'); } });
+
 $('btn-tone').addEventListener('click', () => { if (state.tone.osc) stopTone(); else startTone(); });
 $('tone-freq').addEventListener('input', () => { if (state.tone.osc) state.tone.osc.frequency.value = parseFloat($('tone-freq').value) || 200; });
 $('tone-vol').addEventListener('input', () => { if (state.tone.gain) state.tone.gain.gain.value = (parseFloat($('tone-vol').value) || 0) / 100 * 0.3; });
+
 $('btn-livelog').addEventListener('click', () => { state.liveLogVisible = true; $('livelog-modal').classList.add('active'); updateLiveLog(); });
 $('livelog-close').addEventListener('click', () => { state.liveLogVisible = false; $('livelog-modal').classList.remove('active'); });
 $('wake-toggle').addEventListener('change', async (e) => { if (e.target.checked) await requestWakeLock(); else await releaseWakeLock(); });
 
 $('btn-start').addEventListener('click', async () => {
   if (!state.running) {
-    state.running = true;
-    state.log = [];
-    state.startTime = Date.now();
+    state.running = true; state.log = []; state.startTime = Date.now();
     state.rpm = { current: null, lastUpdate: 0, history: [] };
     $('btn-start').textContent = '■ Stop & Save';
     $('btn-start').classList.add('stop');
     $('pill-rec').style.display = 'inline-block';
     setPill('pill-rec', false, 'REC');
     $('log-summary').style.display = 'block';
-    if (!state.gps.watchId) startGPS();
+    if (state.gps.watchId === null) startGPS();
     if (!state.audio.ctx) await startAudio();
   } else {
     state.running = false;
@@ -1896,32 +1711,47 @@ $('btn-start').addEventListener('click', async () => {
     if (state.log.length > 0) {
       const u = getUnit();
       const summary = computeSummary(state.log, u);
-      const config = {
+      const cfg = {
         cyl: parseFloat($('cyl').value), stroke: parseFloat($('stroke').value),
         rpmMin: parseFloat($('rpm-min').value), rpmMax: parseFloat($('rpm-max').value),
         harmonic: parseFloat($('harmonic').value),
         gear: parseFloat($('gear').value), pitch: parseFloat($('pitch').value), diam: parseFloat($('diam').value),
-        speedUnit: $('speed-unit').value,
-        maxSlew: parseFloat($('rpm-slew').value),
-        snrThresh: parseFloat($('snr-thresh').value),
-        contrastThresh: parseFloat($('contrast-thresh').value),
+        speedUnit: $('speed-unit').value, maxSlew: parseFloat($('rpm-slew').value),
+        snrThresh: parseFloat($('snr-thresh').value), contrastThresh: parseFloat($('contrast-thresh').value),
       };
       const session = {
         startTime: state.startTime,
         name: `Session ${new Date(state.startTime).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })}`,
-        config: config, samples: state.log,
+        config: cfg, samples: state.log,
         summary: summary || { samples: 0, maxSpeed: 0, avgSpeed: 0, maxRpm: 0, avgRpm: 0, duration: 0 },
       };
       try { await saveSession(session); } catch (e) { console.error('Save failed', e); alert('Failed to save: ' + e.message); }
     }
-    if (!state.debugging) { stopGPS(); setPill('pill-gps', null, 'GPS'); }
     if (!state.calibrating && !state.debugging) { stopAudio(); setPill('pill-mic', null, 'Mic'); }
   }
 });
 
-// Init
+// Save settings whenever any input changes
+for (const id of PERSIST_FIELDS) {
+  const el = $(id);
+  if (el) el.addEventListener('change', saveSettings);
+}
+
+// ============ INITIALIZATION ============
+loadSettings();
 setupChartInteraction();
 setupChartToggles();
+
+// Speedometer ON by default if not explicitly set otherwise
+if (!localStorage.getItem(STORAGE_KEY)) {
+  state.speedoVisible = true;
+  $('speedo-wrap').classList.add('active');
+  $('btn-speedo').classList.add('active');
+}
+
+// Auto-start GPS on app load (will prompt for permission first time)
+startGPS();
 </script>
+
 </body>
 </html>
