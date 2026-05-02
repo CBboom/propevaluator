@@ -10,7 +10,8 @@
 <title>Prop Slip Logger</title>
 <style>
   /* ===== THEMES ===== */
-  html[data-theme="midnight"] {
+  /* Midnight is the default in :root so it always applies even before JS runs */
+  :root, html[data-theme="midnight"] {
     --bg: #0a0e14; --panel: #131922; --panel-2: #1a212d; --border: #2a3340;
     --text: #ffffff; --text-dim: #b8c5d6; --text-faint: #6b7889;
     --accent: #00f5b8; --warn: #ffc26b; --danger: #ff7a7a;
@@ -48,28 +49,41 @@
 
 - { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-  margin: 0; padding: 0; background: var(–bg); color: var(–text);
+  margin: 0; padding: 0;
+  background-color: var(–bg) !important;
+  color: var(–text);
   font-family: ‘JetBrains Mono’, ‘Menlo’, ‘Courier New’, monospace;
   -webkit-font-smoothing: antialiased; overscroll-behavior: none;
   transition: background 0.2s, color 0.2s;
   }
-  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); min-height: 100vh; }
-  .header {
-  padding: 16px 20px 12px; border-bottom: 1px solid var(–border);
-  display: flex; justify-content: space-between; align-items: center; gap: 10px;
-  }
-  .header h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-  .header .v { font-size: 10px; color: var(–text-faint); letter-spacing: 0.1em; }
-  .header-actions { display: flex; gap: 6px; align-items: center; }
-  .icon-btn { background: var(–panel); border: 1px solid var(–border); color: var(–text-dim); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
-  .icon-btn.active { background: var(–accent); color: var(–bg); border-color: var(–accent); }
-  .theme-select {
-  background: var(–panel); border: 1px solid var(–border); color: var(–text);
-  font-family: inherit; font-size: 11px; padding: 5px 22px 5px 8px;
-  border-radius: 6px; -webkit-appearance: none; appearance: none; cursor: pointer; height: 32px;
-  background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>”);
-  background-repeat: no-repeat; background-position: right 6px center;
-  }
+  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); min-height: 100vh; background-color: var(–bg) !important; }
+
+/* Force-reset all form elements - prevent iOS Safari from styling them */
+input, select, button, textarea {
+font-family: inherit;
+-webkit-appearance: none !important;
+appearance: none !important;
+background-color: var(–panel);
+color: var(–text);
+border: 1px solid var(–border);
+}
+button { cursor: pointer; }
+.header {
+padding: 16px 20px 12px; border-bottom: 1px solid var(–border);
+display: flex; justify-content: space-between; align-items: center; gap: 10px;
+}
+.header h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+.header .v { font-size: 10px; color: var(–text-faint); letter-spacing: 0.1em; }
+.header-actions { display: flex; gap: 6px; align-items: center; }
+.icon-btn { background: var(–panel); border: 1px solid var(–border); color: var(–text-dim); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
+.icon-btn.active { background: var(–accent); color: var(–bg); border-color: var(–accent); }
+.theme-select {
+background: var(–panel); border: 1px solid var(–border); color: var(–text);
+font-family: inherit; font-size: 11px; padding: 5px 22px 5px 8px;
+border-radius: 6px; -webkit-appearance: none; appearance: none; cursor: pointer; height: 32px;
+background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>”);
+background-repeat: no-repeat; background-position: right 6px center;
+}
 
 .container { padding: 16px 20px 100px; }
 .section { margin-bottom: 20px; }
@@ -77,12 +91,17 @@
 .section-title::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-.field { display: flex; flex-direction: column; gap: 4px; }
-.field label { font-size: 10px; color: var(–text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field label {
+font-size: 10px; color: var(–text-dim); letter-spacing: 0.05em;
+text-transform: uppercase; white-space: nowrap; overflow: hidden;
+text-overflow: ellipsis;
+}
 .field input, .field select {
 background: var(–panel); border: 1px solid var(–border); color: var(–text);
-padding: 10px 12px; font-family: inherit; font-size: 15px;
-border-radius: 6px; width: 100%; -webkit-appearance: none; appearance: none;
+padding: 8px 10px; font-family: inherit; font-size: 14px;
+border-radius: 6px; width: 100%; min-width: 0;
+-webkit-appearance: none; appearance: none;
 }
 .field input:focus, .field select:focus { outline: none; border-color: var(–accent); }
 .field select {
@@ -115,12 +134,26 @@ background-repeat: no-repeat; background-position: right 12px center; padding-ri
 .slip-bar { height: 6px; background: var(–panel-2); border-radius: 3px; margin-top: 10px; overflow: hidden; }
 .slip-bar-fill { height: 100%; background: var(–accent); transition: width 0.2s ease, background 0.3s; width: 0%; }
 
-.btn { display: block; width: 100%; padding: 18px; background: var(–accent); color: var(–bg); border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+.btn {
+display: block; width: 100%; padding: 18px;
+background-color: var(–accent) !important;
+color: var(–bg) !important;
+border: none !important; border-radius: 8px;
+font-family: inherit; font-size: 14px; font-weight: 700;
+letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer;
+transition: transform 0.1s, opacity 0.2s;
+-webkit-appearance: none !important; appearance: none !important;
+}
 .btn:active { transform: scale(0.98); }
-.btn.stop { background: var(–danger); color: var(–bg); }
-.btn.secondary { background: var(–panel); color: var(–text); border: 1px solid var(–border); padding: 12px; font-size: 11px; }
+.btn.stop { background-color: var(–danger) !important; color: var(–bg) !important; }
+.btn.secondary {
+background-color: var(–panel) !important;
+color: var(–text) !important;
+border: 1px solid var(–border) !important;
+padding: 12px; font-size: 11px;
+}
 .btn.tiny { padding: 8px; font-size: 10px; }
-.btn.danger { background: var(–danger); color: var(–bg); }
+.btn.danger { background-color: var(–danger) !important; color: var(–bg) !important; }
 .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
 .btn-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(–bg) 70%, transparent); z-index: 10; }
@@ -267,7 +300,7 @@ display: none;
     </select>
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
     <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
-    <span class="v">v0.6</span>
+    <span class="v">v0.6.1</span>
   </div>
 </div>
 
@@ -331,7 +364,7 @@ display: none;
   <div class="section">
     <div class="section-title">Engine</div>
     <div class="grid-2" style="margin-bottom:10px">
-      <div class="field"><label>Cylinders (1–16)</label><input type="number" id="cyl" value="4" min="1" max="16"></div>
+      <div class="field"><label>Cylinders</label><input type="number" id="cyl" value="4" min="1" max="16"></div>
       <div class="field"><label>Stroke</label>
         <select id="stroke">
           <option value="2">2-stroke</option>
@@ -340,8 +373,8 @@ display: none;
       </div>
     </div>
     <div class="grid-3">
-      <div class="field"><label>Min RPM (≥300)</label><input type="number" id="rpm-min" value="600" step="50" min="300"></div>
-      <div class="field"><label>Max RPM (≤12000)</label><input type="number" id="rpm-max" value="6000" step="100" max="12000"></div>
+      <div class="field"><label>Min RPM</label><input type="number" id="rpm-min" value="600" step="50" min="300"></div>
+      <div class="field"><label>Max RPM</label><input type="number" id="rpm-max" value="6000" step="100" max="12000"></div>
       <div class="field"><label>Harmonic</label>
         <select id="harmonic">
           <option value="0.5">×0.5</option>
@@ -377,7 +410,7 @@ display: none;
     </div>
     <div class="grid-2">
       <div class="field"><label>Speedo max</label><input type="number" id="speedo-max" value="50" step="5" min="5"></div>
-      <div class="field"><label>Spectral contrast (dB)</label><input type="number" id="contrast-thresh" value="6" step="1" min="0" max="20"></div>
+      <div class="field"><label>Contrast (dB)</label><input type="number" id="contrast-thresh" value="6" step="1" min="0" max="20"></div>
     </div>
   </div>
 
