@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en" data-theme="midnight">
 <head>
 <meta charset="UTF-8">
@@ -47,244 +46,243 @@
     --c-speed: #ff5050; --c-rpm: #ff8855; --c-slip: #d99090; --c-j: #ff80a0; --c-accel: #ffd4d4;
   }
 
-- { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-  margin: 0; padding: 0;
-  background-color: var(–bg) !important;
-  color: var(–text);
-  font-family: ‘JetBrains Mono’, ‘Menlo’, ‘Courier New’, monospace;
-  -webkit-font-smoothing: antialiased; overscroll-behavior: none;
-  transition: background 0.2s, color 0.2s;
+    margin: 0; padding: 0;
+    background-color: var(--bg) !important;
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
+    -webkit-font-smoothing: antialiased; overscroll-behavior: none;
+    transition: background 0.2s, color 0.2s;
   }
-  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); min-height: 100vh; background-color: var(–bg) !important; }
+  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); min-height: 100vh; background-color: var(--bg) !important; }
 
-/* Force-reset all form elements - prevent iOS Safari from styling them */
-input, select, button, textarea {
-font-family: inherit;
--webkit-appearance: none !important;
-appearance: none !important;
-background-color: var(–panel);
-color: var(–text);
-border: 1px solid var(–border);
-}
-button { cursor: pointer; }
-.header {
-padding: 16px 20px 12px; border-bottom: 1px solid var(–border);
-display: flex; justify-content: space-between; align-items: center; gap: 10px;
-}
-.header h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-.header .v { font-size: 10px; color: var(–text-faint); letter-spacing: 0.1em; }
-.header-actions { display: flex; gap: 6px; align-items: center; }
-.icon-btn { background: var(–panel); border: 1px solid var(–border); color: var(–text-dim); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
-.icon-btn.active { background: var(–accent); color: var(–bg); border-color: var(–accent); }
-.theme-select {
-background: var(–panel); border: 1px solid var(–border); color: var(–text);
-font-family: inherit; font-size: 11px; padding: 5px 22px 5px 8px;
-border-radius: 6px; -webkit-appearance: none; appearance: none; cursor: pointer; height: 32px;
-background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>”);
-background-repeat: no-repeat; background-position: right 6px center;
-}
+  /* Force-reset all form elements - prevent iOS Safari from styling them */
+  input, select, button, textarea {
+    font-family: inherit;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background-color: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  button { cursor: pointer; }
+  .header {
+    padding: 16px 20px 12px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  }
+  .header h1 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+  .header .v { font-size: 10px; color: var(--text-faint); letter-spacing: 0.1em; }
+  .header-actions { display: flex; gap: 6px; align-items: center; }
+  .icon-btn { background: var(--panel); border: 1px solid var(--border); color: var(--text-dim); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
+  .icon-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .theme-select {
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    font-family: inherit; font-size: 11px; padding: 5px 22px 5px 8px;
+    border-radius: 6px; -webkit-appearance: none; appearance: none; cursor: pointer; height: 32px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>");
+    background-repeat: no-repeat; background-position: right 6px center;
+  }
 
-.container { padding: 16px 20px 100px; }
-.section { margin-bottom: 20px; }
-.section-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(–text-dim); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-.section-title::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.field label {
-font-size: 10px; color: var(–text-dim); letter-spacing: 0.05em;
-text-transform: uppercase; white-space: nowrap; overflow: hidden;
-text-overflow: ellipsis;
-}
-.field input, .field select {
-background: var(–panel); border: 1px solid var(–border); color: var(–text);
-padding: 8px 10px; font-family: inherit; font-size: 14px;
-border-radius: 6px; width: 100%; min-width: 0;
--webkit-appearance: none; appearance: none;
-}
-.field input:focus, .field select:focus { outline: none; border-color: var(–accent); }
-.field select {
-background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>”);
-background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
-}
-.field input[type=“range”] { -webkit-appearance: none; appearance: none; height: 6px; padding: 0; background: var(–panel-2); }
-.field input[type=“range”]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(–accent); cursor: pointer; }
+  .container { padding: 16px 20px 100px; }
+  .section { margin-bottom: 20px; }
+  .section-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .field label {
+    font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em;
+    text-transform: uppercase; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .field input, .field select {
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    padding: 8px 10px; font-family: inherit; font-size: 14px;
+    border-radius: 6px; width: 100%; min-width: 0;
+    -webkit-appearance: none; appearance: none;
+  }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+  .field select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%238b97a8' d='M2 4l4 4 4-4z'/></svg>");
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+  }
+  .field input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; padding: 0; background: var(--panel-2); }
+  .field input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-.speedometer-wrap { background: var(–panel); border: 1px solid var(–border); border-radius: 10px; padding: 16px; margin-bottom: 14px; display: none; }
-.speedometer-wrap.active { display: block; }
-.speedometer { width: 100%; aspect-ratio: 2 / 1.1; display: block; }
-.speedometer-readout { text-align: center; margin-top: -12px; font-variant-numeric: tabular-nums; }
-.speedometer-readout .big { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(–accent); }
-.speedometer-readout .ghost-text { font-size: 11px; color: var(–ghost); margin-top: 2px; letter-spacing: 0.1em; }
+  .speedometer-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 14px; display: none; }
+  .speedometer-wrap.active { display: block; }
+  .speedometer { width: 100%; aspect-ratio: 2 / 1.1; display: block; }
+  .speedometer-readout { text-align: center; margin-top: -12px; font-variant-numeric: tabular-nums; }
+  .speedometer-readout .big { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(--accent); }
+  .speedometer-readout .ghost-text { font-size: 11px; color: var(--ghost); margin-top: 2px; letter-spacing: 0.1em; }
 
-.readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.readout { background: var(–panel); border: 1px solid var(–border); border-radius: 8px; padding: 14px; }
-.readout .label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(–text-dim); margin-bottom: 6px; }
-.readout .value { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
-.readout .unit { font-size: 12px; color: var(–text-dim); margin-left: 4px; font-weight: 400; }
-.readout .sub { font-size: 10px; color: var(–text-dim); margin-top: 6px; letter-spacing: 0.05em; }
-.readout .sub.warn { color: var(–warn); }
-.readout .sub.danger { color: var(–danger); }
-.readout.accent .value { color: var(–accent); }
-.readout.warn .value { color: var(–warn); }
-.readout.ghost .value { color: var(–ghost); }
-.readout.wide { grid-column: span 2; }
+  .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .readout { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .readout .label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+  .readout .value { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .readout .unit { font-size: 12px; color: var(--text-dim); margin-left: 4px; font-weight: 400; }
+  .readout .sub { font-size: 10px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.05em; }
+  .readout .sub.warn { color: var(--warn); }
+  .readout .sub.danger { color: var(--danger); }
+  .readout.accent .value { color: var(--accent); }
+  .readout.warn .value { color: var(--warn); }
+  .readout.ghost .value { color: var(--ghost); }
+  .readout.wide { grid-column: span 2; }
 
-.slip-bar { height: 6px; background: var(–panel-2); border-radius: 3px; margin-top: 10px; overflow: hidden; }
-.slip-bar-fill { height: 100%; background: var(–accent); transition: width 0.2s ease, background 0.3s; width: 0%; }
+  .slip-bar { height: 6px; background: var(--panel-2); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+  .slip-bar-fill { height: 100%; background: var(--accent); transition: width 0.2s ease, background 0.3s; width: 0%; }
 
-.btn {
-display: block; width: 100%; padding: 18px;
-background-color: var(–accent) !important;
-color: var(–bg) !important;
-border: none !important; border-radius: 8px;
-font-family: inherit; font-size: 14px; font-weight: 700;
-letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer;
-transition: transform 0.1s, opacity 0.2s;
--webkit-appearance: none !important; appearance: none !important;
-}
-.btn:active { transform: scale(0.98); }
-.btn.stop { background-color: var(–danger) !important; color: var(–bg) !important; }
-.btn.secondary {
-background-color: var(–panel) !important;
-color: var(–text) !important;
-border: 1px solid var(–border) !important;
-padding: 12px; font-size: 11px;
-}
-.btn.tiny { padding: 8px; font-size: 10px; }
-.btn.danger { background-color: var(–danger) !important; color: var(–bg) !important; }
-.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
-.btn-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(–bg) 70%, transparent); z-index: 10; }
+  .btn {
+    display: block; width: 100%; padding: 18px;
+    background-color: var(--accent) !important;
+    color: var(--bg) !important;
+    border: none !important; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    -webkit-appearance: none !important; appearance: none !important;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.stop { background-color: var(--danger) !important; color: var(--bg) !important; }
+  .btn.secondary {
+    background-color: var(--panel) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
+    padding: 12px; font-size: 11px;
+  }
+  .btn.tiny { padding: 8px; font-size: 10px; }
+  .btn.danger { background-color: var(--danger) !important; color: var(--bg) !important; }
+  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .btn-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 10; }
 
-.status { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-.pill { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: var(–panel-2); color: var(–text-dim); border: 1px solid var(–border); }
-.pill.ok { color: var(–good); border-color: var(–good); }
-.pill.err { color: var(–danger); border-color: var(–danger); }
-.pill.warn { color: var(–warn); border-color: var(–warn); }
-.pill .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 4px; vertical-align: middle; }
-.pill.ok .dot { animation: pulse 2s infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .status { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .pill { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: var(--panel-2); color: var(--text-dim); border: 1px solid var(--border); }
+  .pill.ok { color: var(--good); border-color: var(--good); }
+  .pill.err { color: var(--danger); border-color: var(--danger); }
+  .pill.warn { color: var(--warn); border-color: var(--warn); }
+  .pill .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 4px; vertical-align: middle; }
+  .pill.ok .dot { animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-details { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(–text-dim); }
-details summary { cursor: pointer; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
-details p { margin: 8px 0 4px; line-height: 1.5; }
+  details { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(--text-dim); }
+  details summary { cursor: pointer; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+  details p { margin: 8px 0 4px; line-height: 1.5; }
 
-.log-summary { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 12px; font-size: 12px; color: var(–text-dim); margin-top: 10px; }
-.log-summary span { color: var(–text); font-variant-numeric: tabular-nums; }
+  .log-summary { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 12px; color: var(--text-dim); margin-top: 10px; }
+  .log-summary span { color: var(--text); font-variant-numeric: tabular-nums; }
 
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; overflow-y: auto; }
-.modal-overlay.active { display: block; }
-.modal { background: var(–bg); margin: 20px auto; max-width: 700px; border: 1px solid var(–border); border-radius: 10px; overflow: hidden; }
-.modal-header { padding: 16px 20px; border-bottom: 1px solid var(–border); display: flex; justify-content: space-between; align-items: center; }
-.modal-header h2 { margin: 0; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
-.modal-close { background: none; border: none; color: var(–text-dim); font-size: 22px; cursor: pointer; padding: 4px 8px; }
-.modal-body { padding: 16px 20px; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; overflow-y: auto; }
+  .modal-overlay.active { display: block; }
+  .modal { background: var(--bg); margin: 20px auto; max-width: 700px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .modal-header h2 { margin: 0; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
+  .modal-close { background: none; border: none; color: var(--text-dim); font-size: 22px; cursor: pointer; padding: 4px 8px; }
+  .modal-body { padding: 16px 20px; }
 
-.peaks-list { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 12px; margin-top: 10px; }
-.peak-row { display: grid; grid-template-columns: 30px 1fr 1fr 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(–border); font-size: 13px; font-variant-numeric: tabular-nums; }
-.peak-row:last-child { border-bottom: none; }
-.peak-row.header { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(–text-dim); }
-.peak-row .strength { color: var(–text-dim); }
-.peak-row.dominant { color: var(–accent); }
-.peak-row.dominant .strength { color: var(–accent); }
+  .peaks-list { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-top: 10px; }
+  .peak-row { display: grid; grid-template-columns: 30px 1fr 1fr 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .peak-row:last-child { border-bottom: none; }
+  .peak-row.header { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .peak-row .strength { color: var(--text-dim); }
+  .peak-row.dominant { color: var(--accent); }
+  .peak-row.dominant .strength { color: var(--accent); }
 
-.verdict { margin-top: 14px; padding: 12px; border-radius: 6px; font-size: 13px; border: 1px solid var(–border); background: var(–panel); line-height: 1.5; }
-.verdict.good { border-color: var(–good); }
-.verdict.bad { border-color: var(–warn); }
-.verdict strong { color: var(–text); }
+  .verdict { margin-top: 14px; padding: 12px; border-radius: 6px; font-size: 13px; border: 1px solid var(--border); background: var(--panel); line-height: 1.5; }
+  .verdict.good { border-color: var(--good); }
+  .verdict.bad { border-color: var(--warn); }
+  .verdict strong { color: var(--text); }
 
-.debug-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-.debug-stat { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 10px 12px; }
-.debug-stat .lbl { font-size: 9px; color: var(–text-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
-.debug-stat .val { font-size: 16px; font-variant-numeric: tabular-nums; color: var(–text); font-weight: 500; }
-.debug-stat .val.dim { color: var(–text-dim); font-size: 13px; }
-.debug-stat .val.accent { color: var(–accent); }
-.debug-stat .val.warn { color: var(–warn); }
-.debug-stat .val.magenta { color: var(–magenta); }
+  .debug-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .debug-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+  .debug-stat .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+  .debug-stat .val { font-size: 16px; font-variant-numeric: tabular-nums; color: var(--text); font-weight: 500; }
+  .debug-stat .val.dim { color: var(--text-dim); font-size: 13px; }
+  .debug-stat .val.accent { color: var(--accent); }
+  .debug-stat .val.warn { color: var(--warn); }
+  .debug-stat .val.magenta { color: var(--magenta); }
 
-.spectrum { width: 100%; background: var(–panel); border: 1px solid var(–border); border-radius: 6px; display: block; }
+  .spectrum { width: 100%; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; display: block; }
 
-.test-tone { background: var(–panel-2); border: 1px solid var(–border); border-radius: 6px; padding: 12px; margin-top: 14px; }
-.test-tone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
+  .test-tone { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-top: 14px; }
+  .test-tone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
 
-.session-card { background: var(–panel); border: 1px solid var(–border); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
-.session-card:active { background: var(–panel-2); }
-.session-card-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
-.session-name { font-size: 14px; color: var(–text); font-weight: 500; }
-.session-date { font-size: 10px; color: var(–text-dim); letter-spacing: 0.05em; }
-.session-stats { font-size: 11px; color: var(–text-dim); margin-top: 4px; }
-.session-stats span { color: var(–text); font-variant-numeric: tabular-nums; }
+  .session-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
+  .session-card:active { background: var(--panel-2); }
+  .session-card-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .session-name { font-size: 14px; color: var(--text); font-weight: 500; }
+  .session-date { font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em; }
+  .session-stats { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .session-stats span { color: var(--text); font-variant-numeric: tabular-nums; }
 
-.log-table-wrap { max-height: 50vh; overflow-y: auto; background: var(–panel); border: 1px solid var(–border); border-radius: 6px; }
-.log-table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums; }
-.log-table th, .log-table td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(–border); }
-.log-table th { position: sticky; top: 0; background: var(–panel-2); color: var(–text-dim); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
-.log-table tr:last-child td { border-bottom: none; }
-.log-table .col-t { text-align: left; }
+  .log-table-wrap { max-height: 50vh; overflow-y: auto; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; }
+  .log-table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .log-table th, .log-table td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--border); }
+  .log-table th { position: sticky; top: 0; background: var(--panel-2); color: var(--text-dim); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+  .log-table tr:last-child td { border-bottom: none; }
+  .log-table .col-t { text-align: left; }
 
-.summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-.summary-stat { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 10px; }
-.summary-stat .lbl { font-size: 9px; color: var(–text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-.summary-stat .val { font-size: 18px; font-variant-numeric: tabular-nums; color: var(–text); font-weight: 600; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .summary-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
+  .summary-stat .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .summary-stat .val { font-size: 18px; font-variant-numeric: tabular-nums; color: var(--text); font-weight: 600; }
 
-.toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(–panel); border: 1px solid var(–border); border-radius: 6px; margin-bottom: 8px; }
-.toggle-row label { font-size: 12px; color: var(–text); }
-.toggle-row .desc { font-size: 10px; color: var(–text-dim); margin-top: 2px; }
-.switch { position: relative; width: 44px; height: 24px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; inset: 0; background: var(–panel-2); border: 1px solid var(–border); border-radius: 24px; transition: 0.2s; }
-.slider::before { content: “”; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: var(–text-dim); border-radius: 50%; transition: 0.2s; }
-.switch input:checked + .slider { background: var(–accent); border-color: var(–accent); }
-.switch input:checked + .slider::before { transform: translateX(20px); background: var(–bg); }
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; }
+  .toggle-row label { font-size: 12px; color: var(--text); }
+  .toggle-row .desc { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .switch { position: relative; width: 44px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; inset: 0; background: var(--panel-2); border: 1px solid var(--border); border-radius: 24px; transition: 0.2s; }
+  .slider::before { content: ""; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: var(--text-dim); border-radius: 50%; transition: 0.2s; }
+  .switch input:checked + .slider { background: var(--accent); border-color: var(--accent); }
+  .switch input:checked + .slider::before { transform: translateX(20px); background: var(--bg); }
 
-.empty-state { text-align: center; padding: 30px 20px; color: var(–text-dim); font-size: 13px; }
+  .empty-state { text-align: center; padding: 30px 20px; color: var(--text-dim); font-size: 13px; }
 
-/* Chart viewer */
-.chart-toggles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.series-toggle {
-padding: 6px 10px; font-size: 10px; letter-spacing: 0.1em;
-text-transform: uppercase; border-radius: 4px;
-border: 1px solid var(–border); background: var(–panel-2);
-color: var(–text-dim); cursor: pointer; font-family: inherit;
-display: flex; align-items: center; gap: 6px;
-}
-.series-toggle .swatch { width: 10px; height: 10px; border-radius: 2px; background: var(–text-dim); }
-.series-toggle.active { color: var(–text); }
-.series-toggle.active .swatch { background: currentColor; }
-.series-toggle.spd.active { border-color: var(–c-speed); color: var(–c-speed); }
-.series-toggle.rpm.active { border-color: var(–c-rpm); color: var(–c-rpm); }
-.series-toggle.slp.active { border-color: var(–c-slip); color: var(–c-slip); }
-.series-toggle.j.active { border-color: var(–c-j); color: var(–c-j); }
-.series-toggle.acc.active { border-color: var(–c-accel); color: var(–c-accel); }
+  /* Chart viewer */
+  .chart-toggles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .series-toggle {
+    padding: 6px 10px; font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; border-radius: 4px;
+    border: 1px solid var(--border); background: var(--panel-2);
+    color: var(--text-dim); cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .series-toggle .swatch { width: 10px; height: 10px; border-radius: 2px; background: var(--text-dim); }
+  .series-toggle.active { color: var(--text); }
+  .series-toggle.active .swatch { background: currentColor; }
+  .series-toggle.spd.active { border-color: var(--c-speed); color: var(--c-speed); }
+  .series-toggle.rpm.active { border-color: var(--c-rpm); color: var(--c-rpm); }
+  .series-toggle.slp.active { border-color: var(--c-slip); color: var(--c-slip); }
+  .series-toggle.j.active { border-color: var(--c-j); color: var(--c-j); }
+  .series-toggle.acc.active { border-color: var(--c-accel); color: var(--c-accel); }
 
-.chart-wrap { background: var(–panel); border: 1px solid var(–border); border-radius: 6px; padding: 8px; user-select: none; -webkit-user-select: none; position: relative; }
-.chart-svg { width: 100%; height: 320px; display: block; touch-action: none; }
-.chart-rangebar { width: 100%; height: 50px; display: block; margin-top: 6px; touch-action: none; }
-.chart-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
-.chart-time-mode { display: flex; gap: 4px; }
-.chart-time-mode button {
-padding: 4px 8px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-border-radius: 3px; border: 1px solid var(–border); background: var(–panel-2);
-color: var(–text-dim); cursor: pointer; font-family: inherit;
-}
-.chart-time-mode button.active { background: var(–accent); color: var(–bg); border-color: var(–accent); }
+  .chart-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 8px; user-select: none; -webkit-user-select: none; position: relative; }
+  .chart-svg { width: 100%; height: 320px; display: block; touch-action: none; }
+  .chart-rangebar { width: 100%; height: 50px; display: block; margin-top: 6px; touch-action: none; }
+  .chart-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
+  .chart-time-mode { display: flex; gap: 4px; }
+  .chart-time-mode button {
+    padding: 4px 8px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    border-radius: 3px; border: 1px solid var(--border); background: var(--panel-2);
+    color: var(--text-dim); cursor: pointer; font-family: inherit;
+  }
+  .chart-time-mode button.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 
-/* HTML tooltip overlay - much more reliable than SVG text */
-.chart-tooltip {
-position: absolute; pointer-events: none;
-background: var(–bg); border: 1px solid var(–border);
-border-radius: 6px; padding: 8px 10px; font-size: 13px;
-font-variant-numeric: tabular-nums; min-width: 130px; z-index: 5;
-display: none;
-}
-.chart-tooltip.active { display: block; }
-.chart-tooltip .tt-time { color: var(–text-dim); font-size: 11px; margin-bottom: 6px; letter-spacing: 0.05em; }
-.chart-tooltip .tt-row { display: flex; justify-content: space-between; gap: 12px; line-height: 1.5; }
-.chart-tooltip .tt-row .tt-name { color: var(–text-dim); }
+  /* HTML tooltip overlay - much more reliable than SVG text */
+  .chart-tooltip {
+    position: absolute; pointer-events: none;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px; font-size: 13px;
+    font-variant-numeric: tabular-nums; min-width: 130px; z-index: 5;
+    display: none;
+  }
+  .chart-tooltip.active { display: block; }
+  .chart-tooltip .tt-time { color: var(--text-dim); font-size: 11px; margin-bottom: 6px; letter-spacing: 0.05em; }
+  .chart-tooltip .tt-row { display: flex; justify-content: space-between; gap: 12px; line-height: 1.5; }
+  .chart-tooltip .tt-row .tt-name { color: var(--text-dim); }
 </style>
-
 </head>
 <body>
 
@@ -300,7 +298,7 @@ display: none;
     </select>
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
     <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
-    <span class="v">v0.6.1</span>
+    <span class="v">v0.7</span>
   </div>
 </div>
 
@@ -313,52 +311,49 @@ display: none;
       <span class="pill" id="pill-wake" style="display:none">⌁ Awake</span>
     </div>
 
-```
-<div class="speedometer-wrap" id="speedo-wrap">
-  <svg class="speedometer" id="speedo-svg" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid meet"></svg>
-  <div class="speedometer-readout">
-    <div><span class="big" id="speedo-val">—</span><span style="color:var(--text-dim); font-size:14px; margin-left:4px" id="speedo-unit">kn</span></div>
-    <div class="ghost-text">BEST 2s / 20s: <span id="speedo-ghost">—</span></div>
-  </div>
-</div>
+    <div class="speedometer-wrap" id="speedo-wrap">
+      <svg class="speedometer" id="speedo-svg" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="speedometer-readout">
+        <div><span class="big" id="speedo-val">—</span><span style="color:var(--text-dim); font-size:14px; margin-left:4px" id="speedo-unit">kn</span></div>
+        <div class="ghost-text">BEST 2s / 20s: <span id="speedo-ghost">—</span></div>
+      </div>
+    </div>
 
-<div class="readouts">
-  <div class="readout accent">
-    <div class="label">Speed</div>
-    <div><span class="value" id="r-speed">—</span><span class="unit" id="r-speed-unit">kn</span></div>
-    <div class="sub" id="r-speed-acc">—</div>
-  </div>
-  <div class="readout warn">
-    <div class="label">RPM</div>
-    <div><span class="value" id="r-rpm">—</span></div>
-    <div class="sub" id="r-rpm-sub">—</div>
-  </div>
-  <div class="readout">
-    <div class="label">Theoretical</div>
-    <div><span class="value" id="r-theo" style="font-size:24px">—</span><span class="unit" id="r-theo-unit">kn</span></div>
-  </div>
-  <div class="readout">
-    <div class="label">Slip</div>
-    <div><span class="value" id="r-slip" style="font-size:24px">—</span><span class="unit">%</span></div>
-    <div class="slip-bar"><div class="slip-bar-fill" id="slip-fill"></div></div>
-  </div>
-  <div class="readout ghost wide">
-    <div class="label">Best 2-sec speed (rolling 20s)</div>
-    <div><span class="value" id="r-best" style="font-size:28px">—</span><span class="unit" id="r-best-unit">kn</span></div>
-  </div>
-</div>
+    <div class="readouts">
+      <div class="readout accent">
+        <div class="label">Speed</div>
+        <div><span class="value" id="r-speed">—</span><span class="unit" id="r-speed-unit">kn</span></div>
+        <div class="sub" id="r-speed-acc">—</div>
+      </div>
+      <div class="readout warn">
+        <div class="label">RPM</div>
+        <div><span class="value" id="r-rpm">—</span></div>
+        <div class="sub" id="r-rpm-sub">—</div>
+      </div>
+      <div class="readout">
+        <div class="label">Theoretical</div>
+        <div><span class="value" id="r-theo" style="font-size:24px">—</span><span class="unit" id="r-theo-unit">kn</span></div>
+      </div>
+      <div class="readout">
+        <div class="label">Slip</div>
+        <div><span class="value" id="r-slip" style="font-size:24px">—</span><span class="unit">%</span></div>
+        <div class="slip-bar"><div class="slip-bar-fill" id="slip-fill"></div></div>
+      </div>
+      <div class="readout ghost wide">
+        <div class="label">Best 2-sec speed (rolling 20s)</div>
+        <div><span class="value" id="r-best" style="font-size:28px">—</span><span class="unit" id="r-best-unit">kn</span></div>
+      </div>
+    </div>
 
-<div class="log-summary" id="log-summary" style="display:none">
-  Logged: <span id="log-count">0</span> samples · Duration: <span id="log-duration">0s</span>
-</div>
+    <div class="log-summary" id="log-summary" style="display:none">
+      Logged: <span id="log-count">0</span> samples · Duration: <span id="log-duration">0s</span>
+    </div>
 
-<div class="btn-row three">
-  <button class="btn secondary" id="btn-calibrate">⚙ Cal</button>
-  <button class="btn secondary" id="btn-debug">◍ Debug</button>
-  <button class="btn secondary" id="btn-livelog">▤ Live</button>
-</div>
-```
-
+    <div class="btn-row three">
+      <button class="btn secondary" id="btn-calibrate">⚙ Cal</button>
+      <button class="btn secondary" id="btn-debug">◍ Debug</button>
+      <button class="btn secondary" id="btn-livelog">▤ Live</button>
+    </div>
   </div>
 
   <div class="section">
@@ -425,6 +420,24 @@ display: none;
     </div>
   </div>
 
+  <div class="section">
+    <div class="section-title">Storage & Backup</div>
+    <div class="toggle-row">
+      <div>
+        <label>Auto-export CSV after Stop</label>
+        <div class="desc">Opens Share Sheet automatically when a session is saved</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="autoexport-toggle"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <div>
+        <label>Storage status</label>
+        <div class="desc" id="storage-status">Checking…</div>
+      </div>
+      <button class="btn secondary tiny" id="btn-persist" style="width:auto; padding: 8px 12px">Protect</button>
+    </div>
+  </div>
+
   <details>
     <summary>How it works</summary>
     <p><strong>Auto-recovery:</strong> If GPS stops sending updates, the app restarts the watch automatically. Status pill turns yellow when stale.</p>
@@ -438,7 +451,6 @@ display: none;
 </div>
 
 <!-- CALIBRATION MODAL -->
-
 <div class="modal-overlay" id="cal-modal">
   <div class="modal">
     <div class="modal-header">
@@ -464,7 +476,6 @@ display: none;
 </div>
 
 <!-- DEBUG MODAL -->
-
 <div class="modal-overlay" id="debug-modal">
   <div class="modal">
     <div class="modal-header">
@@ -508,7 +519,6 @@ display: none;
 </div>
 
 <!-- LIVE LOG MODAL -->
-
 <div class="modal-overlay" id="livelog-modal">
   <div class="modal">
     <div class="modal-header">
@@ -528,19 +538,24 @@ display: none;
 </div>
 
 <!-- SESSIONS MODAL -->
-
 <div class="modal-overlay" id="sessions-modal">
   <div class="modal">
     <div class="modal-header">
       <h2>≡ Sessions</h2>
       <button class="modal-close" id="sessions-close">×</button>
     </div>
-    <div class="modal-body"><div id="sessions-list"></div></div>
+    <div class="modal-body">
+      <div class="btn-row" style="margin-bottom: 14px">
+        <button class="btn secondary tiny" id="btn-import">⤒ Import CSV</button>
+        <button class="btn secondary tiny" id="btn-backup-all">⤓ Backup all</button>
+      </div>
+      <input type="file" id="import-file-input" accept=".csv,text/csv" multiple style="display:none">
+      <div id="sessions-list"></div>
+    </div>
   </div>
 </div>
 
 <!-- SESSION DETAIL MODAL -->
-
 <div class="modal-overlay" id="session-detail-modal">
   <div class="modal">
     <div class="modal-header">
@@ -550,46 +565,43 @@ display: none;
     <div class="modal-body">
       <div class="summary-grid" id="session-detail-summary"></div>
 
-```
-  <div class="btn-row" style="margin-bottom:14px">
-    <button class="btn secondary tiny" id="session-export">⤓ Export CSV</button>
-    <button class="btn secondary tiny danger" id="session-delete">🗑 Delete</button>
-  </div>
-
-  <div class="section-title">Chart</div>
-  <div class="chart-toggles" id="chart-toggles">
-    <button class="series-toggle spd active" data-key="speed"><span class="swatch"></span>Speed</button>
-    <button class="series-toggle rpm active" data-key="rpm"><span class="swatch"></span>RPM</button>
-    <button class="series-toggle slp" data-key="slip"><span class="swatch"></span>Slip</button>
-    <button class="series-toggle j" data-key="j"><span class="swatch"></span>J</button>
-    <button class="series-toggle acc" data-key="accel"><span class="swatch"></span>Accel</button>
-  </div>
-  <div class="chart-wrap">
-    <svg class="chart-svg" id="chart-svg" viewBox="0 0 800 320" preserveAspectRatio="none"></svg>
-    <div class="chart-tooltip" id="chart-tooltip"></div>
-    <svg class="chart-rangebar" id="chart-rangebar" viewBox="0 0 800 50" preserveAspectRatio="none"></svg>
-    <div class="chart-controls">
-      <div class="chart-time-mode">
-        <button id="time-clock" class="active">Clock</button>
-        <button id="time-elapsed">Elapsed</button>
+      <div class="btn-row" style="margin-bottom:14px">
+        <button class="btn secondary tiny" id="session-export">⤓ Export CSV</button>
+        <button class="btn secondary tiny danger" id="session-delete">🗑 Delete</button>
       </div>
-      <button class="btn secondary tiny" id="chart-reset" style="width:auto">Reset zoom</button>
+
+      <div class="section-title">Chart</div>
+      <div class="chart-toggles" id="chart-toggles">
+        <button class="series-toggle spd active" data-key="speed"><span class="swatch"></span>Speed</button>
+        <button class="series-toggle rpm active" data-key="rpm"><span class="swatch"></span>RPM</button>
+        <button class="series-toggle slp" data-key="slip"><span class="swatch"></span>Slip</button>
+        <button class="series-toggle j" data-key="j"><span class="swatch"></span>J</button>
+        <button class="series-toggle acc" data-key="accel"><span class="swatch"></span>Accel</button>
+      </div>
+      <div class="chart-wrap">
+        <svg class="chart-svg" id="chart-svg" viewBox="0 0 800 320" preserveAspectRatio="none"></svg>
+        <div class="chart-tooltip" id="chart-tooltip"></div>
+        <svg class="chart-rangebar" id="chart-rangebar" viewBox="0 0 800 50" preserveAspectRatio="none"></svg>
+        <div class="chart-controls">
+          <div class="chart-time-mode">
+            <button id="time-clock" class="active">Clock</button>
+            <button id="time-elapsed">Elapsed</button>
+          </div>
+          <button class="btn secondary tiny" id="chart-reset" style="width:auto">Reset zoom</button>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:20px">Configuration</div>
+      <div id="session-config" style="background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:10px; font-size:12px; color:var(--text-dim); margin-bottom:14px"></div>
+
+      <div class="section-title">Samples (last 200)</div>
+      <div class="log-table-wrap">
+        <table class="log-table">
+          <thead><tr><th class="col-t">t (s)</th><th>RPM</th><th>Speed</th><th>Theo</th><th>Slip</th></tr></thead>
+          <tbody id="session-detail-tbody"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
-
-  <div class="section-title" style="margin-top:20px">Configuration</div>
-  <div id="session-config" style="background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:10px; font-size:12px; color:var(--text-dim); margin-bottom:14px"></div>
-
-  <div class="section-title">Samples (last 200)</div>
-  <div class="log-table-wrap">
-    <table class="log-table">
-      <thead><tr><th class="col-t">t (s)</th><th>RPM</th><th>Speed</th><th>Theo</th><th>Slip</th></tr></thead>
-      <tbody id="session-detail-tbody"></tbody>
-    </table>
-  </div>
-</div>
-```
-
   </div>
 </div>
 
@@ -621,6 +633,9 @@ function loadSettings() {
     }
     if (data.chartVisible) {
       state.chart.visible = data.chartVisible;
+    }
+    if (data.autoExport) {
+      $('autoexport-toggle').checked = true;
     }
   } catch (e) { console.warn('Load settings failed', e); }
 }
@@ -1662,6 +1677,203 @@ async function exportSession(session) {
   URL.revokeObjectURL(url);
 }
 
+// ============ CSV import (restore) ============
+function parseCSV(text) {
+  // Parse a CSV produced by sessionToCSV. Returns a session-like object, or null.
+  const lines = text.split(/\r?\n/);
+  const cfg = {};
+  let unit = 'kn';
+  let name = null, startTimeIso = null;
+  let headerIdx = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i].trim();
+    if (ln.startsWith('# name:')) name = ln.substring(7).trim();
+    else if (ln.startsWith('# started:')) startTimeIso = ln.substring(10).trim();
+    else if (ln.startsWith('# config:')) {
+      const m = ln.match(/cyl=(\S+)\s+stroke=(\S+)\s+gear=(\S+)\s+pitch=(\S+)\s+diam=(\S+)/);
+      if (m) { cfg.cyl = parseFloat(m[1]); cfg.stroke = parseFloat(m[2]); cfg.gear = parseFloat(m[3]); cfg.pitch = parseFloat(m[4]); cfg.diam = parseFloat(m[5]); }
+    } else if (ln.startsWith('# filter:')) {
+      const m = ln.match(/snr=(\S+)dB\s+contrast=(\S+)dB\s+slew=(\S+)rpm\/s\s+harmonic=x(\S+)/);
+      if (m) { cfg.snrThresh = parseFloat(m[1]); cfg.contrastThresh = parseFloat(m[2]); cfg.maxSlew = parseFloat(m[3]); cfg.harmonic = parseFloat(m[4]); }
+    } else if (ln.startsWith('# unit:')) {
+      unit = ln.substring(7).trim();
+    } else if (ln.startsWith('t_s,')) {
+      headerIdx = i;
+      break;
+    }
+  }
+  if (headerIdx === -1 || !startTimeIso) return null;
+
+  // Map unit string back to key
+  const unitKey = unit === 'kn' ? 'kn' : unit === 'mph' ? 'mph' : unit === 'km/h' ? 'kmh' : 'ms';
+  cfg.speedUnit = unitKey;
+  // Defaults for things we don't have
+  if (cfg.rpmMin == null) cfg.rpmMin = 600;
+  if (cfg.rpmMax == null) cfg.rpmMax = 6000;
+
+  const cols = lines[headerIdx].split(',');
+  const idx = {};
+  cols.forEach((c, i) => idx[c.trim()] = i);
+
+  const samples = [];
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const ln = lines[i].trim();
+    if (!ln) continue;
+    const f = ln.split(',');
+    const parseNum = v => v === '' || v == null ? null : parseFloat(v);
+    samples.push({
+      t: Math.round(parseFloat(f[idx['t_s']]) * 1000),
+      rpm: parseNum(f[idx['rpm']]),
+      speedMs: parseNum(f[idx['speed_ms']]),
+      accMs: parseNum(f[idx['acc_ms']]),
+      freqHz: parseNum(f[idx['freq_hz']]),
+      peakDb: parseNum(f[idx['peak_db']]),
+      noiseDb: parseNum(f[idx['noise_db']]),
+      snr: parseNum(f[idx['snr_db']]),
+      contrast: parseNum(f[idx['contrast_db']]),
+      theoKn: parseNum(f[idx['theo_kn']]),
+      slip: parseNum(f[idx['slip_pct']]),
+    });
+  }
+
+  if (samples.length === 0) return null;
+
+  const startTime = new Date(startTimeIso).getTime();
+  const u = speedUnits[unitKey] || speedUnits.kn;
+  const summary = computeSummary(samples, u) || { samples: 0, maxSpeed: 0, avgSpeed: 0, maxRpm: 0, avgRpm: 0, duration: 0 };
+
+  return {
+    startTime: startTime,
+    name: name || `Imported ${new Date(startTime).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })}`,
+    config: cfg,
+    samples: samples,
+    summary: summary,
+  };
+}
+
+async function importFiles(files) {
+  let imported = 0, skipped = 0, failed = 0;
+  const existing = await listSessions();
+  const existingTimes = new Set(existing.map(s => s.startTime));
+
+  for (const file of files) {
+    try {
+      const text = await file.text();
+      const session = parseCSV(text);
+      if (!session) { failed++; continue; }
+      if (existingTimes.has(session.startTime)) { skipped++; continue; }
+      await saveSession(session);
+      imported++;
+    } catch (e) {
+      console.warn('Import failed for', file.name, e);
+      failed++;
+    }
+  }
+  alert(`Import complete:\n${imported} imported\n${skipped} duplicates skipped\n${failed} failed`);
+  await renderSessionsList();
+}
+
+// ============ Backup all ============
+async function backupAllSessions() {
+  const sessions = await listSessions();
+  if (sessions.length === 0) { alert('No sessions to back up.'); return; }
+
+  // Build a combined manifest + CSVs in one text blob (JSON wrapper containing CSVs)
+  // To keep it simple and CSV-only, we share multiple files at once
+  const files = [];
+  for (const s of sessions) {
+    const csv = sessionToCSV(s);
+    const fn = `propslip_${new Date(s.startTime).toISOString().slice(0,16).replace(/[:T-]/g,'')}.csv`;
+    files.push(new File([new Blob([csv], { type: 'text/csv' })], fn, { type: 'text/csv' }));
+  }
+
+  // Try to share multiple files
+  if (navigator.canShare) {
+    try {
+      if (navigator.canShare({ files })) {
+        await navigator.share({ files, title: `Prop Slip Backup (${sessions.length} sessions)` });
+        return;
+      }
+    } catch (e) { console.warn('Multi-file share failed', e); }
+  }
+
+  // Fallback: bundle into a single .txt with separator markers, then share that one
+  const combined = sessions.map(s => {
+    return `===== SESSION ${new Date(s.startTime).toISOString()} =====\n` + sessionToCSV(s);
+  }).join('\n\n');
+  const blob = new Blob([combined], { type: 'text/plain' });
+  const fn = `propslip_backup_${new Date().toISOString().slice(0,10)}.txt`;
+  if (navigator.canShare) {
+    try {
+      const file = new File([blob], fn, { type: 'text/plain' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Prop Slip Backup' });
+        return;
+      }
+    } catch (e) { console.warn('Single-file share failed', e); }
+  }
+  // Final fallback: download link
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = fn;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ============ Persistent Storage ============
+async function checkStorageStatus() {
+  const statusEl = $('storage-status');
+  const btn = $('btn-persist');
+  if (!navigator.storage || !navigator.storage.persist) {
+    statusEl.textContent = 'Not supported on this device';
+    btn.style.display = 'none';
+    return;
+  }
+  try {
+    const isPersisted = await navigator.storage.persisted();
+    if (isPersisted) {
+      statusEl.textContent = '✓ Protected from auto-cleanup';
+      btn.textContent = 'Protected';
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+    } else {
+      statusEl.textContent = 'Not protected — may be cleared by iOS after 7 days unused';
+      btn.textContent = 'Protect';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+    // Also estimate usage
+    if (navigator.storage.estimate) {
+      const est = await navigator.storage.estimate();
+      if (est.usage && est.quota) {
+        const mb = (est.usage / 1024 / 1024).toFixed(1);
+        const quotaMb = (est.quota / 1024 / 1024).toFixed(0);
+        statusEl.textContent += ` · ${mb} MB used of ${quotaMb} MB`;
+      }
+    }
+  } catch (e) {
+    statusEl.textContent = 'Status check failed';
+    console.warn('Storage status check failed', e);
+  }
+}
+
+async function requestPersistentStorage() {
+  if (!navigator.storage || !navigator.storage.persist) {
+    alert('Persistent storage not supported on this device.');
+    return;
+  }
+  try {
+    const granted = await navigator.storage.persist();
+    if (granted) {
+      alert('✓ Storage is now protected from automatic cleanup.\n\nNote: Works best when this site is added to your home screen.');
+    } else {
+      alert('Storage protection was not granted.\n\nTip: Add this site to your home screen ("Add to Home Screen" in Safari Share menu) and try again.');
+    }
+    await checkStorageStatus();
+  } catch (e) {
+    alert('Failed to request persistent storage: ' + e.message);
+  }
+}
+
 async function requestWakeLock() {
   if (!('wakeLock' in navigator)) { alert('Wake Lock not supported.'); $('wake-toggle').checked = false; return; }
   try {
@@ -1758,11 +1970,40 @@ $('btn-start').addEventListener('click', async () => {
         config: cfg, samples: state.log,
         summary: summary || { samples: 0, maxSpeed: 0, avgSpeed: 0, maxRpm: 0, avgRpm: 0, duration: 0 },
       };
-      try { await saveSession(session); } catch (e) { console.error('Save failed', e); alert('Failed to save: ' + e.message); }
+      let savedId = null;
+      try {
+        savedId = await saveSession(session);
+      } catch (e) { console.error('Save failed', e); alert('Failed to save: ' + e.message); }
+
+      // Auto-export if toggle is on
+      if (savedId && $('autoexport-toggle').checked) {
+        session.id = savedId;
+        try { await exportSession(session); }
+        catch (e) { console.warn('Auto-export failed', e); }
+      }
     }
     if (!state.calibrating && !state.debugging) { stopAudio(); setPill('pill-mic', null, 'Mic'); }
   }
 });
+
+// Storage & Backup event handlers
+$('autoexport-toggle').addEventListener('change', () => {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    data.autoExport = $('autoexport-toggle').checked;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {}
+});
+$('btn-persist').addEventListener('click', requestPersistentStorage);
+$('btn-import').addEventListener('click', () => $('import-file-input').click());
+$('import-file-input').addEventListener('change', async (e) => {
+  const files = Array.from(e.target.files || []);
+  if (files.length === 0) return;
+  await importFiles(files);
+  e.target.value = ''; // reset so same file can be re-imported
+});
+$('btn-backup-all').addEventListener('click', backupAllSessions);
+
 
 // Save settings whenever any input changes
 for (const id of PERSIST_FIELDS) {
@@ -1784,7 +2025,9 @@ if (!localStorage.getItem(STORAGE_KEY)) {
 
 // Auto-start GPS on app load (will prompt for permission first time)
 startGPS();
-</script>
 
+// Check persistent storage status
+checkStorageStatus();
+</script>
 </body>
 </html>
