@@ -298,7 +298,7 @@
     </select>
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
     <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
-    <span class="v">v0.7</span>
+    <span class="v">v0.7.1</span>
   </div>
 </div>
 
@@ -406,17 +406,6 @@
     <div class="grid-2">
       <div class="field"><label>Speedo max</label><input type="number" id="speedo-max" value="50" step="5" min="5"></div>
       <div class="field"><label>Contrast (dB)</label><input type="number" id="contrast-thresh" value="6" step="1" min="0" max="20"></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Power</div>
-    <div class="toggle-row">
-      <div>
-        <label>Keep screen on</label>
-        <div class="desc">Prevents iOS from sleeping during logging</div>
-      </div>
-      <label class="switch"><input type="checkbox" id="wake-toggle"><span class="slider"></span></label>
     </div>
   </div>
 
@@ -613,6 +602,36 @@ const STORAGE_KEY = 'propslip_settings_v1';
 const PERSIST_FIELDS = ['cyl','stroke','rpm-min','rpm-max','harmonic','gear','pitch','diam',
   'speed-unit','rpm-slew','snr-thresh','contrast-thresh','speedo-max','tone-freq','tone-vol','cal-tach'];
 
+// ============ Modal scroll lock ============
+// Watches all .modal-overlay elements and locks body scroll when any is active.
+// Prevents iOS from scrolling the background page when interacting with a modal.
+let savedBodyScrollY = 0;
+function updateBodyScrollLock() {
+  const anyOpen = document.querySelector('.modal-overlay.active') != null;
+  if (anyOpen && document.body.style.position !== 'fixed') {
+    savedBodyScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedBodyScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  } else if (!anyOpen && document.body.style.position === 'fixed') {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedBodyScrollY);
+  }
+}
+// Setup MutationObserver to track class changes on all modal-overlays
+function setupModalScrollLock() {
+  const observer = new MutationObserver(updateBodyScrollLock);
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    observer.observe(el, { attributes: true, attributeFilter: ['class'] });
+  });
+}
+
 function loadSettings() {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -759,7 +778,8 @@ setInterval(() => {
 document.addEventListener('visibilitychange', async () => {
   if (document.visibilityState === 'visible') {
     if (state.gps.watchId === null) startGPS();
-    if ($('wake-toggle').checked && !state.wakeLock) await requestWakeLock();
+    // Re-acquire wake lock if we were logging when app was backgrounded
+    if (state.running && !state.wakeLock) await requestWakeLock();
   }
 });
 
@@ -1221,11 +1241,8 @@ function computeSummary(log, u) {
 function renderSummary(s, u) {
   if (!s) return '<div class="empty-state">No data yet</div>';
   return `<div class="summary-stat"><div class="lbl">Max ${u.label}</div><div class="val">${(s.maxSpeed * u.factor).toFixed(1)}</div></div>
-    <div class="summary-stat"><div class="lbl">Avg ${u.label}</div><div class="val">${(s.avgSpeed * u.factor).toFixed(1)}</div></div>
-    <div class="summary-stat"><div class="lbl">Duration</div><div class="val">${s.duration}s</div></div>
     <div class="summary-stat"><div class="lbl">Max RPM</div><div class="val">${s.maxRpm}</div></div>
-    <div class="summary-stat"><div class="lbl">Avg RPM</div><div class="val">${s.avgRpm}</div></div>
-    <div class="summary-stat"><div class="lbl">Avg slip</div><div class="val">${s.avgSlip != null ? s.avgSlip.toFixed(1) + '%' : '—'}</div></div>`;
+    <div class="summary-stat"><div class="lbl">Duration</div><div class="val">${s.duration}s</div></div>`;
 }
 
 // ============ Sessions ============
@@ -1405,7 +1422,7 @@ function renderChart() {
     const x = CHART_PAD_LEFT + (i / numXLabels) * CHART_PLOT_W;
     const ts = xMin + (i / numXLabels) * (xMax - xMin);
     html += `<line x1="${x}" y1="${CHART_PAD_TOP}" x2="${x}" y2="${CHART_H - CHART_PAD_BOTTOM}" stroke="${cBorder}" stroke-width="1" opacity="0.4"/>`;
-    html += `<text x="${x}" y="${CHART_H - 14}" text-anchor="middle" fill="${cTextDim}" font-size="13" font-family="monospace">${formatTime(ts)}</text>`;
+    html += `<text x="${x}" y="${CHART_H - 14}" text-anchor="middle" fill="${cText}" font-size="15" font-weight="600" font-family="monospace">${formatTime(ts)}</text>`;
   }
 
   html += `<rect x="${CHART_PAD_LEFT}" y="${CHART_PAD_TOP}" width="${CHART_PLOT_W}" height="${CHART_PLOT_H}" fill="none" stroke="${cBorder}" stroke-width="1"/>`;
@@ -1668,7 +1685,7 @@ async function exportSession(session) {
   if (navigator.canShare) {
     try {
       const file = new File([blob], fn, { type: 'text/csv' });
-      if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Prop Slip Session' }); return; }
+      if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file] }); return; }
     } catch (e) { console.warn('Share failed', e); }
   }
   const url = URL.createObjectURL(blob);
@@ -1791,7 +1808,7 @@ async function backupAllSessions() {
   if (navigator.canShare) {
     try {
       if (navigator.canShare({ files })) {
-        await navigator.share({ files, title: `Prop Slip Backup (${sessions.length} sessions)` });
+        await navigator.share({ files });
         return;
       }
     } catch (e) { console.warn('Multi-file share failed', e); }
@@ -1807,7 +1824,7 @@ async function backupAllSessions() {
     try {
       const file = new File([blob], fn, { type: 'text/plain' });
       if (navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Prop Slip Backup' });
+        await navigator.share({ files: [file] });
         return;
       }
     } catch (e) { console.warn('Single-file share failed', e); }
@@ -1875,14 +1892,14 @@ async function requestPersistentStorage() {
 }
 
 async function requestWakeLock() {
-  if (!('wakeLock' in navigator)) { alert('Wake Lock not supported.'); $('wake-toggle').checked = false; return; }
+  if (!('wakeLock' in navigator)) { console.warn('Wake Lock not supported on this device.'); return; }
   try {
     state.wakeLock = await navigator.wakeLock.request('screen');
     $('pill-wake').style.display = 'inline-block';
     state.wakeLock.addEventListener('release', () => $('pill-wake').style.display = 'none');
-  } catch (e) { console.warn('Wake lock failed', e); $('wake-toggle').checked = false; }
+  } catch (e) { console.warn('Wake lock request failed', e); }
 }
-async function releaseWakeLock() { if (state.wakeLock) { await state.wakeLock.release(); state.wakeLock = null; $('pill-wake').style.display = 'none'; } }
+async function releaseWakeLock() { if (state.wakeLock) { try { await state.wakeLock.release(); } catch (e) {} state.wakeLock = null; $('pill-wake').style.display = 'none'; } }
 
 function startTone() {
   if (!state.audio.ctx) { alert('Open Debug to initialize audio first.'); return; }
@@ -1935,7 +1952,6 @@ $('tone-vol').addEventListener('input', () => { if (state.tone.gain) state.tone.
 
 $('btn-livelog').addEventListener('click', () => { state.liveLogVisible = true; $('livelog-modal').classList.add('active'); updateLiveLog(); });
 $('livelog-close').addEventListener('click', () => { state.liveLogVisible = false; $('livelog-modal').classList.remove('active'); });
-$('wake-toggle').addEventListener('change', async (e) => { if (e.target.checked) await requestWakeLock(); else await releaseWakeLock(); });
 
 $('btn-start').addEventListener('click', async () => {
   if (!state.running) {
@@ -1948,11 +1964,15 @@ $('btn-start').addEventListener('click', async () => {
     $('log-summary').style.display = 'block';
     if (state.gps.watchId === null) startGPS();
     if (!state.audio.ctx) await startAudio();
+    // Auto-acquire wake lock so screen stays on during logging
+    await requestWakeLock();
   } else {
     state.running = false;
     $('btn-start').textContent = '▶ Start Logging';
     $('btn-start').classList.remove('stop');
     $('pill-rec').style.display = 'none';
+    // Release wake lock so screen can sleep again
+    await releaseWakeLock();
     if (state.log.length > 0) {
       const u = getUnit();
       const summary = computeSummary(state.log, u);
@@ -2015,6 +2035,7 @@ for (const id of PERSIST_FIELDS) {
 loadSettings();
 setupChartInteraction();
 setupChartToggles();
+setupModalScrollLock();
 
 // Speedometer ON by default if not explicitly set otherwise
 if (!localStorage.getItem(STORAGE_KEY)) {
