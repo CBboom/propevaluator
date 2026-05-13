@@ -334,7 +334,7 @@
     </select>
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
     <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
-    <span class="v">v0.8</span>
+    <span class="v">v0.8.1</span>
   </div>
 </div>
 
@@ -549,6 +549,7 @@
     <div class="live-dash-top">
       <div class="status" style="margin-bottom: 0">
         <span class="pill" id="pill-live-gps"><span class="dot"></span>GPS</span>
+        <span class="pill" id="pill-live-mic"><span class="dot"></span>Mic</span>
         <span class="pill" id="pill-live-rec" style="display:none"><span class="dot"></span>Rec</span>
       </div>
       <button class="live-close-btn" id="livelog-close">×</button>
@@ -1358,6 +1359,7 @@ function renderLiveDash() {
 
   // Status pills (mirror main view)
   setPill('pill-live-gps', state.gps.watchId !== null && state.gps.speedMs != null, 'GPS');
+  setPill('pill-live-mic', state.audio.ctx != null && state.audio.analyser != null, 'Mic');
   if (state.running) {
     $('pill-live-rec').style.display = 'inline-block';
     setPill('pill-live-rec', false, 'REC');
@@ -1543,7 +1545,7 @@ function renderChart() {
       const v = leftR.max - (i / 5) * (leftR.max - leftR.min);
       const label = Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(1);
       const color = SCOLORS[leftKey];
-      html += `<text x="${CHART_PAD_LEFT - 8}" y="${y + 5}" text-anchor="end" fill="${color}" font-size="14" font-family="monospace" font-weight="500">${label}</text>`;
+      html += `<text x="${CHART_PAD_LEFT - 8}" y="${y + 5}" text-anchor="end" fill="${color}" font-size="14" font-family="Menlo, 'Courier New', monospace" letter-spacing="0.05em" font-weight="500">${label}</text>`;
     }
   }
   // Right axis labels
@@ -1553,7 +1555,7 @@ function renderChart() {
       const v = rightR.max - (i / 5) * (rightR.max - rightR.min);
       const label = Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(2);
       const color = rightKeys.length === 1 ? SCOLORS[rightKeys[0]] : cTextDim;
-      html += `<text x="${CHART_W - CHART_PAD_RIGHT + 8}" y="${y + 5}" text-anchor="start" fill="${color}" font-size="14" font-family="monospace" font-weight="500">${label}</text>`;
+      html += `<text x="${CHART_W - CHART_PAD_RIGHT + 8}" y="${y + 5}" text-anchor="start" fill="${color}" font-size="14" font-family="Menlo, 'Courier New', monospace" letter-spacing="0.05em" font-weight="500">${label}</text>`;
     }
   }
 
@@ -1571,7 +1573,7 @@ function renderChart() {
     const x = CHART_PAD_LEFT + (i / numXLabels) * CHART_PLOT_W;
     const ts = xMin + (i / numXLabels) * (xMax - xMin);
     html += `<line x1="${x}" y1="${CHART_PAD_TOP}" x2="${x}" y2="${CHART_H - CHART_PAD_BOTTOM}" stroke="${cBorder}" stroke-width="1" opacity="0.4"/>`;
-    html += `<text x="${x}" y="${CHART_H - 18}" text-anchor="middle" fill="${cText}" font-size="20" font-weight="600" font-family="monospace">${formatTime(ts)}</text>`;
+    html += `<text x="${x}" y="${CHART_H - 18}" text-anchor="middle" fill="${cText}" font-size="20" font-weight="600" font-family="Menlo, 'Courier New', monospace" letter-spacing="0.08em">${formatTime(ts)}</text>`;
   }
 
   html += `<rect x="${CHART_PAD_LEFT}" y="${CHART_PAD_TOP}" width="${CHART_PLOT_W}" height="${CHART_PLOT_H}" fill="none" stroke="${cBorder}" stroke-width="1"/>`;
@@ -2096,18 +2098,32 @@ $('session-export').addEventListener('click', () => { if (state.currentSessionDe
 $('session-delete').addEventListener('click', async () => { if (!state.currentSessionDetail) return; if (!confirm('Delete this session?')) return; await deleteSession(state.currentSessionDetail.id); $('session-detail-modal').classList.remove('active'); await renderSessionsList(); });
 
 $('btn-calibrate').addEventListener('click', async () => { state.calibrating = true; state.peaks = []; state.rpm = { current: null, lastUpdate: 0, history: [] }; $('cal-modal').classList.add('active'); if (!state.audio.ctx) await startAudio(); });
-$('cal-close').addEventListener('click', () => { state.calibrating = false; $('cal-modal').classList.remove('active'); if (!state.running && !state.debugging) stopAudio(); });
+$('cal-close').addEventListener('click', () => { state.calibrating = false; $('cal-modal').classList.remove('active'); if (!state.running && !state.debugging && !state.liveLogVisible) stopAudio(); });
 $('cal-apply').addEventListener('click', () => { if (state.suggestedHarmonic) { $('harmonic').value = String(state.suggestedHarmonic); state.rpm = { current: null, lastUpdate: 0, history: [] }; saveSettings(); } });
 
 $('btn-debug').addEventListener('click', async () => { state.debugging = true; $('debug-modal').classList.add('active'); if (!state.audio.ctx) await startAudio(); });
-$('debug-close').addEventListener('click', () => { state.debugging = false; $('debug-modal').classList.remove('active'); if (state.tone.osc) stopTone(); if (!state.running && !state.calibrating) { stopAudio(); setPill('pill-mic', null, 'Mic'); } });
+$('debug-close').addEventListener('click', () => { state.debugging = false; $('debug-modal').classList.remove('active'); if (state.tone.osc) stopTone(); if (!state.running && !state.calibrating && !state.liveLogVisible) { stopAudio(); setPill('pill-mic', null, 'Mic'); } });
 
 $('btn-tone').addEventListener('click', () => { if (state.tone.osc) stopTone(); else startTone(); });
 $('tone-freq').addEventListener('input', () => { if (state.tone.osc) state.tone.osc.frequency.value = parseFloat($('tone-freq').value) || 200; });
 $('tone-vol').addEventListener('input', () => { if (state.tone.gain) state.tone.gain.gain.value = (parseFloat($('tone-vol').value) || 0) / 100 * 0.3; });
 
-$('btn-livelog').addEventListener('click', () => { state.liveLogVisible = true; $('livelog-modal').classList.add('active'); renderLiveDash(); });
-$('livelog-close').addEventListener('click', () => { state.liveLogVisible = false; $('livelog-modal').classList.remove('active'); });
+$('btn-livelog').addEventListener('click', async () => {
+  state.liveLogVisible = true;
+  $('livelog-modal').classList.add('active');
+  renderLiveDash();
+  // Start mic so we can show RPM in the dashboard
+  if (!state.audio.ctx) await startAudio();
+});
+$('livelog-close').addEventListener('click', () => {
+  state.liveLogVisible = false;
+  $('livelog-modal').classList.remove('active');
+  // Stop mic only if no other view (logging, calibration, debug) needs it
+  if (!state.running && !state.calibrating && !state.debugging) {
+    stopAudio();
+    setPill('pill-mic', null, 'Mic');
+  }
+});
 $('live-start-btn').addEventListener('click', () => { $('btn-start').click(); });
 
 $('btn-start').addEventListener('click', async () => {
@@ -2163,7 +2179,7 @@ $('btn-start').addEventListener('click', async () => {
         catch (e) { console.warn('Auto-export failed', e); }
       }
     }
-    if (!state.calibrating && !state.debugging) { stopAudio(); setPill('pill-mic', null, 'Mic'); }
+    if (!state.calibrating && !state.debugging && !state.liveLogVisible) { stopAudio(); setPill('pill-mic', null, 'Mic'); }
   }
 });
 
