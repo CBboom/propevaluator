@@ -240,6 +240,42 @@
 
   .empty-state { text-align: center; padding: 30px 20px; color: var(--text-dim); font-size: 13px; }
 
+  /* Live dashboard (full-screen instrument panel) */
+  .modal-overlay.live-dash {
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .live-dash-wrap {
+    display: flex; flex-direction: column;
+    height: 100vh; max-width: 100%;
+    padding: env(safe-area-inset-top) 16px calc(16px + env(safe-area-inset-bottom));
+  }
+  .live-dash-top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 4px;
+  }
+  .live-close-btn {
+    background: var(--panel); border: 1px solid var(--border);
+    color: var(--text); width: 40px; height: 40px;
+    border-radius: 8px; font-size: 22px; cursor: pointer; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .live-dash-gauges {
+    flex: 1; display: flex; flex-direction: column;
+    gap: 12px; justify-content: center; min-height: 0;
+  }
+  .live-gauge-wrap {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    min-height: 0; max-height: 50vh;
+  }
+  .live-gauge {
+    width: 100%; height: 100%;
+    max-width: 600px;
+  }
+  .live-dash-bottom {
+    padding-top: 12px;
+  }
+
   /* Chart viewer */
   .chart-toggles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
   .series-toggle {
@@ -259,7 +295,7 @@
   .series-toggle.acc.active { border-color: var(--c-accel); color: var(--c-accel); }
 
   .chart-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 8px; user-select: none; -webkit-user-select: none; position: relative; }
-  .chart-svg { width: 100%; height: 320px; display: block; touch-action: none; }
+  .chart-svg { width: 100%; height: 340px; display: block; touch-action: none; }
   .chart-rangebar { width: 100%; height: 50px; display: block; margin-top: 6px; touch-action: none; }
   .chart-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
   .chart-time-mode { display: flex; gap: 4px; }
@@ -298,7 +334,7 @@
     </select>
     <button class="icon-btn" id="btn-speedo" title="Toggle speedometer">◐</button>
     <button class="icon-btn" id="btn-sessions" title="Sessions">≡</button>
-    <span class="v">v0.7.1</span>
+    <span class="v">v0.8</span>
   </div>
 </div>
 
@@ -508,20 +544,25 @@
 </div>
 
 <!-- LIVE LOG MODAL -->
-<div class="modal-overlay" id="livelog-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>▤ Live Log</h2>
-      <button class="modal-close" id="livelog-close">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="summary-grid" id="livelog-summary"></div>
-      <div class="log-table-wrap">
-        <table class="log-table" id="livelog-table">
-          <thead><tr><th class="col-t">t (s)</th><th>RPM</th><th>Speed</th><th>Theo</th><th>Slip</th></tr></thead>
-          <tbody id="livelog-tbody"></tbody>
-        </table>
+<div class="modal-overlay live-dash" id="livelog-modal">
+  <div class="live-dash-wrap">
+    <div class="live-dash-top">
+      <div class="status" style="margin-bottom: 0">
+        <span class="pill" id="pill-live-gps"><span class="dot"></span>GPS</span>
+        <span class="pill" id="pill-live-rec" style="display:none"><span class="dot"></span>Rec</span>
       </div>
+      <button class="live-close-btn" id="livelog-close">×</button>
+    </div>
+    <div class="live-dash-gauges">
+      <div class="live-gauge-wrap">
+        <svg class="live-gauge" id="live-speedo-svg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <div class="live-gauge-wrap">
+        <svg class="live-gauge" id="live-tacho-svg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+    </div>
+    <div class="live-dash-bottom">
+      <button class="btn" id="live-start-btn">▶ Start Logging</button>
     </div>
   </div>
 </div>
@@ -568,7 +609,7 @@
         <button class="series-toggle acc" data-key="accel"><span class="swatch"></span>Accel</button>
       </div>
       <div class="chart-wrap">
-        <svg class="chart-svg" id="chart-svg" viewBox="0 0 800 320" preserveAspectRatio="none"></svg>
+        <svg class="chart-svg" id="chart-svg" viewBox="0 0 800 340" preserveAspectRatio="none"></svg>
         <div class="chart-tooltip" id="chart-tooltip"></div>
         <svg class="chart-rangebar" id="chart-rangebar" viewBox="0 0 800 50" preserveAspectRatio="none"></svg>
         <div class="chart-controls">
@@ -681,7 +722,7 @@ const state = {
     spectrum: null, spectrumSmoothing: null, adaptiveNoise: null, fftRateUpdates: [] },
   speedHistory: [], bestTwoSec: null, log: [], startTime: 0,
   suggestedHarmonic: null, wakeLock: null, currentSessionDetail: null,
-  anim: { speedDisplayed: 0, bestDisplayed: 0, lastFrame: 0 },
+  anim: { speedDisplayed: 0, bestDisplayed: 0, rpmDisplayed: 0, lastFrame: 0 },
   chart: {
     session: null,
     visible: { speed: true, rpm: true, slip: false, j: false, accel: false },
@@ -985,9 +1026,12 @@ function animateLoop(now) {
   const factor = 1 - Math.exp(-dt / tau);
   const targetSpeed = state.gps.speedMs ?? 0;
   const targetBest = state.bestTwoSec ?? 0;
+  const targetRpm = state.rpm.current ?? 0;
   state.anim.speedDisplayed += (targetSpeed - state.anim.speedDisplayed) * factor;
   state.anim.bestDisplayed += (targetBest - state.anim.bestDisplayed) * factor;
+  state.anim.rpmDisplayed += (targetRpm - state.anim.rpmDisplayed) * factor;
   if (state.speedoVisible) renderSpeedometer();
+  if (state.liveLogVisible) renderLiveDash();
   updateSpeedReadouts();
   requestAnimationFrame(animateLoop);
 }
@@ -1154,7 +1198,7 @@ function uiTick() {
     $('log-duration').textContent = Math.floor((Date.now() - state.startTime) / 1000) + 's';
   }
   if (state.calibrating) updateCalibrationUI();
-  if (state.liveLogVisible) updateLiveLog();
+  if (state.liveLogVisible) renderLiveDash();
 }
 setInterval(uiTick, 200);
 
@@ -1219,12 +1263,117 @@ function updateCalibrationUI() {
   else { v.className = 'verdict bad'; v.innerHTML = `<strong>? Mismatch.</strong> Detected ${Math.round(detected)} vs tach ${tach} (ratio ${r.toFixed(2)}).`; }
 }
 
-function updateLiveLog() {
-  const log = state.log; const u = getUnit();
-  const tbody = $('livelog-tbody');
-  const recent = log.slice(-30).reverse();
-  tbody.innerHTML = recent.map(r => `<tr><td class="col-t">${(r.t / 1000).toFixed(1)}</td><td>${r.rpm ?? '—'}</td><td>${r.speedMs != null ? (r.speedMs * u.factor).toFixed(1) : '—'}</td><td>${r.theoKn != null ? (r.theoKn * u.factor / 1.94384).toFixed(1) : '—'}</td><td>${r.slip != null ? r.slip.toFixed(1) : '—'}</td></tr>`).join('');
-  $('livelog-summary').innerHTML = renderSummary(computeSummary(log, u), u);
+// ============ Live dashboard (speedo + tacho) ============
+// Generic gauge renderer used for both speed and RPM in the dashboard.
+// `redlineFrac` (0..1) — if set, the arc segment from this fraction to 1 is drawn in danger color.
+function renderGauge(svg, opts) {
+  const { value, hasData, maxVal, unit, label, redlineFrac, valueText } = opts;
+  const cx = 200, cy = 220, r = 170;
+  const startAngle = 180, endAngle = 360, arcSpan = endAngle - startAngle;
+  const angleForValue = v => startAngle + (Math.max(0, Math.min(maxVal, v)) / maxVal) * arcSpan;
+  const pointAt = (a, rad) => { const r2 = a * Math.PI / 180; return { x: cx + rad * Math.cos(r2), y: cy + rad * Math.sin(r2) }; };
+
+  const cAccent = getThemeColor('--accent');
+  const cTextDim = getThemeColor('--text-dim');
+  const cBorder = getThemeColor('--border');
+  const cPanel2 = getThemeColor('--panel-2');
+  const cText = getThemeColor('--text');
+  const cDanger = getThemeColor('--danger');
+
+  // Main arc — split into "normal" and "redline" segments if redlineFrac is set
+  let arcHtml = '';
+  if (redlineFrac != null && redlineFrac > 0 && redlineFrac < 1) {
+    const splitAngle = startAngle + redlineFrac * arcSpan;
+    const startPt = pointAt(startAngle, r);
+    const splitPt = pointAt(splitAngle, r);
+    const endPt = pointAt(endAngle, r);
+    arcHtml += `<path d="M ${startPt.x} ${startPt.y} A ${r} ${r} 0 0 1 ${splitPt.x} ${splitPt.y}" stroke="${cAccent}" stroke-width="4" fill="none" opacity="0.7"/>`;
+    arcHtml += `<path d="M ${splitPt.x} ${splitPt.y} A ${r} ${r} 0 0 1 ${endPt.x} ${endPt.y}" stroke="${cDanger}" stroke-width="4" fill="none" opacity="0.85"/>`;
+  } else {
+    const startPt = pointAt(startAngle, r);
+    const endPt = pointAt(endAngle, r);
+    arcHtml += `<path d="M ${startPt.x} ${startPt.y} A ${r} ${r} 0 0 1 ${endPt.x} ${endPt.y}" stroke="${cAccent}" stroke-width="4" fill="none" opacity="0.7"/>`;
+  }
+
+  let html = arcHtml;
+
+  // Ticks
+  for (let i = 0; i <= 10; i++) {
+    const angle = startAngle + (i / 10) * arcSpan;
+    const inner = pointAt(angle, r - 14);
+    const outer = pointAt(angle, r);
+    const big = i % 2 === 0;
+    const tickColor = (redlineFrac != null && (i / 10) >= redlineFrac) ? cDanger : cTextDim;
+    html += `<line x1="${inner.x}" y1="${inner.y}" x2="${outer.x}" y2="${outer.y}" stroke="${tickColor}" stroke-width="${big ? 3 : 1.5}"/>`;
+    if (big) {
+      const labelPt = pointAt(angle, r - 32);
+      html += `<text x="${labelPt.x}" y="${labelPt.y + 6}" text-anchor="middle" fill="${tickColor}" font-size="18" font-family="monospace" font-weight="600">${Math.round((i/10) * maxVal)}</text>`;
+    }
+  }
+
+  // Digital value inside the gauge (positioned above the needle hub)
+  // valueText is the formatted value, label is the unit/description below
+  html += `<text x="${cx}" y="${cy - 55}" text-anchor="middle" fill="${hasData ? cText : cTextDim}" font-size="62" font-family="monospace" font-weight="700" font-variant-numeric="tabular-nums">${valueText}</text>`;
+  html += `<text x="${cx}" y="${cy - 25}" text-anchor="middle" fill="${cTextDim}" font-size="16" letter-spacing="3" font-family="monospace">${label}</text>`;
+
+  // Needle
+  if (hasData) {
+    const needleAngle = angleForValue(value);
+    const needleTip = pointAt(needleAngle, r - 20);
+    const baseL = pointAt(needleAngle + 90, 7);
+    const baseR = pointAt(needleAngle - 90, 7);
+    html += `<polygon points="${needleTip.x},${needleTip.y} ${baseL.x},${baseL.y} ${baseR.x},${baseR.y}" fill="${cAccent}"/>`;
+  }
+  // Hub
+  html += `<circle cx="${cx}" cy="${cy}" r="10" fill="${cPanel2}" stroke="${cBorder}" stroke-width="2"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="4" fill="${cAccent}"/>`;
+
+  svg.innerHTML = html;
+}
+
+function renderLiveDash() {
+  // Speed gauge
+  const u = getUnit();
+  const speedoMax = parseFloat($('speedo-max').value) || 50;
+  const speedDisplay = state.anim.speedDisplayed * u.factor;
+  renderGauge($('live-speedo-svg'), {
+    value: speedDisplay,
+    hasData: state.gps.speedMs != null,
+    maxVal: speedoMax,
+    unit: u.label,
+    label: u.label.toUpperCase(),
+    valueText: state.gps.speedMs == null ? '—' : speedDisplay.toFixed(1),
+  });
+  // RPM gauge
+  const rpmMax = parseFloat($('rpm-max').value) || 6000;
+  renderGauge($('live-tacho-svg'), {
+    value: state.anim.rpmDisplayed,
+    hasData: state.rpm.current != null,
+    maxVal: rpmMax,
+    unit: 'RPM',
+    label: 'RPM',
+    redlineFrac: 0.9,
+    valueText: state.rpm.current == null ? '—' : Math.round(state.anim.rpmDisplayed).toString(),
+  });
+
+  // Status pills (mirror main view)
+  setPill('pill-live-gps', state.gps.watchId !== null && state.gps.speedMs != null, 'GPS');
+  if (state.running) {
+    $('pill-live-rec').style.display = 'inline-block';
+    setPill('pill-live-rec', false, 'REC');
+  } else {
+    $('pill-live-rec').style.display = 'none';
+  }
+
+  // Sync the Start/Stop button label
+  const btn = $('live-start-btn');
+  if (state.running) {
+    btn.textContent = '■ Stop & Save';
+    btn.classList.add('stop');
+  } else {
+    btn.textContent = '▶ Start Logging';
+    btn.classList.remove('stop');
+  }
 }
 
 function computeSummary(log, u) {
@@ -1320,8 +1469,8 @@ function getValue(s, k, u) {
 }
 
 // Chart constants — using larger fonts and dual independent axes
-const CHART_W = 800, CHART_H = 320;
-const CHART_PAD_LEFT = 60, CHART_PAD_RIGHT = 60, CHART_PAD_TOP = 16, CHART_PAD_BOTTOM = 36;
+const CHART_W = 800, CHART_H = 340;
+const CHART_PAD_LEFT = 60, CHART_PAD_RIGHT = 60, CHART_PAD_TOP = 16, CHART_PAD_BOTTOM = 56;
 const CHART_PLOT_W = CHART_W - CHART_PAD_LEFT - CHART_PAD_RIGHT;
 const CHART_PLOT_H = CHART_H - CHART_PAD_TOP - CHART_PAD_BOTTOM;
 
@@ -1417,12 +1566,12 @@ function renderChart() {
       return new Date(ts).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
   }
-  const numXLabels = 5;
+  const numXLabels = 4;
   for (let i = 0; i <= numXLabels; i++) {
     const x = CHART_PAD_LEFT + (i / numXLabels) * CHART_PLOT_W;
     const ts = xMin + (i / numXLabels) * (xMax - xMin);
     html += `<line x1="${x}" y1="${CHART_PAD_TOP}" x2="${x}" y2="${CHART_H - CHART_PAD_BOTTOM}" stroke="${cBorder}" stroke-width="1" opacity="0.4"/>`;
-    html += `<text x="${x}" y="${CHART_H - 14}" text-anchor="middle" fill="${cText}" font-size="15" font-weight="600" font-family="monospace">${formatTime(ts)}</text>`;
+    html += `<text x="${x}" y="${CHART_H - 18}" text-anchor="middle" fill="${cText}" font-size="20" font-weight="600" font-family="monospace">${formatTime(ts)}</text>`;
   }
 
   html += `<rect x="${CHART_PAD_LEFT}" y="${CHART_PAD_TOP}" width="${CHART_PLOT_W}" height="${CHART_PLOT_H}" fill="none" stroke="${cBorder}" stroke-width="1"/>`;
@@ -1658,6 +1807,13 @@ $('time-clock').addEventListener('click', () => { state.chart.timeMode = 'clock'
 $('time-elapsed').addEventListener('click', () => { state.chart.timeMode = 'elapsed'; $('time-elapsed').classList.add('active'); $('time-clock').classList.remove('active'); renderChart(); });
 $('chart-reset').addEventListener('click', () => { state.chart.xMin = state.chart.xMinFull; state.chart.xMax = state.chart.xMaxFull; state.chart.tooltipIdx = null; renderChart(); });
 
+// Format timestamp as YYYY-MM-DD_HH-MM in local time, for filenames
+function localDateForFilename(ts) {
+  const d = new Date(ts);
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+}
+
 function sessionToCSV(session) {
   const u = speedUnits[session.config.speedUnit] || speedUnits.kn;
   const lines = ['# Prop Slip Logger session', `# name: ${session.name}`, `# started: ${new Date(session.startTime).toISOString()}`,
@@ -1680,7 +1836,7 @@ function sessionToCSV(session) {
 }
 async function exportSession(session) {
   const csv = sessionToCSV(session);
-  const fn = `propslip_${new Date(session.startTime).toISOString().slice(0,16).replace(/[:T-]/g,'')}.csv`;
+  const fn = `propslip_${localDateForFilename(session.startTime)}.csv`;
   const blob = new Blob([csv], { type: 'text/csv' });
   if (navigator.canShare) {
     try {
@@ -1800,7 +1956,7 @@ async function backupAllSessions() {
   const files = [];
   for (const s of sessions) {
     const csv = sessionToCSV(s);
-    const fn = `propslip_${new Date(s.startTime).toISOString().slice(0,16).replace(/[:T-]/g,'')}.csv`;
+    const fn = `propslip_${localDateForFilename(s.startTime)}.csv`;
     files.push(new File([new Blob([csv], { type: 'text/csv' })], fn, { type: 'text/csv' }));
   }
 
@@ -1819,7 +1975,7 @@ async function backupAllSessions() {
     return `===== SESSION ${new Date(s.startTime).toISOString()} =====\n` + sessionToCSV(s);
   }).join('\n\n');
   const blob = new Blob([combined], { type: 'text/plain' });
-  const fn = `propslip_backup_${new Date().toISOString().slice(0,10)}.txt`;
+  const fn = `propslip_backup_${localDateForFilename(Date.now()).slice(0,10)}.txt`;
   if (navigator.canShare) {
     try {
       const file = new File([blob], fn, { type: 'text/plain' });
@@ -1950,8 +2106,9 @@ $('btn-tone').addEventListener('click', () => { if (state.tone.osc) stopTone(); 
 $('tone-freq').addEventListener('input', () => { if (state.tone.osc) state.tone.osc.frequency.value = parseFloat($('tone-freq').value) || 200; });
 $('tone-vol').addEventListener('input', () => { if (state.tone.gain) state.tone.gain.gain.value = (parseFloat($('tone-vol').value) || 0) / 100 * 0.3; });
 
-$('btn-livelog').addEventListener('click', () => { state.liveLogVisible = true; $('livelog-modal').classList.add('active'); updateLiveLog(); });
+$('btn-livelog').addEventListener('click', () => { state.liveLogVisible = true; $('livelog-modal').classList.add('active'); renderLiveDash(); });
 $('livelog-close').addEventListener('click', () => { state.liveLogVisible = false; $('livelog-modal').classList.remove('active'); });
+$('live-start-btn').addEventListener('click', () => { $('btn-start').click(); });
 
 $('btn-start').addEventListener('click', async () => {
   if (!state.running) {
@@ -1973,6 +2130,10 @@ $('btn-start').addEventListener('click', async () => {
     $('pill-rec').style.display = 'none';
     // Release wake lock so screen can sleep again
     await releaseWakeLock();
+    // Reset RPM display so we don't show a frozen value when engine is off
+    state.rpm = { current: null, lastUpdate: 0, history: [] };
+    state.peaks = [];
+    state.globalPeak = null;
     if (state.log.length > 0) {
       const u = getUnit();
       const summary = computeSummary(state.log, u);
